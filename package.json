@@ -4,8 +4,8 @@
   "description": "The Official AppGrid SDK for Web",
   "main": "dist/index.js",
   "scripts": {
-    "compile": "babel -d dist/ src/",
-    "eslint": "eslint . --ext .js",
+    "compile": "npm run lint && babel -d dist/ src/",
+    "lint": "eslint . --ext .js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
