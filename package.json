@@ -6,7 +6,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "precompile": "npm run clean && npm run lint",
-    "compile": "babel -d dist/ src/",
+    "compile": "npm run compileModule && npm run compileExample",
+    "compileModule": "babel -d dist/ src/",
+    "compileExample": "babel -d example.js example-es6.js",
     "lint": "eslint . --ext .js",
     "prepublish": "npm run compile",
     "test": "echo \"Error: no test specified\" && exit 1"
