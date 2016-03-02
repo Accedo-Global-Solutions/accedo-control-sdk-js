@@ -19,6 +19,11 @@
   "homepage": "https://bitbucket.org/accedo/appgrid-sdk-web#readme",
   "devDependencies": {
     "babel-cli": "^6.6.0",
-    "babel-preset-es2015": "^6.6.0"
+    "babel-eslint": "^5.0.0",
+    "babel-preset-es2015": "^6.6.0",
+    "eslint": "^2.2.0",
+    "eslint-config-airbnb": "^6.0.2",
+    "eslint-plugin-import": "^1.0.3",
+    "eslint-plugin-react": "^4.1.0"
   }
 }
