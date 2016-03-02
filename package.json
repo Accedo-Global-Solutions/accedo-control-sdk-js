@@ -1,0 +1,20 @@
+{
+  "name": "appgrid",
+  "version": "0.1.0",
+  "description": "The Official AppGrid SDK for Web",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jasondt@bitbucket.org/accedo/appgrid-sdk-web.git"
+  },
+  "keywords": [
+    "appgrid",
+    "accedo"
+  ],
+  "author": "Accedo, AB",
+  "license": "Apache-2.0",
+  "homepage": "https://bitbucket.org/accedo/appgrid-sdk-web#readme"
+}
