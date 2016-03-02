@@ -4,8 +4,11 @@
   "description": "The Official AppGrid SDK for Web",
   "main": "dist/index.js",
   "scripts": {
-    "compile": "npm run lint && babel -d dist/ src/",
+    "clean": "rm -rf dist",
+    "precompile": "npm run clean && npm run lint",
+    "compile": "babel -d dist/ src/",
     "lint": "eslint . --ext .js",
+    "prepublish": "npm run compile",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,5 +31,8 @@
     "eslint-config-airbnb": "^6.0.2",
     "eslint-plugin-import": "^1.0.3",
     "eslint-plugin-react": "^4.1.0"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
   }
 }
