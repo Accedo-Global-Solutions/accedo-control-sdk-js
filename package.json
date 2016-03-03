@@ -1,7 +1,7 @@
 {
   "name": "appgrid",
   "version": "0.1.0",
-  "description": "The Official AppGrid SDK for Web",
+  "description": "The Official AppGrid SDK for NodeJS",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf dist",
@@ -26,7 +26,8 @@
   ],
   "author": "Accedo, AB",
   "license": "Apache-2.0",
-  "homepage": "https://bitbucket.org/accedo/appgrid-sdk-web#readme",
+  "homepage": "http://appgrid.accedo.tv/",
+  "private": true,
   "devDependencies": {
     "babel-cli": "^6.6.0",
     "babel-eslint": "^5.0.0",
