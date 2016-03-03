@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var something = exports.something = 'something';
-
-exports.default = {
+var api = {
   some: 'example'
 };
+
+exports.default = api;

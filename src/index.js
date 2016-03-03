@@ -1,7 +1,7 @@
 'use strict';
 
-export const something = 'something';
-
-export default {
+const api = {
   some: 'example'
 };
+
+export default api;
