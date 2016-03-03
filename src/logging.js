@@ -1,4 +1,4 @@
-// TODO JASON: improve the console.debug logging used in this file!
+// TODO JASON: improve the console logging used in this file!
 
 import { validate } from './options';
 import { getQueryString, post } from './apiHelper';
@@ -65,7 +65,7 @@ const getLogEvent = (logEventOptions = {}, metadataObjects) => {
 const sendEvent = (level, event, options) => {
   const queryString = getQueryString(options);
   const requestUrl = `${options.serviceUrl}/log/${level}?${queryString}`;
-  console.debug(`AppGrid: sendEvent request: ${requestUrl}`); // eslint-disable-line no-console
+  console.info(`AppGrid: sendEvent request: ${requestUrl}`); // eslint-disable-line no-console
   return post(requestUrl, event)
     .catch(error => console.error('AppGrid: sendEvent - Exception: ', error)); // eslint-disable-line no-console
 };
@@ -79,7 +79,7 @@ const mapLogLevelNamesToFunctions = () => {
       const currentLogLevel = logLevelNamesToNumbers[options.logLevel];
       if (currentLogLevel > logLevelNamesToNumbers[current]) { return; }
       const logEvent = getLogEvent(logEventOptions, metadata);
-      console.debug('Sending AppGrid log message:', logEvent); // eslint-disable-line no-console
+      console.info('Sending AppGrid log message:', logEvent); // eslint-disable-line no-console
       sendEvent(current, logEvent, options);
     };
     return accumulator;

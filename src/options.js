@@ -1,4 +1,4 @@
-// TODO JASON: Figure out how to refactor the console.debug() calls to something better...
+// TODO JASON: Figure out how to refactor the console logging calls to something better...
 
 const requiredOptions = [
   'serviceUrl',
@@ -12,13 +12,14 @@ const optionalOptionDefaults = {
 
 const validateRequiredOption = (options, option) => {
   if (options[option]) { return; }
-  throw new Error(`AppGrid Fatal Error: Required option: ${option} was not found.`);
+  const errorMessage = `AppGrid Fatal Error: Required option: ${option} was not found.`;
+  throw new Error(errorMessage);
 };
 
 const setDefaultOptionValueIfNeeded = (options, option) => {
   if (options[option]) { return; }
   options[option] = optionalOptionDefaults[option];
-  console.debug(`AppGrid: Default value of: ${options[option]} was used for: ${option}`); // eslint-disable-line no-console
+  console.info(`AppGrid: Default value of: ${options[option]} was used for: ${option}`); // eslint-disable-line no-console
 };
 
 export const validate = (options) => {

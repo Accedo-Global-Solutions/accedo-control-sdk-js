@@ -9,7 +9,7 @@ var _options = require('./options');
 
 var _apiHelper = require('./apiHelper');
 
-// TODO JASON: improve the console.debug logging used in this file!
+// TODO JASON: improve the console logging used in this file!
 
 var logLevelNamesToNumbers = {
   debug: 0,
@@ -79,7 +79,7 @@ var getLogEvent = function getLogEvent() {
 var sendEvent = function sendEvent(level, event, options) {
   var queryString = (0, _apiHelper.getQueryString)(options);
   var requestUrl = options.serviceUrl + '/log/' + level + '?' + queryString;
-  console.debug('AppGrid: sendEvent request: ' + requestUrl); // eslint-disable-line no-console
+  console.info('AppGrid: sendEvent request: ' + requestUrl); // eslint-disable-line no-console
   return (0, _apiHelper.post)(requestUrl, event).catch(function (error) {
     return console.error('AppGrid: sendEvent - Exception: ', error);
   }); // eslint-disable-line no-console
@@ -102,7 +102,7 @@ var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
         return;
       }
       var logEvent = getLogEvent(logEventOptions, metadata);
-      console.debug('Sending AppGrid log message:', logEvent); // eslint-disable-line no-console
+      console.info('Sending AppGrid log message:', logEvent); // eslint-disable-line no-console
       sendEvent(current, logEvent, options);
     };
     return accumulator;

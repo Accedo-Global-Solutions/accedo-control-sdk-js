@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-// TODO JASON: Figure out how to refactor the console.debug() calls to something better...
+// TODO JASON: Figure out how to refactor the console logging calls to something better...
 
-var requiredOptions = ['serviceUrl'];
+var requiredOptions = ['serviceUrl', 'appId'];
 
 var optionalOptionDefaults = {
   logLevel: 'info',
@@ -16,7 +16,8 @@ var validateRequiredOption = function validateRequiredOption(options, option) {
   if (options[option]) {
     return;
   }
-  throw new Error('AppGrid Fatal Error: Required option: ' + option + ' was not found.');
+  var errorMessage = 'AppGrid Fatal Error: Required option: ' + option + ' was not found.';
+  throw new Error(errorMessage);
 };
 
 var setDefaultOptionValueIfNeeded = function setDefaultOptionValueIfNeeded(options, option) {
@@ -24,7 +25,7 @@ var setDefaultOptionValueIfNeeded = function setDefaultOptionValueIfNeeded(optio
     return;
   }
   options[option] = optionalOptionDefaults[option];
-  console.debug('AppGrid: Default value of: ' + options[option] + ' was used for: ' + option); // eslint-disable-line no-console
+  console.info('AppGrid: Default value of: ' + options[option] + ' was used for: ' + option); // eslint-disable-line no-console
 };
 
 var validate = exports.validate = function validate(options) {
