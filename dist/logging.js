@@ -5,13 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.logger = undefined;
 
+var _options = require('./options');
+
 var _apiHelper = require('./apiHelper');
 
-var defaultDeviceType = 'desktop'; // NOTE: This is the assumed-default value for deviceType, corresponding to Web
 // TODO JASON: improve the console.debug logging used in this file!
-
-var deviceType = defaultDeviceType; // TODO JASON: Determine whether to expose this as an option, with fallback to 'desktop' as a default.
-var logLevel = 'info'; // TODO JASON: Figure out how to refactor this line so that it's dynamic (consumer-specified)
 
 var logLevelNamesToNumbers = {
   debug: 0,
@@ -20,8 +18,6 @@ var logLevelNamesToNumbers = {
   error: 3,
   off: 10
 };
-
-var currentLogLevel = logLevelNamesToNumbers[logLevel];
 
 var getConcatenatedCode = function getConcatenatedCode() {
   var facilityCode = arguments.length <= 0 || arguments[0] === undefined ? '10' : arguments[0];
@@ -70,7 +66,7 @@ var getLogEvent = function getLogEvent() {
   var dimensions = {
     dim1: logEventOptions.source,
     dim2: logEventOptions.view,
-    dim3: deviceType,
+    dim3: logEventOptions.deviceType,
     dim4: getTimeOfDayDimValue()
   };
   return {
@@ -99,6 +95,9 @@ var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
         metadata[_key - 2] = arguments[_key];
       }
 
+      (0, _options.validate)(options);
+      logEventOptions.deviceType = options.deviceType;
+      var currentLogLevel = logLevelNamesToNumbers[options.logLevel];
       if (currentLogLevel > logLevelNamesToNumbers[current]) {
         return;
       }

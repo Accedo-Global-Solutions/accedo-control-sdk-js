@@ -1,10 +1,7 @@
 // TODO JASON: improve the console.debug logging used in this file!
 
+import { validate } from './options';
 import { getQueryString, post } from './apiHelper';
-
-const defaultDeviceType = 'desktop'; // NOTE: This is the assumed-default value for deviceType, corresponding to Web
-const deviceType = defaultDeviceType; // TODO JASON: Determine whether to expose this as an option, with fallback to 'desktop' as a default.
-const logLevel = 'info'; // TODO JASON: Figure out how to refactor this line so that it's dynamic (consumer-specified)
 
 const logLevelNamesToNumbers = {
   debug: 0,
@@ -13,8 +10,6 @@ const logLevelNamesToNumbers = {
   error: 3,
   off: 10
 };
-
-const currentLogLevel = logLevelNamesToNumbers[logLevel];
 
 const getConcatenatedCode = (facilityCode = '10', errorCode = '911') => {
   return parseInt(`${facilityCode}${errorCode}`);
@@ -57,7 +52,7 @@ const getLogEvent = (logEventOptions = {}, metadataObjects) => {
   const dimensions = {
     dim1: logEventOptions.source,
     dim2: logEventOptions.view,
-    dim3: deviceType,
+    dim3: logEventOptions.deviceType,
     dim4: getTimeOfDayDimValue()
   };
   return {
@@ -79,6 +74,9 @@ const mapLogLevelNamesToFunctions = () => {
   return Object.keys(logLevelNamesToNumbers).reduce((accumulator, current) => {
     if (current === 'off') { return accumulator; } // We don't want a function for 'off'
     accumulator[current] = (logEventOptions, options, ...metadata) => {
+      validate(options);
+      logEventOptions.deviceType = options.deviceType;
+      const currentLogLevel = logLevelNamesToNumbers[options.logLevel];
       if (currentLogLevel > logLevelNamesToNumbers[current]) { return; }
       const logEvent = getLogEvent(logEventOptions, metadata);
       console.debug('Sending AppGrid log message:', logEvent); // eslint-disable-line no-console
