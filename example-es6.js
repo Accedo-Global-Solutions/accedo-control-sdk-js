@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
-import { something } from './dist/'; // NOTE: this would normally be:  from 'appgrid';
+import AppGrid from './dist/index'; // NOTE: this would normally be:  from 'appgrid';
 
-console.log(something);
+console.dir(AppGrid);
 
 // TODO: Implement this example file!
