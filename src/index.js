@@ -1,7 +1,9 @@
-'use strict';
+import * as events from './events';
+import { logger } from './logging';
 
 const api = {
-  some: 'example'
+  events,
+  logger
 };
 
 export default api;
