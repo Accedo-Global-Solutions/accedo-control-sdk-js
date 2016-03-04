@@ -13,17 +13,14 @@ const defaultHeaders = { accept: MIME_TYPE_JSON }; // NOTE: never mutate this de
 
 const checkStatus = res => { // TODO JASON: Determine whether this is needed, and update it if so
   if (res.status >= 200 && res.status < 300) { return res; }
-  const isServerError = res.status >= 500;
-  throw { statusText: res.statusText, isServerError }; // eslint-disable-line no-throw-literal
+  const errorMessage = `AppGrid Response Error: ${res.statusText}`;
+  throw new Error(errorMessage);
 };
 
 const extractJsonAndAddTimestamp = res => {
   const time = Date.now();
   return res.json()
-    .then(json => ({ time, json }))
-    .catch(() => {
-      throw { statusText: 'JSON Parse Exception' }; // eslint-disable-line no-throw-literal
-    });
+    .then(json => ({ time, json }));
 };
 
 export const noCacheHeaderName = 'X-NO-CACHE';

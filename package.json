@@ -11,6 +11,8 @@
     "compileModule": "babel -d dist/ src/",
     "precompileExample": "npm run lintExample",
     "compileExample": "babel example-es6.js -o example.js",
+    "prerunExample": "npm run compile",
+    "runExample": "node example",
     "lint": "eslint . --ext .js",
     "lintExample": "eslint ./example-es6.js --no-ignore",
     "prepublish": "npm run compile",

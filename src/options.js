@@ -6,8 +6,7 @@ const requiredOptions = [
 ];
 
 const optionalOptionDefaults = {
-  logLevel: 'info',
-  deviceType: 'desktop' // NOTE: This is the assumed-default value for deviceType, corresponding to Web
+  logLevel: 'info'
 };
 
 const validateRequiredOption = (options, option) => {
@@ -22,8 +21,21 @@ const setDefaultOptionValueIfNeeded = (options, option) => {
   console.info(`AppGrid: Default value of: ${options[option]} was used for: ${option}`); // eslint-disable-line no-console
 };
 
-export const validate = (options) => {
-  if (!options) { throw new Error('The options object was falsey'); }
-  requiredOptions.forEach((option) => validateRequiredOption(options, option));
-  Object.keys(optionalOptionDefaults).forEach((option) => setDefaultOptionValueIfNeeded(options, option));
+const getDebugOutput = (options) => {
+  const noOp = () => {};
+  if (!options || !options.debugLogger || typeof options.debugLogger !== 'function') { return noOp; }
+  return options.debugLogger;
+};
+
+export const getValidatedOptions = (options) => {
+  return new Promise((resolve, reject) => {
+    if (!options) {
+      reject(new Error('The options object was falsey'));
+      return;
+    }
+    requiredOptions.forEach((option) => validateRequiredOption(options, option));
+    Object.keys(optionalOptionDefaults).forEach((option) => setDefaultOptionValueIfNeeded(options, option));
+    options.debugLogger = getDebugOutput(options);
+    resolve(options);
+  });
 };

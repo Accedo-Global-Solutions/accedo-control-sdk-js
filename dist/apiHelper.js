@@ -32,16 +32,14 @@ var checkStatus = function checkStatus(res) {
   if (res.status >= 200 && res.status < 300) {
     return res;
   }
-  var isServerError = res.status >= 500;
-  throw { statusText: res.statusText, isServerError: isServerError }; // eslint-disable-line no-throw-literal
+  var errorMessage = 'AppGrid Response Error: ' + res.statusText;
+  throw new Error(errorMessage);
 };
 
 var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(res) {
   var time = Date.now();
   return res.json().then(function (json) {
     return { time: time, json: json };
-  }).catch(function () {
-    throw { statusText: 'JSON Parse Exception' }; // eslint-disable-line no-throw-literal
   });
 };
 

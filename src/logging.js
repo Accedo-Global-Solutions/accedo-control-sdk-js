@@ -1,6 +1,4 @@
-// TODO JASON: improve the console logging used in this file!
-
-import { validate } from './options';
+import { getValidatedOptions } from './options';
 import { getQueryString, post } from './apiHelper';
 
 const logLevelNamesToNumbers = {
@@ -11,11 +9,11 @@ const logLevelNamesToNumbers = {
   off: 10
 };
 
-const getConcatenatedCode = (facilityCode = '10', errorCode = '911') => {
+const getConcatenatedCode = (facilityCode = 0, errorCode = 0) => {
   return parseInt(`${facilityCode}${errorCode}`);
 };
 
-const getTimeOfDayDimValue = () => {
+const getCurrentTimeOfDayDimValue = () => {
   const currentHour = new Date().getHours();
   let result;
   if (currentHour >= 1 && currentHour <= 5) {
@@ -50,10 +48,10 @@ const getLogEvent = (logEventOptions = {}, metadataObjects) => {
   const message = getLogMessage(logEventOptions.message, metadataObjects);
   const code = getConcatenatedCode(logEventOptions.facilityCode, logEventOptions.errorCode);
   const dimensions = {
-    dim1: logEventOptions.source,
-    dim2: logEventOptions.view,
-    dim3: logEventOptions.deviceType,
-    dim4: getTimeOfDayDimValue()
+    dim1: logEventOptions.dim1,
+    dim2: logEventOptions.dim2,
+    dim3: logEventOptions.dim3,
+    dim4: logEventOptions.dim4
   };
   return {
     code,
@@ -65,22 +63,22 @@ const getLogEvent = (logEventOptions = {}, metadataObjects) => {
 const sendEvent = (level, event, options) => {
   const queryString = getQueryString(options);
   const requestUrl = `${options.serviceUrl}/log/${level}?${queryString}`;
-  console.info(`AppGrid: sendEvent request: ${requestUrl}`); // eslint-disable-line no-console
-  return post(requestUrl, event)
-    .catch(error => console.error('AppGrid: sendEvent - Exception: ', error)); // eslint-disable-line no-console
+  options.debugLogger(`AppGrid: sendEvent request: ${requestUrl}`);
+  return post(requestUrl, event);
 };
 
 const mapLogLevelNamesToFunctions = () => {
   return Object.keys(logLevelNamesToNumbers).reduce((accumulator, current) => {
     if (current === 'off') { return accumulator; } // We don't want a function for 'off'
     accumulator[current] = (logEventOptions, options, ...metadata) => {
-      validate(options);
-      logEventOptions.deviceType = options.deviceType;
-      const currentLogLevel = logLevelNamesToNumbers[options.logLevel];
-      if (currentLogLevel > logLevelNamesToNumbers[current]) { return; }
-      const logEvent = getLogEvent(logEventOptions, metadata);
-      console.info('Sending AppGrid log message:', logEvent); // eslint-disable-line no-console
-      sendEvent(current, logEvent, options);
+      return getValidatedOptions(options)
+        .then((validatedOptions) => {
+          const currentLogLevel = logLevelNamesToNumbers[validatedOptions.logLevel];
+          if (currentLogLevel > logLevelNamesToNumbers[current]) { return; }
+          const logEvent = getLogEvent(logEventOptions, metadata);
+          options.debugLogger('Sending AppGrid log message:', logEvent);
+          return sendEvent(current, logEvent, validatedOptions);
+        });
     };
     return accumulator;
   }, {});
@@ -88,4 +86,4 @@ const mapLogLevelNamesToFunctions = () => {
 
 const logger = mapLogLevelNamesToFunctions();
 
-export { logger };
+export { logger, getCurrentTimeOfDayDimValue };

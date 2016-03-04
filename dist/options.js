@@ -8,8 +8,7 @@ Object.defineProperty(exports, "__esModule", {
 var requiredOptions = ['serviceUrl', 'appId'];
 
 var optionalOptionDefaults = {
-  logLevel: 'info',
-  deviceType: 'desktop' // NOTE: This is the assumed-default value for deviceType, corresponding to Web
+  logLevel: 'info'
 };
 
 var validateRequiredOption = function validateRequiredOption(options, option) {
@@ -28,14 +27,27 @@ var setDefaultOptionValueIfNeeded = function setDefaultOptionValueIfNeeded(optio
   console.info('AppGrid: Default value of: ' + options[option] + ' was used for: ' + option); // eslint-disable-line no-console
 };
 
-var validate = exports.validate = function validate(options) {
-  if (!options) {
-    throw new Error('The options object was falsey');
+var getDebugOutput = function getDebugOutput(options) {
+  var noOp = function noOp() {};
+  if (!options || !options.debugLogger || typeof options.debugLogger !== 'function') {
+    return noOp;
   }
-  requiredOptions.forEach(function (option) {
-    return validateRequiredOption(options, option);
-  });
-  Object.keys(optionalOptionDefaults).forEach(function (option) {
-    return setDefaultOptionValueIfNeeded(options, option);
+  return options.debugLogger;
+};
+
+var getValidatedOptions = exports.getValidatedOptions = function getValidatedOptions(options) {
+  return new Promise(function (resolve, reject) {
+    if (!options) {
+      reject(new Error('The options object was falsey'));
+      return;
+    }
+    requiredOptions.forEach(function (option) {
+      return validateRequiredOption(options, option);
+    });
+    Object.keys(optionalOptionDefaults).forEach(function (option) {
+      return setDefaultOptionValueIfNeeded(options, option);
+    });
+    options.debugLogger = getDebugOutput(options);
+    resolve(options);
   });
 };

@@ -3,13 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logger = undefined;
+exports.getCurrentTimeOfDayDimValue = exports.logger = undefined;
 
 var _options = require('./options');
 
 var _apiHelper = require('./apiHelper');
-
-// TODO JASON: improve the console logging used in this file!
 
 var logLevelNamesToNumbers = {
   debug: 0,
@@ -20,13 +18,13 @@ var logLevelNamesToNumbers = {
 };
 
 var getConcatenatedCode = function getConcatenatedCode() {
-  var facilityCode = arguments.length <= 0 || arguments[0] === undefined ? '10' : arguments[0];
-  var errorCode = arguments.length <= 1 || arguments[1] === undefined ? '911' : arguments[1];
+  var facilityCode = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+  var errorCode = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
   return parseInt('' + facilityCode + errorCode);
 };
 
-var getTimeOfDayDimValue = function getTimeOfDayDimValue() {
+var getCurrentTimeOfDayDimValue = function getCurrentTimeOfDayDimValue() {
   var currentHour = new Date().getHours();
   var result = undefined;
   if (currentHour >= 1 && currentHour <= 5) {
@@ -64,10 +62,10 @@ var getLogEvent = function getLogEvent() {
   var message = getLogMessage(logEventOptions.message, metadataObjects);
   var code = getConcatenatedCode(logEventOptions.facilityCode, logEventOptions.errorCode);
   var dimensions = {
-    dim1: logEventOptions.source,
-    dim2: logEventOptions.view,
-    dim3: logEventOptions.deviceType,
-    dim4: getTimeOfDayDimValue()
+    dim1: logEventOptions.dim1,
+    dim2: logEventOptions.dim2,
+    dim3: logEventOptions.dim3,
+    dim4: logEventOptions.dim4
   };
   return {
     code: code,
@@ -79,10 +77,8 @@ var getLogEvent = function getLogEvent() {
 var sendEvent = function sendEvent(level, event, options) {
   var queryString = (0, _apiHelper.getQueryString)(options);
   var requestUrl = options.serviceUrl + '/log/' + level + '?' + queryString;
-  console.info('AppGrid: sendEvent request: ' + requestUrl); // eslint-disable-line no-console
-  return (0, _apiHelper.post)(requestUrl, event).catch(function (error) {
-    return console.error('AppGrid: sendEvent - Exception: ', error);
-  }); // eslint-disable-line no-console
+  options.debugLogger('AppGrid: sendEvent request: ' + requestUrl);
+  return (0, _apiHelper.post)(requestUrl, event);
 };
 
 var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
@@ -95,15 +91,15 @@ var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
         metadata[_key - 2] = arguments[_key];
       }
 
-      (0, _options.validate)(options);
-      logEventOptions.deviceType = options.deviceType;
-      var currentLogLevel = logLevelNamesToNumbers[options.logLevel];
-      if (currentLogLevel > logLevelNamesToNumbers[current]) {
-        return;
-      }
-      var logEvent = getLogEvent(logEventOptions, metadata);
-      console.info('Sending AppGrid log message:', logEvent); // eslint-disable-line no-console
-      sendEvent(current, logEvent, options);
+      return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
+        var currentLogLevel = logLevelNamesToNumbers[validatedOptions.logLevel];
+        if (currentLogLevel > logLevelNamesToNumbers[current]) {
+          return;
+        }
+        var logEvent = getLogEvent(logEventOptions, metadata);
+        options.debugLogger('Sending AppGrid log message:', logEvent);
+        return sendEvent(current, logEvent, validatedOptions);
+      });
     };
     return accumulator;
   }, {});
@@ -112,3 +108,4 @@ var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
 var logger = mapLogLevelNamesToFunctions();
 
 exports.logger = logger;
+exports.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;

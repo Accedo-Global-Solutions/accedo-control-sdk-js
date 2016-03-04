@@ -3,11 +3,16 @@
 
 
 import * as events from './events';
-import { logger } from './logging';
+import { logger, getCurrentTimeOfDayDimValue } from './logging';
+
+const logUtils = {
+  getCurrentTimeOfDayDimValue
+};
 
 const api = {
   events,
-  logger
+  logger,
+  logUtils
 };
 
 export default api;

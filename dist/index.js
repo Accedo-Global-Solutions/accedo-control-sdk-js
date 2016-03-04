@@ -15,9 +15,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // TODO JASON: Figure out session-handling
 // TODO JASON: Update the api to include a means to send all logs to the consumer (who could then choose how to log them)
 
+var logUtils = {
+  getCurrentTimeOfDayDimValue: _logging.getCurrentTimeOfDayDimValue
+};
+
 var api = {
   events: events,
-  logger: _logging.logger
+  logger: _logging.logger,
+  logUtils: logUtils
 };
 
 exports.default = api;
