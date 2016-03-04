@@ -9,10 +9,12 @@ var _apiHelper = require('./apiHelper');
 
 var _options = require('./options');
 
+// TODO JASON: Update these calls to include the appKey & sessionId!
+
 var sendUsageStartEvent = exports.sendUsageStartEvent = function sendUsageStartEvent(options) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var queryString = (0, _apiHelper.getQueryString)(validatedOptions);
-    var requestUrl = validatedOptions.serviceUrl + '/event/start?' + queryString;
+    var requestUrl = validatedOptions.appGridUrl + '/event/start?' + queryString;
     validatedOptions.debugLogger('AppGrid: sendUsageStartEvent request: ' + requestUrl);
     return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl);
   });
@@ -21,7 +23,7 @@ var sendUsageStartEvent = exports.sendUsageStartEvent = function sendUsageStartE
 var sendUsageStopEvent = exports.sendUsageStopEvent = function sendUsageStopEvent(retentionTimeInSeconds, options) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var queryString = (0, _apiHelper.getQueryString)(validatedOptions);
-    var requestUrl = validatedOptions.serviceUrl + '/event/quit?retentionTime=' + retentionTimeInSeconds + '&' + queryString;
+    var requestUrl = validatedOptions.appGridUrl + '/event/quit?retentionTime=' + retentionTimeInSeconds + '&' + queryString;
     validatedOptions.debugLogger('AppGrid: sendUsageStopEvent request: ' + requestUrl);
     return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl);
   });

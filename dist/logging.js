@@ -74,9 +74,10 @@ var getLogEvent = function getLogEvent() {
   };
 };
 
+// TODO JASON: Update the following call to include the appKey & sessionId!
 var sendEvent = function sendEvent(level, event, options) {
   var queryString = (0, _apiHelper.getQueryString)(options);
-  var requestUrl = options.serviceUrl + '/log/' + level + '?' + queryString;
+  var requestUrl = options.appGridUrl + '/log/' + level + '?' + queryString;
   options.debugLogger('AppGrid: sendEvent request: ' + requestUrl);
   return (0, _apiHelper.post)(requestUrl, event);
 };

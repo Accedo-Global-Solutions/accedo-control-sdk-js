@@ -27,14 +27,11 @@ var MIME_TYPE_JSON = 'application/json';
 var credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 var defaultHeaders = { accept: MIME_TYPE_JSON }; // NOTE: never mutate this default object !
 
-var checkStatus = function checkStatus(res) {
-  // TODO JASON: Determine whether this is needed, and update it if so
-  if (res.status >= 200 && res.status < 300) {
-    return res;
-  }
-  var errorMessage = 'AppGrid Response Error: ' + res.statusText;
-  throw new Error(errorMessage);
-};
+// const checkStatus = res => { // TODO JASON: Determine whether this is needed, and update it if so
+//   if (res.status >= 200 && res.status < 300) { return res; }
+//   const errorMessage = `AppGrid Response Error: ${res.statusText}`;
+//   throw new Error(errorMessage);
+// };
 
 var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(res) {
   var time = Date.now();
@@ -50,21 +47,25 @@ var getNoCacheHeader = function getNoCacheHeader() {
 
 var grabWithoutExtractingResult = exports.grabWithoutExtractingResult = function grabWithoutExtractingResult(requestUrl, extraHeaders) {
   var headers = !extraHeaders ? defaultHeaders : _extends({}, defaultHeaders, extraHeaders);
-  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers }).then(checkStatus);
+  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers });
+  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
 };
 
 var grab = exports.grab = function grab() {
   return grabWithoutExtractingResult.apply(undefined, arguments).then(extractJsonAndAddTimestamp);
 };
 
-var post = exports.post = function post(requestUrl, body) {
+var post = exports.post = function post(requestUrl) {
+  var body = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
   var options = {
     headers: { 'Content-Type': MIME_TYPE_JSON },
     credentials: credentials,
     method: 'post',
     body: JSON.stringify(body)
   };
-  return (0, _isomorphicFetch2.default)(requestUrl, options).then(checkStatus);
+  return (0, _isomorphicFetch2.default)(requestUrl, options);
+  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
 };
 
 var getExtraHeaders = exports.getExtraHeaders = function getExtraHeaders(options) {

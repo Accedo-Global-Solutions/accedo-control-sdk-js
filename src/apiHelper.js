@@ -11,11 +11,11 @@ const MIME_TYPE_JSON = 'application/json';
 const credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 const defaultHeaders = { accept: MIME_TYPE_JSON }; // NOTE: never mutate this default object !
 
-const checkStatus = res => { // TODO JASON: Determine whether this is needed, and update it if so
-  if (res.status >= 200 && res.status < 300) { return res; }
-  const errorMessage = `AppGrid Response Error: ${res.statusText}`;
-  throw new Error(errorMessage);
-};
+// const checkStatus = res => { // TODO JASON: Determine whether this is needed, and update it if so
+//   if (res.status >= 200 && res.status < 300) { return res; }
+//   const errorMessage = `AppGrid Response Error: ${res.statusText}`;
+//   throw new Error(errorMessage);
+// };
 
 const extractJsonAndAddTimestamp = res => {
   const time = Date.now();
@@ -28,8 +28,8 @@ const getNoCacheHeader = () => ({ [noCacheHeaderName]: 'true' });
 
 export const grabWithoutExtractingResult = (requestUrl, extraHeaders) => {
   const headers = !extraHeaders ? defaultHeaders : { ...defaultHeaders, ...extraHeaders };
-  return fetch(requestUrl, { credentials, headers })
-    .then(checkStatus);
+  return fetch(requestUrl, { credentials, headers });
+  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
 };
 
 export const grab = (...args) => {
@@ -37,15 +37,15 @@ export const grab = (...args) => {
     .then(extractJsonAndAddTimestamp);
 };
 
-export const post = (requestUrl, body) => {
+export const post = (requestUrl, body = {}) => {
   const options = {
     headers: { 'Content-Type': MIME_TYPE_JSON },
     credentials,
     method: 'post',
     body: JSON.stringify(body)
   };
-  return fetch(requestUrl, options)
-    .then(checkStatus);
+  return fetch(requestUrl, options);
+  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
 };
 
 export const getExtraHeaders = options => { // TODO JASON: Determine whether this is needed, and update it if so

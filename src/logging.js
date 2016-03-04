@@ -60,9 +60,10 @@ const getLogEvent = (logEventOptions = {}, metadataObjects) => {
   };
 };
 
+// TODO JASON: Update the following call to include the appKey & sessionId!
 const sendEvent = (level, event, options) => {
   const queryString = getQueryString(options);
-  const requestUrl = `${options.serviceUrl}/log/${level}?${queryString}`;
+  const requestUrl = `${options.appGridUrl}/log/${level}?${queryString}`;
   options.debugLogger(`AppGrid: sendEvent request: ${requestUrl}`);
   return post(requestUrl, event);
 };

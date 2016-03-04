@@ -10,10 +10,11 @@ var _chalk2 = _interopRequireDefault(_chalk);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// console.dir(AppGrid); // TODO JASON: Kill this line
-
 /* eslint-disable no-console */
 
+console.dir(_index2.default); // TODO JASON: Kill this line
+
+// NOTE: this would normally be: import AppGrid from 'appgrid';
 var debugLogger = function debugLogger(message) {
   var _console;
 
@@ -22,8 +23,7 @@ var debugLogger = function debugLogger(message) {
   }
 
   (_console = console).log.apply(_console, [_chalk2.default.bgBlack.white('\t\tAppGrid DEBUG: ' + message + ' ')].concat(metadata));
-}; // NOTE: this would normally be: import AppGrid from 'appgrid';
-
+};
 
 var logError = function logError(message) {
   var _console2;
@@ -35,10 +35,12 @@ var logError = function logError(message) {
   (_console2 = console).error.apply(_console2, [_chalk2.default.bgBlack.red.bold('\t\t ' + message)].concat(metadata));
 };
 
+var exampleUuid = _index2.default.session.generateUuid();
+
 var appGridOptions = { // TODO JASON: Finish updating these values
   // NOTE: The following properties are required
-  serviceUrl: 'http://InsertTheCorrectAppGridUrlHere',
-  appId: 'INSERT-THE-CORRECT-APPID-HERE',
+  appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
+  appId: '560e505de4b0150cbb576df5', // TODO JASON: CRITICAL: MAKE SURE TO UPDATE THIS TO THE PROPER EXAMPLE APPID!!!!!!!1! (Currently this is the VIA-Go dev AppId)
 
   // NOTE: The following properties are optional
   logLevel: 'info', // This will default to: 'info' if not provided
@@ -49,7 +51,11 @@ var appGridOptions = { // TODO JASON: Finish updating these values
      error,
      off
   */
-  debugLogger: debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library
+  clientIp: '', // NOTE: If provided, this value will be inserted into the X-FORWARDED-FOR header for all AppGrid API Calls
+  sessionId: '', // NOTE: It's ideal to store and reuse the sessionId as much as possible, however a new one will automatically be requested if needed or missing.
+  gid: '', // NOTE: Refer to the AppGrid documentation on how to optionally make use of a GID.
+  uuid: exampleUuid, // NOTE: This value should be unique per end-user. If not provided, a new UUID will be generated for each request.
+  debugLogger: debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
 };
 
 var logExampleHeader = function logExampleHeader(message) {

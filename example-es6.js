@@ -3,7 +3,7 @@
 import AppGrid from './dist/index'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 import chalk from 'chalk';
 
-// console.dir(AppGrid); // TODO JASON: Kill this line
+console.dir(AppGrid); // TODO JASON: Kill this line
 
 const debugLogger = (message, ...metadata) => {
   console.log(chalk.bgBlack.white(`\t\tAppGrid DEBUG: ${message} `), ...metadata);
@@ -13,10 +13,12 @@ const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
 };
 
+const exampleUuid = AppGrid.session.generateUuid();
+
 const appGridOptions = { // TODO JASON: Finish updating these values
   // NOTE: The following properties are required
-  serviceUrl: 'http://InsertTheCorrectAppGridUrlHere',
-  appId: 'INSERT-THE-CORRECT-APPID-HERE',
+  appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
+  appId: '560e505de4b0150cbb576df5', // TODO JASON: CRITICAL: MAKE SURE TO UPDATE THIS TO THE PROPER EXAMPLE APPID!!!!!!!1! (Currently this is the VIA-Go dev AppId)
 
   // NOTE: The following properties are optional
   logLevel: 'info', // This will default to: 'info' if not provided
@@ -27,7 +29,11 @@ const appGridOptions = { // TODO JASON: Finish updating these values
      error,
      off
   */
-  debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library
+  clientIp: '', // NOTE: If provided, this value will be inserted into the X-FORWARDED-FOR header for all AppGrid API Calls
+  sessionId: '', // NOTE: It's ideal to store and reuse the sessionId as much as possible, however a new one will automatically be requested if needed or missing.
+  gid: '', // NOTE: Refer to the AppGrid documentation on how to optionally make use of a GID.
+  uuid: exampleUuid, // NOTE: This value should be unique per end-user. If not provided, a new UUID will be generated for each request.
+  debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
 };
 
 const logExampleHeader = (message) => {
