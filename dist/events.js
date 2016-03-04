@@ -13,7 +13,7 @@ var sendUsageStartEvent = exports.sendUsageStartEvent = function sendUsageStartE
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var queryString = (0, _apiHelper.getQueryString)(validatedOptions);
     var requestUrl = validatedOptions.serviceUrl + '/event/start?' + queryString;
-    validatedOptions.debugLogger('AppGrid: sendUsageStartEvent request: ' + requestUrl); // eslint-disable-line no-console
+    validatedOptions.debugLogger('AppGrid: sendUsageStartEvent request: ' + requestUrl);
     return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl);
   });
 };
@@ -22,7 +22,7 @@ var sendUsageStopEvent = exports.sendUsageStopEvent = function sendUsageStopEven
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var queryString = (0, _apiHelper.getQueryString)(validatedOptions);
     var requestUrl = validatedOptions.serviceUrl + '/event/quit?retentionTime=' + retentionTimeInSeconds + '&' + queryString;
-    validatedOptions.debugLogger('AppGrid: sendUsageStopEvent request: ' + requestUrl); // eslint-disable-line no-console
+    validatedOptions.debugLogger('AppGrid: sendUsageStopEvent request: ' + requestUrl);
     return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl);
   });
 };

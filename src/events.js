@@ -5,7 +5,7 @@ export const sendUsageStartEvent = (options) => {
   return getValidatedOptions(options).then((validatedOptions) => {
     const queryString = getQueryString(validatedOptions);
     const requestUrl = `${validatedOptions.serviceUrl}/event/start?${queryString}`;
-    validatedOptions.debugLogger(`AppGrid: sendUsageStartEvent request: ${requestUrl}`); // eslint-disable-line no-console
+    validatedOptions.debugLogger(`AppGrid: sendUsageStartEvent request: ${requestUrl}`);
     return grabWithoutExtractingResult(requestUrl);
   });
 };
@@ -14,7 +14,7 @@ export const sendUsageStopEvent = (retentionTimeInSeconds, options) => {
   return getValidatedOptions(options).then((validatedOptions) => {
     const queryString = getQueryString(validatedOptions);
     const requestUrl = `${validatedOptions.serviceUrl}/event/quit?retentionTime=${retentionTimeInSeconds}&${queryString}`;
-    validatedOptions.debugLogger(`AppGrid: sendUsageStopEvent request: ${requestUrl}`); // eslint-disable-line no-console
+    validatedOptions.debugLogger(`AppGrid: sendUsageStopEvent request: ${requestUrl}`);
     return grabWithoutExtractingResult(requestUrl);
   });
 };
