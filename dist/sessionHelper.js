@@ -17,16 +17,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // const appGridTimeFormat = 'YYYYMMDDTHH:mm:ssZZ'; // The format AppGrid uses to represent expiration time for sessions
 // const appGridOfflineStatus = 'OFFLINE';
 
-// const getSessionHeader = (sessionId) => {
-//   return { 'X-Session': sessionId };
-// };
-
-// const createHeadersFor = (options, extraHeaders) => { // TODO JASON: Either update (and rename!) or remove this function
-//   const headers = extraHeaders || {};
-//   if (options.ip) { headers['X-Forwarded-For'] = [options.ip]; }
-//   return headers;
-// };
-
 // TODO JASON: Finish updating this file
 
 // NOTE: This file contains the "private" Session functions for us by other API files.
@@ -55,10 +45,6 @@ var getSession = function getSession(options) {
 var updateSessionUuid = function updateSessionUuid(options) {
   // TODO JASON: Update this function!
   var requestUrl = options.appGridUrl + '/session';
-  // TODO JASON: Figure out how to update the headers here!
-  // headers: createHeadersFor(request, {
-  //   'X-Session': request.session.appgridSession.sessionKey
-  // })
   (0, _apiHelper.post)(requestUrl, options).then(function (response) {
     console.log('DEBUG ~~~~~~~~~~~~~~ updateSessionUuid response: '); // eslint-disable-line no-console // TODO JASON: Kill this line!
     console.dir(response); // eslint-disable-line no-console // TODO JASON: Kill this line!
@@ -67,17 +53,11 @@ var updateSessionUuid = function updateSessionUuid(options) {
 };
 
 var validateSession = function validateSession(options) {
-  // TODO JASON: Update this function!
-  // TODO JASON: Confirm with the AppGrid folks on which API call to use for confirming the validity of an existing Session!
-  var requestUrl = options.appGridUrl + '/session';
-  // TODO JASON: Figure out how to update the headers here!
-  // headers: createHeadersFor(request, {
-  //   'X-Session': request.session.appgridSession.sessionKey
-  // })
-  return (0, _apiHelper.grab)(requestUrl, options).then(function (response) {
-    console.log('DEBUG ~~~~~~~~~~~~~~ validateSession response: '); // eslint-disable-line no-console // TODO JASON: Kill this line!
-    console.dir(response); // eslint-disable-line no-console // TODO JASON: Kill this line!
-    return response.body;
+  var requestUrl = options.appGridUrl + '/status';
+  return (0, _apiHelper.grab)(requestUrl, options).then(function () {
+    return true;
+  }).catch(function () {
+    return false;
   });
 };
 

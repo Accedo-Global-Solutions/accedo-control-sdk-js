@@ -11,16 +11,6 @@ import { grab, post } from './apiHelper';
 // const appGridTimeFormat = 'YYYYMMDDTHH:mm:ssZZ'; // The format AppGrid uses to represent expiration time for sessions
 // const appGridOfflineStatus = 'OFFLINE';
 
-// const getSessionHeader = (sessionId) => {
-//   return { 'X-Session': sessionId };
-// };
-
-// const createHeadersFor = (options, extraHeaders) => { // TODO JASON: Either update (and rename!) or remove this function
-//   const headers = extraHeaders || {};
-//   if (options.ip) { headers['X-Forwarded-For'] = [options.ip]; }
-//   return headers;
-// };
-
 const getSession = (options) => { // TODO JASON: Update this function!
   options.debugLogger(`AppGrid: Requesting a new session for the following UUID: ${options.uuid}`);
   const requestUrl = `${options.appGridUrl}/session`;
@@ -41,10 +31,6 @@ const getSession = (options) => { // TODO JASON: Update this function!
 
 const updateSessionUuid = (options) => { // TODO JASON: Update this function!
   const requestUrl = `${options.appGridUrl}/session`;
-  // TODO JASON: Figure out how to update the headers here!
-  // headers: createHeadersFor(request, {
-  //   'X-Session': request.session.appgridSession.sessionKey
-  // })
   post(requestUrl, options).then((response) => {
     console.log('DEBUG ~~~~~~~~~~~~~~ updateSessionUuid response: '); // eslint-disable-line no-console // TODO JASON: Kill this line!
     console.dir(response); // eslint-disable-line no-console // TODO JASON: Kill this line!
@@ -52,18 +38,11 @@ const updateSessionUuid = (options) => { // TODO JASON: Update this function!
   });
 };
 
-const validateSession = (options) => { // TODO JASON: Update this function!
-  // TODO JASON: Confirm with the AppGrid folks on which API call to use for confirming the validity of an existing Session!
-  const requestUrl = `${options.appGridUrl}/session`;
-  // TODO JASON: Figure out how to update the headers here!
-  // headers: createHeadersFor(request, {
-  //   'X-Session': request.session.appgridSession.sessionKey
-  // })
-  return grab(requestUrl, options).then((response) => {
-    console.log('DEBUG ~~~~~~~~~~~~~~ validateSession response: '); // eslint-disable-line no-console // TODO JASON: Kill this line!
-    console.dir(response); // eslint-disable-line no-console // TODO JASON: Kill this line!
-    return response.body;
-  });
+const validateSession = (options) => {
+  const requestUrl = `${options.appGridUrl}/status`;
+  return grab(requestUrl, options)
+    .then(() => true)
+    .catch(() => false);
 };
 
 const generateUuid = () => uuid.v1();
