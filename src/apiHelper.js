@@ -1,21 +1,9 @@
-// TODO JASON: Determine what to remove from this file
-
-// TODO JASON: Figure out how to include the AppGrid service URI and appId into the options
-
-// TODO JASON: Add validation here
-
 import fetch from 'isomorphic-fetch';
 import qs from 'qs';
 
 const MIME_TYPE_JSON = 'application/json';
 const credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
-const defaultHeaders = { accept: MIME_TYPE_JSON }; // NOTE: never mutate this default object !
-
-// const checkStatus = res => { // TODO JASON: Determine whether this is needed, and update it if so
-//   if (res.status >= 200 && res.status < 300) { return res; }
-//   const errorMessage = `AppGrid Response Error: ${res.statusText}`;
-//   throw new Error(errorMessage);
-// };
+const defaultHeaders = { accept: MIME_TYPE_JSON };
 
 const extractJsonAndAddTimestamp = res => {
   const time = Date.now();
@@ -23,13 +11,50 @@ const extractJsonAndAddTimestamp = res => {
     .then(json => ({ time, json }));
 };
 
-export const noCacheHeaderName = 'X-NO-CACHE';
-const getNoCacheHeader = () => ({ [noCacheHeaderName]: 'true' });
+const getForwardedForHeader = ({ clientIp }) => {
+  if (!clientIp) { return {}; }
+  return { 'X-FORWARDED-FOR': clientIp };
+};
 
-export const grabWithoutExtractingResult = (requestUrl, extraHeaders) => {
-  const headers = !extraHeaders ? defaultHeaders : { ...defaultHeaders, ...extraHeaders };
+const getSessionHeader = ({ sessionId }) => {
+  if (!sessionId) { return {}; }
+  return { 'X-SESSION': sessionId };
+};
+
+const getNoCacheHeader = ({ noCache }) => {
+  if (!noCache) { return {}; }
+  return { 'X-NO-CACHE': 'true' };
+};
+
+const getContentTypeHeader = () => ({ 'Content-Type': MIME_TYPE_JSON });
+
+const getQueryString = (options, existingQs = {}) => {
+  const defaultQs = {
+    appKey: options.appId,
+    uuid: options.uuid
+  };
+  const qsObject = { ...existingQs, ...defaultQs };
+  const queryString = qs.stringify(qsObject);
+  return queryString;
+};
+
+const getRequestUrlWithQueryString = (url, options) => {
+  const splitUrl = url.split('?');
+  const urlWithoutQs = splitUrl[0];
+  const existingQs = qs.parse(splitUrl[1]);
+  const queryString = getQueryString(options, existingQs);
+  return `${urlWithoutQs}?${queryString}`;
+};
+
+const getExtraHeaders = (options) => {
+  return { ...getForwardedForHeader(options), ...getSessionHeader(options), ...getNoCacheHeader(options) };
+};
+
+export const grabWithoutExtractingResult = (url, options) => {
+  const headers = { ...defaultHeaders, ...getExtraHeaders(options) };
+  const requestUrl = getRequestUrlWithQueryString(url, options);
+  options.debugLogger(`Sending a GET request to: ${requestUrl}. With the following headers: `, headers);
   return fetch(requestUrl, { credentials, headers });
-  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
 };
 
 export const grab = (...args) => {
@@ -37,39 +62,19 @@ export const grab = (...args) => {
     .then(extractJsonAndAddTimestamp);
 };
 
-export const post = (requestUrl, body = {}) => {
-  const options = {
-    headers: { 'Content-Type': MIME_TYPE_JSON },
+export const post = (url, options, body = {}) => {
+  const headers = {
+    ...defaultHeaders,
+    ...getContentTypeHeader(),
+    ...getExtraHeaders(options)
+  };
+  const requestUrl = getRequestUrlWithQueryString(url, options);
+  options.debugLogger(`Sending a POST request to: ${requestUrl}. With the following headers: `, headers);
+  const requestOptions = {
+    headers,
     credentials,
     method: 'post',
     body: JSON.stringify(body)
   };
-  return fetch(requestUrl, options);
-  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
-};
-
-export const getExtraHeaders = options => { // TODO JASON: Determine whether this is needed, and update it if so
-  if (!options || options.noCache !== 'true') { return; }
-  return getNoCacheHeader();
-};
-
-export const getQueryString = options => { // TODO JASON: Determine whether this is needed, and update it if so
-  if (!options) { return; }
-  const queryString = qs.stringify({
-    clientIp: options.clientIp,
-    gid: options.gid,
-    text: options.text,
-    pageSize: options.pageSize,
-    pageNumber: options.pageNumber
-  });
-  return queryString;
-};
-
-export const getOptions = ({ apiOptions, state }) => { // TODO JASON: Determine whether this is needed, and update it if so
-  const { routing: { location: { query: queryParams = {} } = {} } = {} } = state || {};
-  return {
-    clientIp: apiOptions && apiOptions.clientIp,
-    gid: (apiOptions && apiOptions.gid) || queryParams.gid,
-    noCache: (apiOptions && apiOptions.noCache) || queryParams.nocache
-  };
+  return fetch(requestUrl, requestOptions);
 };

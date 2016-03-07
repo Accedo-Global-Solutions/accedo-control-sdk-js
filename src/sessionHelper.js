@@ -23,10 +23,10 @@ import { grab, post } from './apiHelper';
 
 const getSession = (options) => { // TODO JASON: Update this function!
   options.debugLogger(`AppGrid: Requesting a new session for the following UUID: ${options.uuid}`);
-  const requestUrl = `${options.appGridUrl}/session?appKey=${options.appId}&uuid=${options.uuid}`;
+  const requestUrl = `${options.appGridUrl}/session`;
   // TODO JASON: Figure out how to update the headers here!
   // headers: createHeadersFor(request)
-  return grab(requestUrl).then((response) => { // TODO JASON: Update this function and kill the commented-code!
+  return grab(requestUrl, options).then((response) => { // TODO JASON: Update this function and kill the commented-code!
     console.log('DEBUG ~~~~~~~~~~~~~~ getSession response: '); // eslint-disable-line no-console // TODO JASON: Kill this line!
     console.dir(response); // eslint-disable-line no-console // TODO JASON: Kill this line!
     return response.json.sessionKey;
@@ -40,12 +40,12 @@ const getSession = (options) => { // TODO JASON: Update this function!
 };
 
 const updateSessionUuid = (options) => { // TODO JASON: Update this function!
-  const requestUrl = `${options.appGridUrl}/session?uuid=${options.uuid}`;
+  const requestUrl = `${options.appGridUrl}/session`;
   // TODO JASON: Figure out how to update the headers here!
   // headers: createHeadersFor(request, {
   //   'X-Session': request.session.appgridSession.sessionKey
   // })
-  post(requestUrl).then((response) => {
+  post(requestUrl, options).then((response) => {
     console.log('DEBUG ~~~~~~~~~~~~~~ updateSessionUuid response: '); // eslint-disable-line no-console // TODO JASON: Kill this line!
     console.dir(response); // eslint-disable-line no-console // TODO JASON: Kill this line!
     return response; // TODO JASON: Confirm what to return here
@@ -54,12 +54,12 @@ const updateSessionUuid = (options) => { // TODO JASON: Update this function!
 
 const validateSession = (options) => { // TODO JASON: Update this function!
   // TODO JASON: Confirm with the AppGrid folks on which API call to use for confirming the validity of an existing Session!
-  const requestUrl = `${options.appGridUrl}/session?appKey=${options.appId}&uuid=${options.uuid}`;
+  const requestUrl = `${options.appGridUrl}/session`;
   // TODO JASON: Figure out how to update the headers here!
   // headers: createHeadersFor(request, {
   //   'X-Session': request.session.appgridSession.sessionKey
   // })
-  return grab(requestUrl).then((response) => {
+  return grab(requestUrl, options).then((response) => {
     console.log('DEBUG ~~~~~~~~~~~~~~ validateSession response: '); // eslint-disable-line no-console // TODO JASON: Kill this line!
     console.dir(response); // eslint-disable-line no-console // TODO JASON: Kill this line!
     return response.body;

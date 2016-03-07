@@ -13,18 +13,16 @@ var _options = require('./options');
 
 var sendUsageStartEvent = exports.sendUsageStartEvent = function sendUsageStartEvent(options) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
-    var queryString = (0, _apiHelper.getQueryString)(validatedOptions);
-    var requestUrl = validatedOptions.appGridUrl + '/event/start?' + queryString;
+    var requestUrl = validatedOptions.appGridUrl + '/event/start';
     validatedOptions.debugLogger('AppGrid: sendUsageStartEvent request: ' + requestUrl);
-    return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl);
+    return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl, validatedOptions);
   });
 };
 
 var sendUsageStopEvent = exports.sendUsageStopEvent = function sendUsageStopEvent(retentionTimeInSeconds, options) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
-    var queryString = (0, _apiHelper.getQueryString)(validatedOptions);
-    var requestUrl = validatedOptions.appGridUrl + '/event/quit?retentionTime=' + retentionTimeInSeconds + '&' + queryString;
+    var requestUrl = validatedOptions.appGridUrl + '/event/quit?retentionTime=' + retentionTimeInSeconds;
     validatedOptions.debugLogger('AppGrid: sendUsageStopEvent request: ' + requestUrl);
-    return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl);
+    return (0, _apiHelper.grabWithoutExtractingResult)(requestUrl, validatedOptions);
   });
 };

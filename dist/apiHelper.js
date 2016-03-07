@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getOptions = exports.getQueryString = exports.getExtraHeaders = exports.post = exports.grab = exports.grabWithoutExtractingResult = exports.noCacheHeaderName = undefined;
+exports.post = exports.grab = exports.grabWithoutExtractingResult = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -17,21 +17,9 @@ var _qs2 = _interopRequireDefault(_qs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } // TODO JASON: Determine what to remove from this file
-
-// TODO JASON: Figure out how to include the AppGrid service URI and appId into the options
-
-// TODO JASON: Add validation here
-
 var MIME_TYPE_JSON = 'application/json';
 var credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
-var defaultHeaders = { accept: MIME_TYPE_JSON }; // NOTE: never mutate this default object !
-
-// const checkStatus = res => { // TODO JASON: Determine whether this is needed, and update it if so
-//   if (res.status >= 200 && res.status < 300) { return res; }
-//   const errorMessage = `AppGrid Response Error: ${res.statusText}`;
-//   throw new Error(errorMessage);
-// };
+var defaultHeaders = { accept: MIME_TYPE_JSON };
 
 var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(res) {
   var time = Date.now();
@@ -40,74 +28,83 @@ var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(res) {
   });
 };
 
-var noCacheHeaderName = exports.noCacheHeaderName = 'X-NO-CACHE';
-var getNoCacheHeader = function getNoCacheHeader() {
-  return _defineProperty({}, noCacheHeaderName, 'true');
+var getForwardedForHeader = function getForwardedForHeader(_ref) {
+  var clientIp = _ref.clientIp;
+
+  if (!clientIp) {
+    return {};
+  }
+  return { 'X-FORWARDED-FOR': clientIp };
 };
 
-var grabWithoutExtractingResult = exports.grabWithoutExtractingResult = function grabWithoutExtractingResult(requestUrl, extraHeaders) {
-  var headers = !extraHeaders ? defaultHeaders : _extends({}, defaultHeaders, extraHeaders);
+var getSessionHeader = function getSessionHeader(_ref2) {
+  var sessionId = _ref2.sessionId;
+
+  if (!sessionId) {
+    return {};
+  }
+  return { 'X-SESSION': sessionId };
+};
+
+var getNoCacheHeader = function getNoCacheHeader(_ref3) {
+  var noCache = _ref3.noCache;
+
+  if (!noCache) {
+    return {};
+  }
+  return { 'X-NO-CACHE': 'true' };
+};
+
+var getContentTypeHeader = function getContentTypeHeader() {
+  return { 'Content-Type': MIME_TYPE_JSON };
+};
+
+var getQueryString = function getQueryString(options) {
+  var existingQs = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+  var defaultQs = {
+    appKey: options.appId,
+    uuid: options.uuid
+  };
+  var qsObject = _extends({}, existingQs, defaultQs);
+  var queryString = _qs2.default.stringify(qsObject);
+  return queryString;
+};
+
+var getRequestUrlWithQueryString = function getRequestUrlWithQueryString(url, options) {
+  var splitUrl = url.split('?');
+  var urlWithoutQs = splitUrl[0];
+  var existingQs = _qs2.default.parse(splitUrl[1]);
+  var queryString = getQueryString(options, existingQs);
+  return urlWithoutQs + '?' + queryString;
+};
+
+var getExtraHeaders = function getExtraHeaders(options) {
+  return _extends({}, getForwardedForHeader(options), getSessionHeader(options), getNoCacheHeader(options));
+};
+
+var grabWithoutExtractingResult = exports.grabWithoutExtractingResult = function grabWithoutExtractingResult(url, options) {
+  var headers = _extends({}, defaultHeaders, getExtraHeaders(options));
+  var requestUrl = getRequestUrlWithQueryString(url, options);
+  options.debugLogger('Sending a GET request to: ' + requestUrl + '. With the following headers: ', headers);
   return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers });
-  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
 };
 
 var grab = exports.grab = function grab() {
   return grabWithoutExtractingResult.apply(undefined, arguments).then(extractJsonAndAddTimestamp);
 };
 
-var post = exports.post = function post(requestUrl) {
-  var body = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+var post = exports.post = function post(url, options) {
+  var body = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-  var options = {
-    headers: { 'Content-Type': MIME_TYPE_JSON },
+  var headers = _extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(options));
+  var requestUrl = getRequestUrlWithQueryString(url, options);
+  options.debugLogger('Sending a POST request to: ' + requestUrl + '. With the following headers: ', headers);
+  var requestOptions = {
+    headers: headers,
     credentials: credentials,
     method: 'post',
     body: JSON.stringify(body)
   };
-  return (0, _isomorphicFetch2.default)(requestUrl, options);
-  // .then(checkStatus); // TODO JASON: Determine whether to keep or kill this line
-};
-
-var getExtraHeaders = exports.getExtraHeaders = function getExtraHeaders(options) {
-  // TODO JASON: Determine whether this is needed, and update it if so
-  if (!options || options.noCache !== 'true') {
-    return;
-  }
-  return getNoCacheHeader();
-};
-
-var getQueryString = exports.getQueryString = function getQueryString(options) {
-  // TODO JASON: Determine whether this is needed, and update it if so
-  if (!options) {
-    return;
-  }
-  var queryString = _qs2.default.stringify({
-    clientIp: options.clientIp,
-    gid: options.gid,
-    text: options.text,
-    pageSize: options.pageSize,
-    pageNumber: options.pageNumber
-  });
-  return queryString;
-};
-
-var getOptions = exports.getOptions = function getOptions(_ref2) {
-  var apiOptions = _ref2.apiOptions;
-  var state = _ref2.state;
-  // TODO JASON: Determine whether this is needed, and update it if so
-
-  var _ref3 = state || {};
-
-  var _ref3$routing = _ref3.routing;
-  _ref3$routing = _ref3$routing === undefined ? {} : _ref3$routing;
-  var _ref3$routing$locatio = _ref3$routing.location;
-  _ref3$routing$locatio = _ref3$routing$locatio === undefined ? {} : _ref3$routing$locatio;
-  var _ref3$routing$locatio2 = _ref3$routing$locatio.query;
-  var queryParams = _ref3$routing$locatio2 === undefined ? {} : _ref3$routing$locatio2;
-
-  return {
-    clientIp: apiOptions && apiOptions.clientIp,
-    gid: apiOptions && apiOptions.gid || queryParams.gid,
-    noCache: apiOptions && apiOptions.noCache || queryParams.nocache
-  };
+  return (0, _isomorphicFetch2.default)(requestUrl, requestOptions);
 };
