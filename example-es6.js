@@ -112,33 +112,58 @@ const exampleAppGridLogging = () => {
 
 const exampleAppGridEvents = () => {
   logExampleCategoryHeader('AppGrid Event Examples:');
-  logExampleHeader('Sending a UsageStart Event to AppGrid');
-  return AppGrid.events.sendUsageStartEvent(appGridOptions)
-    .then(() => {
-      return new Promise((resolve) => {
+
+  const sendUsageStartEvent = () => {
+    logExampleHeader('Sending a UsageStart Event to AppGrid');
+    return AppGrid.events.sendUsageStartEvent(appGridOptions)
+      .then(() => {
         console.log('\t\t Successfully sent a UsageStart Event to AppGrid');
-        logExampleHeader('Sending a UsageStop Event to AppGrid');
-        const rententionTimeInSeconds = 6;
-        console.log(`\t\t Waiting ${rententionTimeInSeconds} second(s) before sending the UsageStop Event.`);
-        setTimeout(() => {
-          AppGrid.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions)
-            .then(() => {
-              console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
-              resolve();
-            })
-            .catch(() => {
-              logError('Oops! There was an error while sending a UsageStop Event to AppGrid!');
-              resolve();
-            });
-        }, rententionTimeInSeconds * 1000);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while sending a UsageStart event to AppGrid!', error);
       });
-    })
-    .catch((error) => {
-      logError('Oops! There was an error while sending a UsageStart event to AppGrid!', error);
-    })
-    .then(() => {
-      logExampleCategoryHeader('End AppGrid Event Examples');
+  };
+
+  const sendUsageStopEvent = () => {
+    return new Promise((resolve) => {
+      logExampleHeader('Sending a UsageStop Event to AppGrid');
+      const rententionTimeInSeconds = 6;
+      console.log(`\t\t Waiting ${rententionTimeInSeconds} second(s) before sending the UsageStop Event.`);
+      setTimeout(() => {
+        AppGrid.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions)
+          .then(() => {
+            console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
+            resolve();
+          })
+          .catch(() => {
+            logError('Oops! There was an error while sending a UsageStop Event to AppGrid!');
+            resolve();
+          });
+      }, rententionTimeInSeconds * 1000);
     });
+  };
+
+  return sendUsageStartEvent()
+    .then(sendUsageStopEvent)
+    .then(() => logExampleCategoryHeader('End AppGrid Event Examples'));
+};
+
+const exampleAppGridMetadata = () => {
+  logExampleCategoryHeader('AppGrid Metadata Examples:');
+
+  const getAllMetadata = () => {
+    logExampleHeader('Requesting all metadata from AppGrid');
+    return AppGrid.metadata.getAllMetadata(appGridOptions)
+      .then((metadata) => {
+        console.log('\t\t Successfully requested all metadata from AppGrid', metadata);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting all metadata AppGrid!', error);
+      });
+  };
+
+  return getAllMetadata()
+    .then(() => logExampleCategoryHeader('End AppGrid Metadata Examples'));
 };
 
 const exampleAppGridSessions = () => {
@@ -259,7 +284,14 @@ const runAllExamples = () => {
   outputLogo();
   exampleAppGridSessions()
     .then(exampleAppGridLogging)
-    .then(exampleAppGridEvents);
+    .then(exampleAppGridEvents)
+    .then(exampleAppGridMetadata)
+    .then(() => {
+      console.log();
+      console.log(chalk.bgBlack.yellow('********************************************************************************'));
+      console.log(chalk.bgBlack.yellow('\t\t\tDONE WITH ALL EXAMPLES'));
+      console.log(chalk.bgBlack.yellow('********************************************************************************'));
+    });
 };
 runAllExamples();
 

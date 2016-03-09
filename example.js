@@ -128,10 +128,18 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
 
 var exampleAppGridEvents = function exampleAppGridEvents() {
   logExampleCategoryHeader('AppGrid Event Examples:');
-  logExampleHeader('Sending a UsageStart Event to AppGrid');
-  return _index2.default.events.sendUsageStartEvent(appGridOptions).then(function () {
-    return new Promise(function (resolve) {
+
+  var sendUsageStartEvent = function sendUsageStartEvent() {
+    logExampleHeader('Sending a UsageStart Event to AppGrid');
+    return _index2.default.events.sendUsageStartEvent(appGridOptions).then(function () {
       console.log('\t\t Successfully sent a UsageStart Event to AppGrid');
+    }).catch(function (error) {
+      logError('Oops! There was an error while sending a UsageStart event to AppGrid!', error);
+    });
+  };
+
+  var sendUsageStopEvent = function sendUsageStopEvent() {
+    return new Promise(function (resolve) {
       logExampleHeader('Sending a UsageStop Event to AppGrid');
       var rententionTimeInSeconds = 6;
       console.log('\t\t Waiting ' + rententionTimeInSeconds + ' second(s) before sending the UsageStop Event.');
@@ -145,10 +153,27 @@ var exampleAppGridEvents = function exampleAppGridEvents() {
         });
       }, rententionTimeInSeconds * 1000);
     });
-  }).catch(function (error) {
-    logError('Oops! There was an error while sending a UsageStart event to AppGrid!', error);
-  }).then(function () {
-    logExampleCategoryHeader('End AppGrid Event Examples');
+  };
+
+  return sendUsageStartEvent().then(sendUsageStopEvent).then(function () {
+    return logExampleCategoryHeader('End AppGrid Event Examples');
+  });
+};
+
+var exampleAppGridMetadata = function exampleAppGridMetadata() {
+  logExampleCategoryHeader('AppGrid Metadata Examples:');
+
+  var getAllMetadata = function getAllMetadata() {
+    logExampleHeader('Requesting all metadata from AppGrid');
+    return _index2.default.metadata.getAllMetadata(appGridOptions).then(function (metadata) {
+      console.log('\t\t Successfully requested all metadata from AppGrid', metadata);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting all metadata AppGrid!', error);
+    });
+  };
+
+  return getAllMetadata().then(function () {
+    return logExampleCategoryHeader('End AppGrid Metadata Examples');
   });
 };
 
@@ -256,7 +281,12 @@ var outputLogo = function outputLogo() {
 
 var runAllExamples = function runAllExamples() {
   outputLogo();
-  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents);
+  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents).then(exampleAppGridMetadata).then(function () {
+    console.log();
+    console.log(_chalk2.default.bgBlack.yellow('********************************************************************************'));
+    console.log(_chalk2.default.bgBlack.yellow('\t\t\tDONE WITH ALL EXAMPLES'));
+    console.log(_chalk2.default.bgBlack.yellow('********************************************************************************'));
+  });
 };
 runAllExamples();
 

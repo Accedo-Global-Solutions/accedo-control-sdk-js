@@ -10,6 +10,10 @@ var events = _interopRequireWildcard(_events);
 
 var _logging = require('./logging');
 
+var _metadata = require('./metadata');
+
+var metadata = _interopRequireWildcard(_metadata);
+
 var _session = require('./session');
 
 var session = _interopRequireWildcard(_session);
@@ -19,13 +23,13 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var logUtils = {
   getCurrentTimeOfDayDimValue: _logging.getCurrentTimeOfDayDimValue,
   getLogLevel: _logging.getLogLevel
-}; // TODO JASON: Figure out session-handling
-// TODO JASON: Update the api to include a means to send all logs to the consumer (who could then choose how to log them)
+};
 
 var api = {
   events: events,
   logger: _logging.logger,
   logUtils: logUtils,
+  metadata: metadata,
   session: session
 };
 
