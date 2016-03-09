@@ -1,20 +1,27 @@
 // TODO JASON: Update these calls to include the appKey & sessionId!
 
-import { grab } from './apiHelper';
+import { post } from './apiHelper';
 import { getValidatedOptions } from './options';
 
 export const sendUsageStartEvent = (options) => {
   return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/event/start`;
+    const requestUrl = `${validatedOptions.appGridUrl}/event/log`;
+    const body = {
+      eventType: 'START'
+    };
     validatedOptions.debugLogger(`AppGrid: sendUsageStartEvent request: ${requestUrl}`);
-    return grab(requestUrl, validatedOptions);
+    return post(requestUrl, validatedOptions, body);
   });
 };
 
 export const sendUsageStopEvent = (retentionTimeInSeconds, options) => {
   return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/event/quit?retentionTime=${retentionTimeInSeconds}`;
+    const requestUrl = `${validatedOptions.appGridUrl}/event/log`;
+    const body = {
+      eventType: 'QUIT',
+      retentionTime: retentionTimeInSeconds
+    };
     validatedOptions.debugLogger(`AppGrid: sendUsageStopEvent request: ${requestUrl}`);
-    return grab(requestUrl, validatedOptions);
+    return post(requestUrl, validatedOptions, body);
   });
 };

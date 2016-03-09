@@ -104,7 +104,7 @@ var post = exports.post = function post(url, options) {
 
   var headers = _extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(options));
   var requestUrl = getRequestUrlWithQueryString(url, options);
-  options.debugLogger('Sending a POST request to: ' + requestUrl + '. With the following headers: ', headers);
+  options.debugLogger('Sending a POST request to: ' + requestUrl + '. With the following headers and body: ', headers, body);
   var requestOptions = {
     headers: headers,
     credentials: credentials,

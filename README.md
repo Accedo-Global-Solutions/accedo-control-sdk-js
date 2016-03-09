@@ -62,7 +62,6 @@
 **The following tasks remain to be done for the initial version of this SDK**
 
   * **Finish implementing the initial AppGrid functionality**:
-      * Log Level
       * Metadata
       * Assets
       * Entries

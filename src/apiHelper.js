@@ -73,7 +73,7 @@ export const post = (url, options, body = {}) => {
     ...getExtraHeaders(options)
   };
   const requestUrl = getRequestUrlWithQueryString(url, options);
-  options.debugLogger(`Sending a POST request to: ${requestUrl}. With the following headers: `, headers);
+  options.debugLogger(`Sending a POST request to: ${requestUrl}. With the following headers and body: `, headers, body);
   const requestOptions = {
     headers,
     credentials,
