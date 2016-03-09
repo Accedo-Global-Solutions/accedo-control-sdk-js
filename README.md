@@ -57,4 +57,25 @@
 ```
 
 
-Readme TBD
+**Readme TBD**
+
+**The following tasks remain to be done for the initial version of this SDK**
+
+  * **Finish implementing the initial AppGrid functionality**:
+      * Log Level
+      * Metadata
+      * Assets
+      * Entries
+      * User Data (Get & Post)
+
+
+  * Run ```npm-shrinkwrap```
+  
+  * **Update the README.md file with the following**:
+      * Summary
+      * Install
+      * How to use
+      * Examples 
+
+
+  * **Tests**: Add a TODO/JIRA task for implementing Unit Tests for coverage of API functions exposed by this module 
