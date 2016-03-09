@@ -89,26 +89,40 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
     };
   };
   var logFacilityCode = 13;
-  var sendExampleInfoEventWithMetadata = function sendExampleInfoEventWithMetadata() {
-    var exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
-    var exampleInfoMetadata = { someMetadataKey: 'someValue' };
-    return _index2.default.logger.info(exampleInfoEventOptionsWithMetadata, exampleInfoMetadata);
-  };
-  var exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
   logExampleCategoryHeader('AppGrid Logging Examples');
 
-  logExampleHeader('Sending an info log message to AppGrid');
-  return _index2.default.logger.info(exampleInfoEventOptions, appGridOptions).then(function () {
-    console.log('Successfully sent an info log to AppGrid');
+  var getLogLevel = function getLogLevel() {
+    logExampleHeader('Requesting the current LogLevel from AppGrid');
+    return _index2.default.logUtils.getLogLevel(appGridOptions).then(function (logLevelResponse) {
+      console.log('\t\t Successfully got the current LogLevel from AppGrid: ' + _chalk2.default.blue(logLevelResponse));
+      appGridOptions.logLevel = logLevelResponse;
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting the current LogLevel from AppGrid!', error);
+    });
+  };
+
+  var sendInfoLogMessage = function sendInfoLogMessage() {
+    logExampleHeader('Sending an info log message to AppGrid');
+    var exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
+    return _index2.default.logger.info(exampleInfoEventOptions, appGridOptions).then(function () {
+      console.log('Successfully sent an info log to AppGrid');
+    }).catch(function (error) {
+      logError('Oops! There was an error while sending an info log to AppGrid!', error);
+    });
+  };
+
+  var sendInfoLogMessageWithMetadata = function sendInfoLogMessageWithMetadata() {
     logExampleHeader('Sending an info log message with Metadata to AppGrid');
-    return sendExampleInfoEventWithMetadata().then(function () {
+    var exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
+    var exampleInfoMetadata = { someMetadataKey: 'someValue' };
+    return _index2.default.logger.info(exampleInfoEventOptionsWithMetadata, exampleInfoMetadata).then(function () {
       console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
     }).catch(function () {
       logError('Oops! There was an error while sending an info log with Metadata to AppGrid!');
     });
-  }).catch(function (error) {
-    logError('Oops! There was an error while sending an info log to AppGrid!', error);
-  }).then(function () {
+  };
+
+  return getLogLevel().then(sendInfoLogMessage).then(sendInfoLogMessageWithMetadata).then(function () {
     return logExampleCategoryHeader('End AppGrid Logging Examples');
   });
 };

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getCurrentTimeOfDayDimValue = exports.logger = undefined;
+exports.getLogLevel = exports.getCurrentTimeOfDayDimValue = exports.logger = undefined;
 
 var _options = require('./options');
 
@@ -74,7 +74,15 @@ var getLogEvent = function getLogEvent() {
   };
 };
 
-// TODO JASON: Update the following call to include the appKey & sessionId!
+var getLogLevel = function getLogLevel(options) {
+  return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
+    var requestUrl = validatedOptions.appGridUrl + '/application/log/level';
+    return (0, _apiHelper.grab)(requestUrl, options).then(function (response) {
+      return response.json.logLevel;
+    });
+  });
+};
+
 var sendEvent = function sendEvent(level, event, options) {
   var requestUrl = options.appGridUrl + '/log/' + level;
   options.debugLogger('AppGrid: sendEvent request: ' + requestUrl);
@@ -109,3 +117,4 @@ var logger = mapLogLevelNamesToFunctions();
 
 exports.logger = logger;
 exports.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
+exports.getLogLevel = getLogLevel;

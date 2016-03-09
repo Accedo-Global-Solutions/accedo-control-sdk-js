@@ -1,5 +1,5 @@
 import { getValidatedOptions } from './options';
-import { post } from './apiHelper';
+import { grab, post } from './apiHelper';
 
 const logLevelNamesToNumbers = {
   debug: 0,
@@ -60,7 +60,15 @@ const getLogEvent = (logEventOptions = {}, metadataObjects) => {
   };
 };
 
-// TODO JASON: Update the following call to include the appKey & sessionId!
+const getLogLevel = (options) => {
+  return getValidatedOptions(options)
+    .then((validatedOptions) => {
+      const requestUrl = `${validatedOptions.appGridUrl}/application/log/level`;
+      return grab(requestUrl, options)
+        .then((response) => response.json.logLevel);
+    });
+};
+
 const sendEvent = (level, event, options) => {
   const requestUrl = `${options.appGridUrl}/log/${level}`;
   options.debugLogger(`AppGrid: sendEvent request: ${requestUrl}`);
@@ -86,4 +94,4 @@ const mapLogLevelNamesToFunctions = () => {
 
 const logger = mapLogLevelNamesToFunctions();
 
-export { logger, getCurrentTimeOfDayDimValue };
+export { logger, getCurrentTimeOfDayDimValue, getLogLevel };
