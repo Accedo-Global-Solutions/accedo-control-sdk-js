@@ -71,6 +71,8 @@
 
   * Run ```npm-shrinkwrap```
   
+  * Write an example consumer app in ES5 (totally separate from the examples file included in this project)
+  
   * **Update the README.md file with the following**:
       * Summary
       * Install
