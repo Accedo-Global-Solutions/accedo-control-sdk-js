@@ -9,8 +9,6 @@ var _apiHelper = require('./apiHelper');
 
 var _options = require('./options');
 
-// TODO JASON: Update these calls to include the appKey & sessionId!
-
 var sendUsageStartEvent = exports.sendUsageStartEvent = function sendUsageStartEvent(options) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var requestUrl = validatedOptions.appGridUrl + '/event/log';

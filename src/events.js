@@ -1,5 +1,3 @@
-// TODO JASON: Update these calls to include the appKey & sessionId!
-
 import { post } from './apiHelper';
 import { getValidatedOptions } from './options';
 
