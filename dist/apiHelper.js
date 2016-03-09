@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.post = exports.grab = exports.grabWithoutExtractingResult = undefined;
+exports.post = exports.grab = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -89,22 +89,11 @@ var getExtraHeaders = function getExtraHeaders(options) {
   return _extends({}, getForwardedForHeader(options), getSessionHeader(options), getNoCacheHeader(options));
 };
 
-var grabWithoutExtractingResult = exports.grabWithoutExtractingResult = function grabWithoutExtractingResult(url, options) {
-  // TODO JASON: Try to merge this with grab
+var grab = exports.grab = function grab(url, options) {
   var headers = _extends({}, defaultHeaders, getExtraHeaders(options));
   var requestUrl = getRequestUrlWithQueryString(url, options);
   options.debugLogger('Sending a GET request to: ' + requestUrl + '. With the following headers: ', headers);
-  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers })
-  /*
-  .then((response) => { // TODO JASON: Kill this then block!
-    options.debugLogger('GET response: ', response);
-    return response;
-  })
-  */;
-};
-
-var grab = exports.grab = function grab(url, options) {
-  return grabWithoutExtractingResult(url, options).then(extractJsonAndAddTimestamp).then(function (response) {
+  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers }).then(extractJsonAndAddTimestamp).then(function (response) {
     options.debugLogger('GET response: ', response);
     return response;
   });

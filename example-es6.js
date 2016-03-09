@@ -96,12 +96,12 @@ const exampleAppGridLogging = () => {
     logExampleHeader('Sending an info log message with Metadata to AppGrid');
     const exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
     const exampleInfoMetadata = { someMetadataKey: 'someValue' };
-    return AppGrid.logger.info(exampleInfoEventOptionsWithMetadata, exampleInfoMetadata)
+    return AppGrid.logger.info(exampleInfoEventOptionsWithMetadata, appGridOptions, exampleInfoMetadata)
       .then(() => {
         console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
       })
-      .catch(() => {
-        logError('Oops! There was an error while sending an info log with Metadata to AppGrid!');
+      .catch((error) => {
+        logError('Oops! There was an error while sending an info log with Metadata to AppGrid!', error);
       });
   };
 

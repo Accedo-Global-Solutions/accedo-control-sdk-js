@@ -115,10 +115,10 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
     logExampleHeader('Sending an info log message with Metadata to AppGrid');
     var exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
     var exampleInfoMetadata = { someMetadataKey: 'someValue' };
-    return _index2.default.logger.info(exampleInfoEventOptionsWithMetadata, exampleInfoMetadata).then(function () {
+    return _index2.default.logger.info(exampleInfoEventOptionsWithMetadata, appGridOptions, exampleInfoMetadata).then(function () {
       console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
-    }).catch(function () {
-      logError('Oops! There was an error while sending an info log with Metadata to AppGrid!');
+    }).catch(function (error) {
+      logError('Oops! There was an error while sending an info log with Metadata to AppGrid!', error);
     });
   };
 
