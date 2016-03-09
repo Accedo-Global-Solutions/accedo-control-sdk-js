@@ -105,7 +105,7 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
     logExampleHeader('Sending an info log message to AppGrid');
     var exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
     return _index2.default.logger.info(exampleInfoEventOptions, appGridOptions).then(function () {
-      console.log('Successfully sent an info log to AppGrid');
+      console.log('\t\t Successfully sent an info log to AppGrid');
     }).catch(function (error) {
       logError('Oops! There was an error while sending an info log to AppGrid!', error);
     });

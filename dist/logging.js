@@ -84,7 +84,7 @@ var getLogLevel = function getLogLevel(options) {
 };
 
 var sendEvent = function sendEvent(level, event, options) {
-  var requestUrl = options.appGridUrl + '/log/' + level;
+  var requestUrl = options.appGridUrl + '/application/log/' + level;
   options.debugLogger('AppGrid: sendEvent request: ' + requestUrl);
   return (0, _apiHelper.post)(requestUrl, options, event);
 };

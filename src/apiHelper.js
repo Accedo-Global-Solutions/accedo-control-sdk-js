@@ -5,9 +5,9 @@ const MIME_TYPE_JSON = 'application/json';
 const credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 const defaultHeaders = { accept: MIME_TYPE_JSON };
 
-const extractJsonAndAddTimestamp = res => {
+const extractJsonAndAddTimestamp = (response) => {
   const time = Date.now();
-  return res.json()
+  return response.json()
     .then((json) => {
       if (json.error) { throw new Error(`AppGrid GET Request Error. Code: ${json.error.code} Message: ${json.error.message}. Status: ${json.error.status}`); }
       return { time, json };
@@ -54,16 +54,16 @@ const getExtraHeaders = (options) => {
   return { ...getForwardedForHeader(options), ...getSessionHeader(options), ...getNoCacheHeader(options) };
 };
 
-export const grabWithoutExtractingResult = (url, options) => {
+export const grab = (url, options) => {
   const headers = { ...defaultHeaders, ...getExtraHeaders(options) };
   const requestUrl = getRequestUrlWithQueryString(url, options);
   options.debugLogger(`Sending a GET request to: ${requestUrl}. With the following headers: `, headers);
-  return fetch(requestUrl, { credentials, headers });
-};
-
-export const grab = (...args) => {
-  return grabWithoutExtractingResult(...args)
-    .then(extractJsonAndAddTimestamp);
+  return fetch(requestUrl, { credentials, headers })
+    .then(extractJsonAndAddTimestamp)
+    .then((response) => {
+      options.debugLogger('GET response: ', response);
+      return response;
+    });
 };
 
 export const post = (url, options, body = {}) => {
@@ -83,6 +83,8 @@ export const post = (url, options, body = {}) => {
   return fetch(requestUrl, requestOptions)
     .then(({ status, statusText }) => {
       if (status !== 200) { throw new Error(`AppGrid POST request returned a non-200 response. Status Code: ${status}. Status Text: ${statusText}`); }
-      return { status, statusText };
+      const result = { status, statusText };
+      options.debugLogger('POST response: ', result);
+      return result;
     });
 };

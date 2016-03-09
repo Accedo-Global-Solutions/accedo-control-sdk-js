@@ -78,6 +78,8 @@
       * Install
       * How to use
       * Examples 
+      * Include a link to the public AppGrid home page
+      * Include a link to the AppGrid API PDF for optional further reference
 
 
   * **Tests**: Add a TODO/JIRA task for implementing Unit Tests for coverage of API functions exposed by this module 

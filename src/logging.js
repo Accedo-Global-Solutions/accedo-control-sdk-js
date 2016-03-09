@@ -70,7 +70,7 @@ const getLogLevel = (options) => {
 };
 
 const sendEvent = (level, event, options) => {
-  const requestUrl = `${options.appGridUrl}/log/${level}`;
+  const requestUrl = `${options.appGridUrl}/application/log/${level}`;
   options.debugLogger(`AppGrid: sendEvent request: ${requestUrl}`);
   return post(requestUrl, options, event);
 };

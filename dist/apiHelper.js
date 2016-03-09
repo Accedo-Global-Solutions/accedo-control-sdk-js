@@ -21,9 +21,9 @@ var MIME_TYPE_JSON = 'application/json';
 var credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 var defaultHeaders = { accept: MIME_TYPE_JSON };
 
-var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(res) {
+var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(response) {
   var time = Date.now();
-  return res.json().then(function (json) {
+  return response.json().then(function (json) {
     if (json.error) {
       throw new Error('AppGrid GET Request Error. Code: ' + json.error.code + ' Message: ' + json.error.message + '. Status: ' + json.error.status);
     }
@@ -90,14 +90,24 @@ var getExtraHeaders = function getExtraHeaders(options) {
 };
 
 var grabWithoutExtractingResult = exports.grabWithoutExtractingResult = function grabWithoutExtractingResult(url, options) {
+  // TODO JASON: Try to merge this with grab
   var headers = _extends({}, defaultHeaders, getExtraHeaders(options));
   var requestUrl = getRequestUrlWithQueryString(url, options);
   options.debugLogger('Sending a GET request to: ' + requestUrl + '. With the following headers: ', headers);
-  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers });
+  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers })
+  /*
+  .then((response) => { // TODO JASON: Kill this then block!
+    options.debugLogger('GET response: ', response);
+    return response;
+  })
+  */;
 };
 
-var grab = exports.grab = function grab() {
-  return grabWithoutExtractingResult.apply(undefined, arguments).then(extractJsonAndAddTimestamp);
+var grab = exports.grab = function grab(url, options) {
+  return grabWithoutExtractingResult(url, options).then(extractJsonAndAddTimestamp).then(function (response) {
+    options.debugLogger('GET response: ', response);
+    return response;
+  });
 };
 
 var post = exports.post = function post(url, options) {
@@ -119,6 +129,8 @@ var post = exports.post = function post(url, options) {
     if (status !== 200) {
       throw new Error('AppGrid POST request returned a non-200 response. Status Code: ' + status + '. Status Text: ' + statusText);
     }
-    return { status: status, statusText: statusText };
+    var result = { status: status, statusText: statusText };
+    options.debugLogger('POST response: ', result);
+    return result;
   });
 };
