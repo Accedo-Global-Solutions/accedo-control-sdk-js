@@ -41,7 +41,6 @@ const logExampleCategoryHeader = (message) => {
   console.log(chalk.bgBlack.yellow('\t*************************************************'));
   console.log(chalk.bgBlack.yellow(`\t*   \t${message}`));
   console.log(chalk.bgBlack.yellow('\t*************************************************'));
-  console.log();
 };
 
 const logExampleHeader = (message) => {

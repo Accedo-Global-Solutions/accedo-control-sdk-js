@@ -63,7 +63,6 @@ var logExampleCategoryHeader = function logExampleCategoryHeader(message) {
   console.log(_chalk2.default.bgBlack.yellow('\t*************************************************'));
   console.log(_chalk2.default.bgBlack.yellow('\t*   \t' + message));
   console.log(_chalk2.default.bgBlack.yellow('\t*************************************************'));
-  console.log();
 };
 
 var logExampleHeader = function logExampleHeader(message) {
