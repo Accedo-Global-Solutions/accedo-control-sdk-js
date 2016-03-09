@@ -36,12 +36,17 @@ const appGridOptions = { // TODO JASON: Finish updating these values
   debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
 };
 
-const logExampleHeader = (message) => {
+const logExampleCategoryHeader = (message) => {
   console.log();
   console.log(chalk.bgBlack.yellow('\t*************************************************'));
   console.log(chalk.bgBlack.yellow(`\t*   \t${message}`));
   console.log(chalk.bgBlack.yellow('\t*************************************************'));
   console.log();
+};
+
+const logExampleHeader = (message) => {
+  console.log();
+  console.log(`\t\t ${chalk.yellow('Example:')} ${message}`);
 };
 
 const exampleAppGridLogging = () => {
@@ -67,11 +72,13 @@ const exampleAppGridLogging = () => {
     return AppGrid.logger.info(exampleInfoEventOptionsWithMetadata, exampleInfoMetadata);
   };
   const exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
-  logExampleHeader('AppGrid Logging Examples');
+  logExampleCategoryHeader('AppGrid Logging Examples');
 
+  logExampleHeader('Sending an info log message to AppGrid');
   return AppGrid.logger.info(exampleInfoEventOptions, appGridOptions)
     .then(() => {
       console.log('Successfully sent an info log to AppGrid');
+      logExampleHeader('Sending an info log message with Metadata to AppGrid');
       return sendExampleInfoEventWithMetadata()
         .then(() => {
           console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
@@ -83,17 +90,19 @@ const exampleAppGridLogging = () => {
     .catch((error) => {
       logError('Oops! There was an error while sending an info log to AppGrid!', error);
     })
-    .then(() => logExampleHeader('End AppGrid Logging Examples'));
+    .then(() => logExampleCategoryHeader('End AppGrid Logging Examples'));
 };
 
 const exampleAppGridEvents = () => {
-  logExampleHeader('AppGrid Event Examples:');
+  logExampleCategoryHeader('AppGrid Event Examples:');
+  logExampleHeader('Sending a UsageStart Event to AppGrid');
   return AppGrid.events.sendUsageStartEvent(appGridOptions)
     .then(() => {
       return new Promise((resolve) => {
-        console.log('Successfully sent a UsageStart Event to AppGrid');
+        console.log('\t\t Successfully sent a UsageStart Event to AppGrid');
+        logExampleHeader('Sending a UsageStop Event to AppGrid');
         const rententionTimeInSeconds = 6;
-        console.log(`Waiting ${rententionTimeInSeconds} second(s) before sending UsageStop Event.`);
+        console.log(`\t\t Waiting ${rententionTimeInSeconds} second(s) before sending the UsageStop Event.`);
         setTimeout(() => {
           AppGrid.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions)
             .then(() => {
@@ -111,7 +120,62 @@ const exampleAppGridEvents = () => {
       logError('Oops! There was an error while sending a UsageStart event to AppGrid!', error);
     })
     .then(() => {
-      logExampleHeader('End AppGrid Event Examples:');
+      logExampleCategoryHeader('End AppGrid Event Examples');
+    });
+};
+
+const exampleAppGridSessions = () => {
+  logExampleCategoryHeader('AppGrid Session Examples:');
+  const getAppGridSession = () => {
+    logExampleHeader('Requesting a new Session from AppGrid');
+    return AppGrid.session.getSession(appGridOptions)
+      .then((newSessionId) => {
+        console.log(`\t\t Successfully requested a new Session from AppGrid.\n\t\t   SessionId: ${chalk.blue(newSessionId)}`);
+        appGridOptions.sessionId = newSessionId; // NOTE: Sessions should be reused as much as possible.
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting a new Session from AppGrid!', error);
+      });
+  };
+  const getAppGridStatus = () => {
+    logExampleHeader('Requesting AppGrid\'s Status');
+    return AppGrid.session.getStatus(appGridOptions)
+      .then((response) => {
+        console.log('\t\t Successfully requested the status from AppGrid', response);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting the status from AppGrid!', error);
+      });
+  };
+  const validateAppGridSession = () => {
+    logExampleHeader(`Validating an AppGrid Session for the following SessionId: \n\t\t  ${chalk.blue(appGridOptions.sessionId)}`);
+    return AppGrid.session.validateSession(appGridOptions)
+      .then((isValid) => {
+        console.log(`\t\t Is this AppGrid Session valid? ${chalk.blue(isValid)}`);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while attempting to validate the AppGrid Session!', error);
+      });
+  };
+  const updateAppGridSessionUuid = () => {
+    const newUuid = AppGrid.session.generateUuid();
+    logExampleHeader(`Updating the UUID associated with an AppGrid Session\n\t\t For the following SessionId: ${chalk.blue(appGridOptions.sessionId)} \n\t\t With the following UUID: ${chalk.blue(newUuid)}`);
+    appGridOptions.uuid = newUuid;
+    return AppGrid.session.updateSessionUuid(appGridOptions)
+      .then((response) => {
+        console.log('\t\t Successfully updated the UUID associated with this AppGrid Session', response);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while attempting to update the UUID associated with this AppGrid Session!', error);
+      });
+  };
+
+  return getAppGridSession()
+    .then(getAppGridStatus)
+    .then(validateAppGridSession)
+    .then(updateAppGridSessionUuid)
+    .then(() => {
+      logExampleCategoryHeader('End AppGrid Session Examples');
     });
 };
 
@@ -176,7 +240,8 @@ const outputLogo = () => {
 
 const runAllExamples = () => {
   outputLogo();
-  exampleAppGridLogging()
+  exampleAppGridSessions()
+    .then(exampleAppGridLogging)
     .then(exampleAppGridEvents);
 };
 runAllExamples();

@@ -50,7 +50,10 @@ var getDebugOutput = function getDebugOutput(options) {
   return options.debugLogger;
 };
 
-var getNewSession = function getNewSession(options) {
+var getNewSession = function getNewSession(options, failOnInvalidSession) {
+  if (failOnInvalidSession) {
+    throw new Error('This AppGrid API call requires a valid session!');
+  }
   options.debugLogger('AppGrid: Requesting a new Session');
   return sessionHelper.getSession(options).then(function (sessionId) {
     options.sessionId = sessionId;
@@ -58,21 +61,20 @@ var getNewSession = function getNewSession(options) {
   });
 };
 
-var validateAndUpdateSessionIdIfNeeded = function validateAndUpdateSessionIdIfNeeded(options) {
-  // TODO JASON: Excersize this function...
-  if (!options.sessionId) {
-    return getNewSession(options);
+var validateAndUpdateSessionIdIfNeeded = function validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession) {
+  if (isSessionValidationSkipped) {
+    return Promise.resolve(options);
   }
   return sessionHelper.validateSession(options).then(function (isValid) {
     if (!isValid) {
-      return getNewSession(options);
+      return getNewSession(options, failOnInvalidSession);
     }
     options.debugLogger('AppGrid: Session is valid.');
     return options;
   });
 };
 
-var getValidatedOptions = exports.getValidatedOptions = function getValidatedOptions(options) {
+var getValidatedOptions = exports.getValidatedOptions = function getValidatedOptions(options, isSessionValidationSkipped, failOnInvalidSession) {
   return new Promise(function (resolve, reject) {
     if (!options) {
       reject(new Error('The options object was falsey'));
@@ -85,7 +87,7 @@ var getValidatedOptions = exports.getValidatedOptions = function getValidatedOpt
     Object.keys(optionalOptionDefaults).forEach(function (option) {
       return setDefaultOptionValueIfNeeded(options, option);
     });
-    validateAndUpdateSessionIdIfNeeded(options).then(function (validatedOptions) {
+    validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession).then(function (validatedOptions) {
       resolve(validatedOptions);
     }).catch(reject);
   });

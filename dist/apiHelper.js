@@ -66,6 +66,9 @@ var getQueryString = function getQueryString(options) {
     appKey: options.appId,
     uuid: options.uuid
   };
+  if (options.gid) {
+    defaultQs.gid = options.gid;
+  }
   var qsObject = _extends({}, existingQs, defaultQs);
   var queryString = _qs2.default.stringify(qsObject);
   return queryString;
@@ -106,5 +109,13 @@ var post = exports.post = function post(url, options) {
     method: 'post',
     body: JSON.stringify(body)
   };
-  return (0, _isomorphicFetch2.default)(requestUrl, requestOptions);
+  return (0, _isomorphicFetch2.default)(requestUrl, requestOptions).then(function (_ref4) {
+    var status = _ref4.status;
+    var statusText = _ref4.statusText;
+
+    if (status !== 200) {
+      throw new Error('AppGrid POST request returned a non-200 response. Status Code: ' + status + '. Status Text: ' + statusText);
+    }
+    return { status: status, statusText: statusText };
+  });
 };

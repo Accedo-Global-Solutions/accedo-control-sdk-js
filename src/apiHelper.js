@@ -33,6 +33,7 @@ const getQueryString = (options, existingQs = {}) => {
     appKey: options.appId,
     uuid: options.uuid
   };
+  if (options.gid) { defaultQs.gid = options.gid; }
   const qsObject = { ...existingQs, ...defaultQs };
   const queryString = qs.stringify(qsObject);
   return queryString;
@@ -76,5 +77,9 @@ export const post = (url, options, body = {}) => {
     method: 'post',
     body: JSON.stringify(body)
   };
-  return fetch(requestUrl, requestOptions);
+  return fetch(requestUrl, requestOptions)
+    .then(({ status, statusText }) => {
+      if (status !== 200) { throw new Error(`AppGrid POST request returned a non-200 response. Status Code: ${status}. Status Text: ${statusText}`); }
+      return { status, statusText };
+    });
 };

@@ -58,12 +58,17 @@ var appGridOptions = { // TODO JASON: Finish updating these values
   debugLogger: debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
 };
 
-var logExampleHeader = function logExampleHeader(message) {
+var logExampleCategoryHeader = function logExampleCategoryHeader(message) {
   console.log();
   console.log(_chalk2.default.bgBlack.yellow('\t*************************************************'));
   console.log(_chalk2.default.bgBlack.yellow('\t*   \t' + message));
   console.log(_chalk2.default.bgBlack.yellow('\t*************************************************'));
   console.log();
+};
+
+var logExampleHeader = function logExampleHeader(message) {
+  console.log();
+  console.log('\t\t ' + _chalk2.default.yellow('Example:') + ' ' + message);
 };
 
 var exampleAppGridLogging = function exampleAppGridLogging() {
@@ -90,10 +95,12 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
     return _index2.default.logger.info(exampleInfoEventOptionsWithMetadata, exampleInfoMetadata);
   };
   var exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
-  logExampleHeader('AppGrid Logging Examples');
+  logExampleCategoryHeader('AppGrid Logging Examples');
 
+  logExampleHeader('Sending an info log message to AppGrid');
   return _index2.default.logger.info(exampleInfoEventOptions, appGridOptions).then(function () {
     console.log('Successfully sent an info log to AppGrid');
+    logExampleHeader('Sending an info log message with Metadata to AppGrid');
     return sendExampleInfoEventWithMetadata().then(function () {
       console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
     }).catch(function () {
@@ -102,17 +109,19 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
   }).catch(function (error) {
     logError('Oops! There was an error while sending an info log to AppGrid!', error);
   }).then(function () {
-    return logExampleHeader('End AppGrid Logging Examples');
+    return logExampleCategoryHeader('End AppGrid Logging Examples');
   });
 };
 
 var exampleAppGridEvents = function exampleAppGridEvents() {
-  logExampleHeader('AppGrid Event Examples:');
+  logExampleCategoryHeader('AppGrid Event Examples:');
+  logExampleHeader('Sending a UsageStart Event to AppGrid');
   return _index2.default.events.sendUsageStartEvent(appGridOptions).then(function () {
     return new Promise(function (resolve) {
-      console.log('Successfully sent a UsageStart Event to AppGrid');
+      console.log('\t\t Successfully sent a UsageStart Event to AppGrid');
+      logExampleHeader('Sending a UsageStop Event to AppGrid');
       var rententionTimeInSeconds = 6;
-      console.log('Waiting ' + rententionTimeInSeconds + ' second(s) before sending UsageStop Event.');
+      console.log('\t\t Waiting ' + rententionTimeInSeconds + ' second(s) before sending the UsageStop Event.');
       setTimeout(function () {
         _index2.default.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions).then(function () {
           console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
@@ -126,7 +135,50 @@ var exampleAppGridEvents = function exampleAppGridEvents() {
   }).catch(function (error) {
     logError('Oops! There was an error while sending a UsageStart event to AppGrid!', error);
   }).then(function () {
-    logExampleHeader('End AppGrid Event Examples:');
+    logExampleCategoryHeader('End AppGrid Event Examples');
+  });
+};
+
+var exampleAppGridSessions = function exampleAppGridSessions() {
+  logExampleCategoryHeader('AppGrid Session Examples:');
+  var getAppGridSession = function getAppGridSession() {
+    logExampleHeader('Requesting a new Session from AppGrid');
+    return _index2.default.session.getSession(appGridOptions).then(function (newSessionId) {
+      console.log('\t\t Successfully requested a new Session from AppGrid.\n\t\t   SessionId: ' + _chalk2.default.blue(newSessionId));
+      appGridOptions.sessionId = newSessionId; // NOTE: Sessions should be reused as much as possible.
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting a new Session from AppGrid!', error);
+    });
+  };
+  var getAppGridStatus = function getAppGridStatus() {
+    logExampleHeader('Requesting AppGrid\'s Status');
+    return _index2.default.session.getStatus(appGridOptions).then(function (response) {
+      console.log('\t\t Successfully requested the status from AppGrid', response);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting the status from AppGrid!', error);
+    });
+  };
+  var validateAppGridSession = function validateAppGridSession() {
+    logExampleHeader('Validating an AppGrid Session for the following SessionId: \n\t\t  ' + _chalk2.default.blue(appGridOptions.sessionId));
+    return _index2.default.session.validateSession(appGridOptions).then(function (isValid) {
+      console.log('\t\t Is this AppGrid Session valid? ' + _chalk2.default.blue(isValid));
+    }).catch(function (error) {
+      logError('Oops! There was an error while attempting to validate the AppGrid Session!', error);
+    });
+  };
+  var updateAppGridSessionUuid = function updateAppGridSessionUuid() {
+    var newUuid = _index2.default.session.generateUuid();
+    logExampleHeader('Updating the UUID associated with an AppGrid Session\n\t\t For the following SessionId: ' + _chalk2.default.blue(appGridOptions.sessionId) + ' \n\t\t With the following UUID: ' + _chalk2.default.blue(newUuid));
+    appGridOptions.uuid = newUuid;
+    return _index2.default.session.updateSessionUuid(appGridOptions).then(function (response) {
+      console.log('\t\t Successfully updated the UUID associated with this AppGrid Session', response);
+    }).catch(function (error) {
+      logError('Oops! There was an error while attempting to update the UUID associated with this AppGrid Session!', error);
+    });
+  };
+
+  return getAppGridSession().then(getAppGridStatus).then(validateAppGridSession).then(updateAppGridSessionUuid).then(function () {
+    logExampleCategoryHeader('End AppGrid Session Examples');
   });
 };
 
@@ -191,7 +243,7 @@ var outputLogo = function outputLogo() {
 
 var runAllExamples = function runAllExamples() {
   outputLogo();
-  exampleAppGridLogging().then(exampleAppGridEvents);
+  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents);
 };
 runAllExamples();
 

@@ -31,7 +31,8 @@ const getDebugOutput = (options) => {
   return options.debugLogger;
 };
 
-const getNewSession = (options) => {
+const getNewSession = (options, failOnInvalidSession) => {
+  if (failOnInvalidSession) { throw new Error('This AppGrid API call requires a valid session!'); }
   options.debugLogger('AppGrid: Requesting a new Session');
   return sessionHelper.getSession(options)
     .then((sessionId) => {
@@ -40,17 +41,17 @@ const getNewSession = (options) => {
     });
 };
 
-const validateAndUpdateSessionIdIfNeeded = (options) => { // TODO JASON: Excersize this function...
-  if (!options.sessionId) { return getNewSession(options); }
+const validateAndUpdateSessionIdIfNeeded = (options, isSessionValidationSkipped, failOnInvalidSession) => {
+  if (isSessionValidationSkipped) { return Promise.resolve(options); }
   return sessionHelper.validateSession(options)
     .then((isValid) => {
-      if (!isValid) { return getNewSession(options); }
+      if (!isValid) { return getNewSession(options, failOnInvalidSession); }
       options.debugLogger('AppGrid: Session is valid.');
       return options;
     });
 };
 
-export const getValidatedOptions = (options) => {
+export const getValidatedOptions = (options, isSessionValidationSkipped, failOnInvalidSession) => {
   return new Promise((resolve, reject) => {
     if (!options) {
       reject(new Error('The options object was falsey'));
@@ -59,7 +60,7 @@ export const getValidatedOptions = (options) => {
     options.debugLogger = getDebugOutput(options);
     requiredOptions.forEach((option) => validateRequiredOption(options, option));
     Object.keys(optionalOptionDefaults).forEach((option) => setDefaultOptionValueIfNeeded(options, option));
-    validateAndUpdateSessionIdIfNeeded(options)
+    validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession)
       .then((validatedOptions) => {
         resolve(validatedOptions);
       })
