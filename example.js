@@ -161,6 +161,7 @@ var exampleAppGridEvents = function exampleAppGridEvents() {
 };
 
 var exampleAppGridMetadata = function exampleAppGridMetadata() {
+  // TODO: Update the keys used for these examples so that they work once we switch to an example AppGrid profile
   logExampleCategoryHeader('AppGrid Metadata Examples:');
 
   var getAllMetadata = function getAllMetadata() {
@@ -168,12 +169,60 @@ var exampleAppGridMetadata = function exampleAppGridMetadata() {
     return _index2.default.metadata.getAllMetadata(appGridOptions).then(function (metadata) {
       console.log('\t\t Successfully requested all metadata from AppGrid', metadata);
     }).catch(function (error) {
-      logError('Oops! There was an error while requesting all metadata AppGrid!', error);
+      logError('Oops! There was an error while requesting all metadata from AppGrid!', error);
     });
   };
 
-  return getAllMetadata().then(function () {
+  var getMetadataByKey = function getMetadataByKey() {
+    logExampleHeader('Requesting metadata by key from AppGrid');
+    var keyToFetch = 'translations'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
+    return _index2.default.metadata.getMetadataByKey(keyToFetch, appGridOptions).then(function (metadata) {
+      console.log('\t\t Successfully requested metadata by key from AppGrid. Key used: ' + _chalk2.default.blue(keyToFetch) + '. \n\t\t Metadata: ', metadata);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting metadata by key from AppGrid!', error);
+    });
+  };
+
+  var getMetadataByKeys = function getMetadataByKeys() {
+    logExampleHeader('Requesting metadata by multiple keys from AppGrid');
+    var keysToFetch = ['translations', 'color*'];
+    return _index2.default.metadata.getMetadataByKeys(keysToFetch, appGridOptions).then(function (metadata) {
+      console.log('\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ' + _chalk2.default.blue(keysToFetch.join(', ')) + ' \n\t\t Metadata: ', metadata);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting metadata by multiple keys from AppGrid!', error);
+    });
+  };
+
+  return getAllMetadata().then(getMetadataByKey).then(getMetadataByKeys).then(function () {
     return logExampleCategoryHeader('End AppGrid Metadata Examples');
+  });
+};
+
+var exampleAppGridAssets = function exampleAppGridAssets() {
+  logExampleCategoryHeader('AppGrid Asset Examples:');
+
+  var getAllAssets = function getAllAssets() {
+    logExampleHeader('Requesting all assets from AppGrid');
+    return _index2.default.assets.getAllAssets(appGridOptions).then(function (assets) {
+      console.log('\t\t Successfully requested all assets from AppGrid', assets);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting all assets from AppGrid!', error);
+    });
+  };
+
+  var downloadAssetById = function downloadAssetById() {
+    logExampleHeader('Downloading asset by id from AppGrid');
+    var idToDownload = '5566b04e95a0d55dee44bb0001a5109c7b9be597f66ddfd5'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
+    return _index2.default.assets.downloadAssetById(idToDownload, appGridOptions).then(function (asset) {
+      // TODO JASON: Figure out how to update this to handle downloading an asset.
+      console.log('\t\t Successfully downloaded an asset by id from AppGrid. AssetId used: ' + _chalk2.default.blue(idToDownload) + '. \n\t\t Asset: ', asset);
+    }).catch(function (error) {
+      logError('Oops! There was an error while downloading an asset by id from AppGrid!', error);
+    });
+  };
+
+  return getAllAssets().then(downloadAssetById).then(function () {
+    return logExampleCategoryHeader('End AppGrid Asset Examples');
   });
 };
 
@@ -281,7 +330,7 @@ var outputLogo = function outputLogo() {
 
 var runAllExamples = function runAllExamples() {
   outputLogo();
-  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents).then(exampleAppGridMetadata).then(function () {
+  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents).then(exampleAppGridMetadata).then(exampleAppGridAssets).then(function () {
     console.log();
     console.log(_chalk2.default.bgBlack.yellow('********************************************************************************'));
     console.log(_chalk2.default.bgBlack.yellow('\t\t\tDONE WITH ALL EXAMPLES'));

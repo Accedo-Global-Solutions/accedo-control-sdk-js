@@ -62,8 +62,7 @@
 **The following tasks remain to be done for the initial version of this SDK**
 
   * **Finish implementing the initial AppGrid functionality**:
-      * Metadata
-      * Assets
+      * Assets (*In Progress*)
       * Entries
       * User Data (Get & Post)
 

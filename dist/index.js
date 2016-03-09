@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _assets = require('./assets');
+
+var assets = _interopRequireWildcard(_assets);
+
 var _events = require('./events');
 
 var events = _interopRequireWildcard(_events);
@@ -26,6 +30,7 @@ var logUtils = {
 };
 
 var api = {
+  assets: assets,
   events: events,
   logger: _logging.logger,
   logUtils: logUtils,

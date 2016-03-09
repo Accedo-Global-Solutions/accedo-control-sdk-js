@@ -148,7 +148,7 @@ const exampleAppGridEvents = () => {
     .then(() => logExampleCategoryHeader('End AppGrid Event Examples'));
 };
 
-const exampleAppGridMetadata = () => {
+const exampleAppGridMetadata = () => { // TODO: Update the keys used for these examples so that they work once we switch to an example AppGrid profile
   logExampleCategoryHeader('AppGrid Metadata Examples:');
 
   const getAllMetadata = () => {
@@ -158,12 +158,72 @@ const exampleAppGridMetadata = () => {
         console.log('\t\t Successfully requested all metadata from AppGrid', metadata);
       })
       .catch((error) => {
-        logError('Oops! There was an error while requesting all metadata AppGrid!', error);
+        logError('Oops! There was an error while requesting all metadata from AppGrid!', error);
+      });
+  };
+
+  const getMetadataByKey = () => {
+    logExampleHeader('Requesting metadata by key from AppGrid');
+    const keyToFetch = 'translations'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
+    return AppGrid.metadata.getMetadataByKey(keyToFetch, appGridOptions)
+      .then((metadata) => {
+        console.log(`\t\t Successfully requested metadata by key from AppGrid. Key used: ${chalk.blue(keyToFetch)}. \n\t\t Metadata: `, metadata);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting metadata by key from AppGrid!', error);
+      });
+  };
+
+  const getMetadataByKeys = () => {
+    logExampleHeader('Requesting metadata by multiple keys from AppGrid');
+    const keysToFetch = [
+      'translations',
+      'color*'
+    ];
+    return AppGrid.metadata.getMetadataByKeys(keysToFetch, appGridOptions)
+      .then((metadata) => {
+        console.log(`\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ${chalk.blue(keysToFetch.join(', '))} \n\t\t Metadata: `, metadata);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting metadata by multiple keys from AppGrid!', error);
       });
   };
 
   return getAllMetadata()
+    .then(getMetadataByKey)
+    .then(getMetadataByKeys)
     .then(() => logExampleCategoryHeader('End AppGrid Metadata Examples'));
+};
+
+const exampleAppGridAssets = () => {
+  logExampleCategoryHeader('AppGrid Asset Examples:');
+
+  const getAllAssets = () => {
+    logExampleHeader('Requesting all assets from AppGrid');
+    return AppGrid.assets.getAllAssets(appGridOptions)
+      .then((assets) => {
+        console.log('\t\t Successfully requested all assets from AppGrid', assets);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting all assets from AppGrid!', error);
+      });
+  };
+
+  const downloadAssetById = () => {
+    logExampleHeader('Downloading asset by id from AppGrid');
+    const idToDownload = '5566b04e95a0d55dee44bb0001a5109c7b9be597f66ddfd5'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
+    return AppGrid.assets.downloadAssetById(idToDownload, appGridOptions)
+      .then((asset) => { // TODO JASON: Figure out how to update this to handle downloading an asset.
+        console.log(`\t\t Successfully downloaded an asset by id from AppGrid. AssetId used: ${chalk.blue(idToDownload)}. \n\t\t Asset: `, asset);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while downloading an asset by id from AppGrid!', error);
+      });
+  };
+
+  return getAllAssets()
+    .then(downloadAssetById)
+    .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
 };
 
 const exampleAppGridSessions = () => {
@@ -286,6 +346,7 @@ const runAllExamples = () => {
     .then(exampleAppGridLogging)
     .then(exampleAppGridEvents)
     .then(exampleAppGridMetadata)
+    .then(exampleAppGridAssets)
     .then(() => {
       console.log();
       console.log(chalk.bgBlack.yellow('********************************************************************************'));
