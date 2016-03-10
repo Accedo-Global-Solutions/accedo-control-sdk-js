@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.post = exports.grab = undefined;
+exports.post = exports.grabRaw = exports.grab = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -89,13 +89,23 @@ var getExtraHeaders = function getExtraHeaders(options) {
   return _extends({}, getForwardedForHeader(options), getSessionHeader(options), getNoCacheHeader(options));
 };
 
-var grab = exports.grab = function grab(url, options) {
+var getFetchRequest = function getFetchRequest(url, options) {
   var headers = _extends({}, defaultHeaders, getExtraHeaders(options));
   var requestUrl = getRequestUrlWithQueryString(url, options);
   options.debugLogger('Sending a GET request to: ' + requestUrl + '. With the following headers: ', headers);
-  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers }).then(extractJsonAndAddTimestamp).then(function (response) {
+  return (0, _isomorphicFetch2.default)(requestUrl, { credentials: credentials, headers: headers });
+};
+
+var grab = exports.grab = function grab(url, options) {
+  return getFetchRequest(url, options).then(extractJsonAndAddTimestamp).then(function (response) {
     options.debugLogger('GET response: ', response);
     return response;
+  });
+};
+
+var grabRaw = exports.grabRaw = function grabRaw(url, options) {
+  return getFetchRequest(url, options).then(function (response) {
+    return response.body;
   });
 };
 

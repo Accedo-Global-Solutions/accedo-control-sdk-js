@@ -1,4 +1,4 @@
-import { grab } from './apiHelper';
+import { grab, grabRaw } from './apiHelper';
 import { getValidatedOptions } from './options';
 
 export const getAllAssets = (options) => {
@@ -9,10 +9,10 @@ export const getAllAssets = (options) => {
   });
 };
 
-export const downloadAssetById = (id, options) => {
+export const getAssetStreamById = (id, options) => {
   return getValidatedOptions(options).then((validatedOptions) => {
     const requestUrl = `${validatedOptions.appGridUrl}/asset/${id}`;
-    validatedOptions.debugLogger(`AppGrid: downloadAssetById request: ${requestUrl}`);
-    return grab(requestUrl, validatedOptions); // TODO JASON: Figure out how to update this to handle downloading an asset.
+    validatedOptions.debugLogger(`AppGrid: getAssetStreamById request: ${requestUrl}`);
+    return grabRaw(requestUrl, validatedOptions);
   });
 };

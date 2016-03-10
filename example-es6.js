@@ -1,7 +1,8 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, no-unused-expressions */
 
 import AppGrid from './dist/index'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 import chalk from 'chalk';
+import { createWriteStream, existsSync, mkdirSync } from 'fs';
 
 console.dir(AppGrid); // TODO JASON: Kill this line
 
@@ -14,6 +15,7 @@ const logError = (message, ...metadata) => {
 };
 
 const exampleUuid = AppGrid.session.generateUuid();
+const downloadsDirectoryName = 'downloads';
 
 const appGridOptions = { // TODO JASON: Finish updating these values
   // NOTE: The following properties are required
@@ -209,12 +211,21 @@ const exampleAppGridAssets = () => {
       });
   };
 
-  const downloadAssetById = () => {
+  const getAssetStreamById = () => {
     logExampleHeader('Downloading asset by id from AppGrid');
     const idToDownload = '5566b04e95a0d55dee44bb0001a5109c7b9be597f66ddfd5'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
-    return AppGrid.assets.downloadAssetById(idToDownload, appGridOptions)
-      .then((asset) => { // TODO JASON: Figure out how to update this to handle downloading an asset.
-        console.log(`\t\t Successfully downloaded an asset by id from AppGrid. AssetId used: ${chalk.blue(idToDownload)}. \n\t\t Asset: `, asset);
+    const fileName = `${downloadsDirectoryName}/favicon.png`;
+    return AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
+      .then((assetStream) => {
+        return new Promise((resolve, reject) => {
+          existsSync(downloadsDirectoryName) || mkdirSync(downloadsDirectoryName);
+          assetStream.pipe(createWriteStream(fileName))
+            .on('close', resolve)
+            .on('error', reject);
+        });
+      })
+      .then(() => {
+        console.log(`\t\t Successfully downloaded an asset by id from AppGrid.\n\t\t AssetId used: ${chalk.blue(idToDownload)}.\n\t\t Filename: ${chalk.blue(fileName)}`);
       })
       .catch((error) => {
         logError('Oops! There was an error while downloading an asset by id from AppGrid!', error);
@@ -222,7 +233,7 @@ const exampleAppGridAssets = () => {
   };
 
   return getAllAssets()
-    .then(downloadAssetById)
+    .then(getAssetStreamById)
     .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
 };
 

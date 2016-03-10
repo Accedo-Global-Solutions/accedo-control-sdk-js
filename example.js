@@ -8,13 +8,17 @@ var _chalk = require('chalk');
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
+var _fs = require('fs');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* eslint-disable no-console */
+// NOTE: this would normally be: import AppGrid from 'appgrid';
+
 
 console.dir(_index2.default); // TODO JASON: Kill this line
 
-// NOTE: this would normally be: import AppGrid from 'appgrid';
+/* eslint-disable no-console, no-unused-expressions */
+
 var debugLogger = function debugLogger(message) {
   var _console;
 
@@ -36,6 +40,7 @@ var logError = function logError(message) {
 };
 
 var exampleUuid = _index2.default.session.generateUuid();
+var downloadsDirectoryName = 'downloads';
 
 var appGridOptions = { // TODO JASON: Finish updating these values
   // NOTE: The following properties are required
@@ -210,18 +215,23 @@ var exampleAppGridAssets = function exampleAppGridAssets() {
     });
   };
 
-  var downloadAssetById = function downloadAssetById() {
+  var getAssetStreamById = function getAssetStreamById() {
     logExampleHeader('Downloading asset by id from AppGrid');
     var idToDownload = '5566b04e95a0d55dee44bb0001a5109c7b9be597f66ddfd5'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
-    return _index2.default.assets.downloadAssetById(idToDownload, appGridOptions).then(function (asset) {
-      // TODO JASON: Figure out how to update this to handle downloading an asset.
-      console.log('\t\t Successfully downloaded an asset by id from AppGrid. AssetId used: ' + _chalk2.default.blue(idToDownload) + '. \n\t\t Asset: ', asset);
+    var fileName = downloadsDirectoryName + '/favicon.png';
+    return _index2.default.assets.getAssetStreamById(idToDownload, appGridOptions).then(function (assetStream) {
+      return new Promise(function (resolve, reject) {
+        (0, _fs.existsSync)(downloadsDirectoryName) || (0, _fs.mkdirSync)(downloadsDirectoryName);
+        assetStream.pipe((0, _fs.createWriteStream)(fileName)).on('close', resolve).on('error', reject);
+      });
+    }).then(function () {
+      console.log('\t\t Successfully downloaded an asset by id from AppGrid.\n\t\t AssetId used: ' + _chalk2.default.blue(idToDownload) + '.\n\t\t Filename: ' + _chalk2.default.blue(fileName));
     }).catch(function (error) {
       logError('Oops! There was an error while downloading an asset by id from AppGrid!', error);
     });
   };
 
-  return getAllAssets().then(downloadAssetById).then(function () {
+  return getAllAssets().then(getAssetStreamById).then(function () {
     return logExampleCategoryHeader('End AppGrid Asset Examples');
   });
 };

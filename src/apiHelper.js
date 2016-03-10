@@ -54,15 +54,26 @@ const getExtraHeaders = (options) => {
   return { ...getForwardedForHeader(options), ...getSessionHeader(options), ...getNoCacheHeader(options) };
 };
 
-export const grab = (url, options) => {
+const getFetchRequest = (url, options) => {
   const headers = { ...defaultHeaders, ...getExtraHeaders(options) };
   const requestUrl = getRequestUrlWithQueryString(url, options);
   options.debugLogger(`Sending a GET request to: ${requestUrl}. With the following headers: `, headers);
-  return fetch(requestUrl, { credentials, headers })
+  return fetch(requestUrl, { credentials, headers });
+};
+
+export const grab = (url, options) => {
+  return getFetchRequest(url, options)
     .then(extractJsonAndAddTimestamp)
     .then((response) => {
       options.debugLogger('GET response: ', response);
       return response;
+    });
+};
+
+export const grabRaw = (url, options) => {
+  return getFetchRequest(url, options)
+    .then((response) => {
+      return response.body;
     });
 };
 

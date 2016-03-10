@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.downloadAssetById = exports.getAllAssets = undefined;
+exports.getAssetStreamById = exports.getAllAssets = undefined;
 
 var _apiHelper = require('./apiHelper');
 
@@ -17,10 +17,10 @@ var getAllAssets = exports.getAllAssets = function getAllAssets(options) {
   });
 };
 
-var downloadAssetById = exports.downloadAssetById = function downloadAssetById(id, options) {
+var getAssetStreamById = exports.getAssetStreamById = function getAssetStreamById(id, options) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var requestUrl = validatedOptions.appGridUrl + '/asset/' + id;
-    validatedOptions.debugLogger('AppGrid: downloadAssetById request: ' + requestUrl);
-    return (0, _apiHelper.grab)(requestUrl, validatedOptions);
+    validatedOptions.debugLogger('AppGrid: getAssetStreamById request: ' + requestUrl);
+    return (0, _apiHelper.grabRaw)(requestUrl, validatedOptions);
   });
 };
