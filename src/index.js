@@ -1,4 +1,5 @@
 import * as assets from './assets';
+import * as contentEntries from './contentEntries';
 import * as events from './events';
 import { logger, getCurrentTimeOfDayDimValue, getLogLevel } from './logging';
 import * as metadata from './metadata';
@@ -11,6 +12,7 @@ const logUtils = {
 
 const api = {
   assets,
+  contentEntries,
   events,
   logger,
   logUtils,

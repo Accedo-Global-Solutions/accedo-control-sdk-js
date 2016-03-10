@@ -17,7 +17,7 @@ var getAllMetadata = exports.getAllMetadata = function getAllMetadata(options) {
   });
 };
 
-var getMetadataByKey = exports.getMetadataByKey = function getMetadataByKey(key, options) {
+var getMetadataByKey = exports.getMetadataByKey = function getMetadataByKey(options, key) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var requestUrl = validatedOptions.appGridUrl + '/metadata/' + key;
     validatedOptions.debugLogger('AppGrid: getMetadataByKey request: ' + requestUrl);
@@ -25,7 +25,7 @@ var getMetadataByKey = exports.getMetadataByKey = function getMetadataByKey(key,
   });
 };
 
-var getMetadataByKeys = exports.getMetadataByKeys = function getMetadataByKeys(keys, options) {
+var getMetadataByKeys = exports.getMetadataByKeys = function getMetadataByKeys(options, keys) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var requestUrl = validatedOptions.appGridUrl + '/metadata/' + keys.join(',');
     validatedOptions.debugLogger('AppGrid: getMetadataByKeys request: ' + requestUrl);

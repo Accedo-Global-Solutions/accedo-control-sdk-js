@@ -181,7 +181,7 @@ var exampleAppGridMetadata = function exampleAppGridMetadata() {
   var getMetadataByKey = function getMetadataByKey() {
     logExampleHeader('Requesting metadata by key from AppGrid');
     var keyToFetch = 'translations'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
-    return _index2.default.metadata.getMetadataByKey(keyToFetch, appGridOptions).then(function (metadata) {
+    return _index2.default.metadata.getMetadataByKey(appGridOptions, keyToFetch).then(function (metadata) {
       console.log('\t\t Successfully requested metadata by key from AppGrid. Key used: ' + _chalk2.default.blue(keyToFetch) + '. \n\t\t Metadata: ', metadata);
     }).catch(function (error) {
       logError('Oops! There was an error while requesting metadata by key from AppGrid!', error);
@@ -191,7 +191,7 @@ var exampleAppGridMetadata = function exampleAppGridMetadata() {
   var getMetadataByKeys = function getMetadataByKeys() {
     logExampleHeader('Requesting metadata by multiple keys from AppGrid');
     var keysToFetch = ['translations', 'color*'];
-    return _index2.default.metadata.getMetadataByKeys(keysToFetch, appGridOptions).then(function (metadata) {
+    return _index2.default.metadata.getMetadataByKeys(appGridOptions, keysToFetch).then(function (metadata) {
       console.log('\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ' + _chalk2.default.blue(keysToFetch.join(', ')) + ' \n\t\t Metadata: ', metadata);
     }).catch(function (error) {
       logError('Oops! There was an error while requesting metadata by multiple keys from AppGrid!', error);
@@ -233,6 +233,61 @@ var exampleAppGridAssets = function exampleAppGridAssets() {
 
   return getAllAssets().then(getAssetStreamById).then(function () {
     return logExampleCategoryHeader('End AppGrid Asset Examples');
+  });
+};
+
+var exampleAppGridContentEntries = function exampleAppGridContentEntries() {
+  // TODO: Update the ids used for these examples so that they work once we switch to an example AppGrid profile
+  logExampleCategoryHeader('AppGrid ContentEntries Examples:');
+
+  var getAllEntries = function getAllEntries() {
+    logExampleHeader('Requesting all ContentEntries from AppGrid');
+    var offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
+    var countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
+    return _index2.default.contentEntries.getAllEntries(appGridOptions, offset, countOfResults).then(function (response) {
+      var _response$json = response.json;
+      var entries = _response$json.entries;
+      var pagination = _response$json.pagination;
+      // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
+
+      console.log('\t\t Successfully requested all ContentEntries from AppGrid\n\t\t Count of entries recieved: ' + _chalk2.default.blue(entries.length) + ' out of ' + _chalk2.default.blue(pagination.total) + ' total entries.');
+      console.log(entries[1]);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting all ContentEntries from AppGrid!', error);
+    });
+  };
+
+  var getEntryById = function getEntryById() {
+    logExampleHeader('Requesting a ContentEntry by id from AppGrid');
+    var idToFetch = '56c1de17e4b0b8a18ac01632';
+    var isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
+    var atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
+    return _index2.default.contentEntries.getEntryById(appGridOptions, idToFetch, isPreview, atUtcTime).then(function (entry) {
+      console.log('\t\t Successfully requested a ContentEntry by id from AppGrid. Id used: ' + _chalk2.default.blue(idToFetch) + '. \n\t\t ContentEntry: ', entry);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting a ContentEntry by id from AppGrid!', error);
+    });
+  };
+
+  /* // TODO JASON: Kill this commented-block after implementing
+    const getEntriesByIds = () => {
+    logExampleHeader('Requesting metadata by multiple keys from AppGrid');
+    const idToFetch = [
+      '56c1de17e4b0b8a18ac01632',
+      '55b8ec42e4b0161a1b30c041'
+    ];
+    return AppGrid.metadata.getMetadataByKeys(keysToFetch, appGridOptions)
+      .then((metadata) => {
+        console.log(`\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ${chalk.blue(keysToFetch.join(', '))} \n\t\t Metadata: `, metadata);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting metadata by multiple keys from AppGrid!', error);
+      });
+  };
+   */
+
+  return getAllEntries().then(getEntryById).then(function () {
+    return logExampleCategoryHeader('End AppGrid ContentEntries Examples');
   });
 };
 
@@ -340,7 +395,9 @@ var outputLogo = function outputLogo() {
 
 var runAllExamples = function runAllExamples() {
   outputLogo();
-  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents).then(exampleAppGridMetadata).then(exampleAppGridAssets).then(function () {
+  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents).then(exampleAppGridMetadata).then(exampleAppGridAssets).then(exampleAppGridContentEntries).catch(function (error) {
+    logError('Oops! There was an unhandled error during one of the examples!', error);
+  }).then(function () {
     console.log();
     console.log(_chalk2.default.bgBlack.yellow('********************************************************************************'));
     console.log(_chalk2.default.bgBlack.yellow('\t\t\tDONE WITH ALL EXAMPLES'));

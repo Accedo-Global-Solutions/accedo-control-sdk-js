@@ -8,6 +8,10 @@ var _assets = require('./assets');
 
 var assets = _interopRequireWildcard(_assets);
 
+var _contentEntries = require('./contentEntries');
+
+var contentEntries = _interopRequireWildcard(_contentEntries);
+
 var _events = require('./events');
 
 var events = _interopRequireWildcard(_events);
@@ -31,6 +35,7 @@ var logUtils = {
 
 var api = {
   assets: assets,
+  contentEntries: contentEntries,
   events: events,
   logger: _logging.logger,
   logUtils: logUtils,

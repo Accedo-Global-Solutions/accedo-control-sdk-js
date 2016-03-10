@@ -9,7 +9,7 @@ export const getAllMetadata = (options) => {
   });
 };
 
-export const getMetadataByKey = (key, options) => {
+export const getMetadataByKey = (options, key) => {
   return getValidatedOptions(options).then((validatedOptions) => {
     const requestUrl = `${validatedOptions.appGridUrl}/metadata/${key}`;
     validatedOptions.debugLogger(`AppGrid: getMetadataByKey request: ${requestUrl}`);
@@ -17,7 +17,7 @@ export const getMetadataByKey = (key, options) => {
   });
 };
 
-export const getMetadataByKeys = (keys, options) => {
+export const getMetadataByKeys = (options, keys) => {
   return getValidatedOptions(options).then((validatedOptions) => {
     const requestUrl = `${validatedOptions.appGridUrl}/metadata/${keys.join(',')}`;
     validatedOptions.debugLogger(`AppGrid: getMetadataByKeys request: ${requestUrl}`);
