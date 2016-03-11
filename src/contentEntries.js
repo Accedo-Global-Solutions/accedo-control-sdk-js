@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 import { grab } from './apiHelper';
 import { getValidatedOptions } from './options';
 
@@ -5,13 +7,15 @@ const defaultCountOfResults = 20;
 
 const getPaginationQueryParams = (offset, countOfResults) => `offset=${offset}&size=${countOfResults}`;
 
-const getEntryRequestUrl = (validatedOptions, relativePath, isPreview, atUtcTime, ids) => {
-  let requestUrl = `${validatedOptions.appGridUrl}/${relativePath}?`;
-  const queryStrings = [];
-  if (ids && ids.length) { queryStrings.push(`ids=${ids.join(',')}`); }
-  if (isPreview) { queryStrings.push('preview=true'); }
-  if (atUtcTime) { queryStrings.push(`at=${atUtcTime.toISOString()}`); }
-  requestUrl += queryStrings.join('&');
+const getEntryRequestUrl = (validatedOptions, relativePath, isPreview, atUtcTime, ids, typeId) => {
+  let requestUrl = `${validatedOptions.appGridUrl}/${relativePath}`;
+  const qsObject = {};
+  if (ids && ids.length) { qsObject.id = `${ids.join(',')}`; }
+  if (typeId) { qsObject.typeId = typeId; }
+  if (isPreview) { qsObject.preview = true; }
+  if (atUtcTime) { qsObject.at = atUtcTime.toISOString(); }
+  const queryString = qs.stringify(qsObject);
+  requestUrl += `?${queryString}`;
   return requestUrl;
 };
 
@@ -31,8 +35,6 @@ export const getEntryById = (options, id, isPreview = false, atUtcTime) => {
   });
 };
 
-// TODO JASON: Test this out!
-
 export const getEntriesByIds = (options, ids, offset = 0, countOfResults = defaultCountOfResults, isPreview = false, atUtcTime) => {
   return getValidatedOptions(options).then((validatedOptions) => {
     let requestUrl = getEntryRequestUrl(validatedOptions, 'content/entries', isPreview, atUtcTime, ids);
@@ -42,5 +44,11 @@ export const getEntriesByIds = (options, ids, offset = 0, countOfResults = defau
   });
 };
 
-// TODO JASON: Add functions and examples for the following (refer to AppGrid Docs for details):
-// Get Entries by Entry Type ID
+export const getEntriesByTypeId = (options, typeId, offset = 0, countOfResults = defaultCountOfResults, isPreview = false, atUtcTime) => {
+  return getValidatedOptions(options).then((validatedOptions) => {
+    let requestUrl = getEntryRequestUrl(validatedOptions, 'content/entries', isPreview, atUtcTime, null, typeId);
+    requestUrl += `&${getPaginationQueryParams(offset, countOfResults)}`;
+    validatedOptions.debugLogger(`AppGrid: getEntriesByTypeId request: ${requestUrl}`);
+    return grab(requestUrl, validatedOptions);
+  });
+};

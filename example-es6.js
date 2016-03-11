@@ -249,7 +249,6 @@ const exampleAppGridContentEntries = () => { // TODO: Update the ids used for th
         const { json: { entries, pagination } } = response;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
         console.log(`\t\t Successfully requested all ContentEntries from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
-        console.log(entries[1]);
       })
       .catch((error) => {
         logError('Oops! There was an error while requesting all ContentEntries from AppGrid!', error);
@@ -270,28 +269,49 @@ const exampleAppGridContentEntries = () => { // TODO: Update the ids used for th
       });
   };
 
-  /* // TODO JASON: Kill this commented-block after implementing
-
-
   const getEntriesByIds = () => {
-    logExampleHeader('Requesting metadata by multiple keys from AppGrid');
-    const idToFetch = [
+    logExampleHeader('Requesting ContentEntries by multiple ids from AppGrid');
+    const idsToFetch = [
       '56c1de17e4b0b8a18ac01632',
       '55b8ec42e4b0161a1b30c041'
     ];
-    return AppGrid.metadata.getMetadataByKeys(keysToFetch, appGridOptions)
-      .then((metadata) => {
-        console.log(`\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ${chalk.blue(keysToFetch.join(', '))} \n\t\t Metadata: `, metadata);
+    const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
+    const countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
+    const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
+    const atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
+    return AppGrid.contentEntries.getEntriesByIds(appGridOptions, idsToFetch, offset, countOfResults, isPreview, atUtcTime)
+      .then((response) => {
+        const { json: { entries, pagination } } = response;
+        // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
+        console.log(`\t\t Successfully requested multiple ContentEntries by ids from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
       })
       .catch((error) => {
-        logError('Oops! There was an error while requesting metadata by multiple keys from AppGrid!', error);
+        logError('Oops! There was an error while requesting ContentEntries by multiple ids from AppGrid!', error);
       });
   };
 
-  */
+  const getEntriesByTypeId = () => {
+    logExampleHeader('Requesting ContentEntries by typeId from AppGrid');
+    const typeIdToFetch = '55d6fb35e4b09adc64cd6ad2';
+    const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
+    const countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
+    const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
+    const atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
+    return AppGrid.contentEntries.getEntriesByTypeId(appGridOptions, typeIdToFetch, offset, countOfResults, isPreview, atUtcTime)
+      .then((response) => {
+        const { json: { entries, pagination } } = response;
+        // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
+        console.log(`\t\t Successfully requested ContentEntries by typeId from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting ContentEntries by typeId from AppGrid!', error);
+      });
+  };
 
   return getAllEntries()
     .then(getEntryById)
+    .then(getEntriesByIds)
+    .then(getEntriesByTypeId)
     .then(() => logExampleCategoryHeader('End AppGrid ContentEntries Examples'));
 };
 

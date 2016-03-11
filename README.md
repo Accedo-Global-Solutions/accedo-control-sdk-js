@@ -62,9 +62,7 @@
 **The following tasks remain to be done for the initial version of this SDK**
 
   * **Finish implementing the initial AppGrid functionality**:
-      * Assets (*In Progress*)
-      * Entries
-      * User Data (Get & Post)
+      * User Data (Get & Post) (*In Progress*)
 
 
   * Run ```npm-shrinkwrap```
