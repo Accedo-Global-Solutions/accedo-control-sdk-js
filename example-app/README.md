@@ -1,4 +1,4 @@
-#AppGrid Web SDK#
+#AppGrid Web SDK - Example App#
 
 ```
 *******************************************************************************
@@ -59,7 +59,6 @@
 
 **Readme TBD**
 
-**This repository contains two sub-projects:**
+**The following tasks remain to be done**
   
-  * An ``` npm-module ``` for the NodeJS AppGrid SDK
-  * A CLI ``` example-app ``` written in ES5 for consuming the SDK node-module
+  * Write an example consumer app in ES5 (totally separate from the examples file included in this project)

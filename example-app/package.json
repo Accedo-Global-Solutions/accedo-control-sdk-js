@@ -1,0 +1,25 @@
+{
+  "name": "appgrid-cli-example",
+  "version": "0.1.0",
+  "description": "An example ES5 CLI app for consuming the AppGrid SDK for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/accedo/appgrid-sdk-web.git"
+  },
+  "keywords": [
+    "appgrid",
+    "accedo"
+  ],
+  "author": "Accedo, AB",
+  "license": "Apache-2.0",
+  "homepage": "http://appgrid.accedo.tv/",
+  "private": true,
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}
