@@ -377,11 +377,39 @@ var exampleAppGridUserData = function exampleAppGridUserData() {
   logExampleCategoryHeader('AppGrid UserData Examples:');
   var userName = 'exampleUser';
   var dataKeyToRequest = 'name';
+  var dataKeyToSet = 'packageName';
+  var dataValueToSet = 'platinum';
+  var userProfileData = {
+    name: 'Johnny AppGridUser',
+    email: 'johnny.appgriduser@email.com',
+    favoriteVideoIds: ['abc123', '321abc', 'cba321']
+  };
+
+  var setApplicationScopeUserData = function setApplicationScopeUserData() {
+    logExampleHeader('Setting Application-Scope User Data on AppGrid');
+    return _index2.default.userData.setApplicationScopeUserData(appGridOptions, userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
+    .then(function (data) {
+      console.log('\t\t Successfully set Application-Scope User Data on AppGrid.\n\t\t Username used: ' + _chalk2.default.blue(userName) + '. \n\t\t User data sent: ', userProfileData);
+    }).catch(function (error) {
+      logError('Oops! There was an error while setting Application-Scope User Data on AppGrid!', error);
+    });
+  };
+
+  var setApplicationScopeUserDataByKey = function setApplicationScopeUserDataByKey() {
+    logExampleHeader('Setting Application-Scope User Data by key on AppGrid');
+    return _index2.default.userData.setApplicationScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet).then(function (data) {
+      console.log('\t\t Successfully set Application-Scope User Data by key on AppGrid.\n\t\t Username used: ' + _chalk2.default.blue(userName) + '.\n\t\t Key used: ' + _chalk2.default.blue(dataKeyToSet) + ' \n\t\t Value sent: ' + _chalk2.default.blue(dataValueToSet));
+    }).catch(function (error) {
+      logError('Oops! There was an error while setting Application-Scope User Data by key on AppGrid!', error);
+    });
+  };
+
+  // TODO JASON: Continue with the remaining set calls here
 
   var getAllApplicationScopeDataByUser = function getAllApplicationScopeDataByUser() {
     logExampleHeader('Requesting All Application-Scope Data by user from AppGrid');
     return _index2.default.userData.getAllApplicationScopeDataByUser(appGridOptions, userName).then(function (data) {
-      console.log('\t\t Successfully requested all Application-Scope Data by user from AppGrid. Username used: ' + _chalk2.default.blue(userName) + '. \n\t\t Data: ', data);
+      console.log('\t\t Successfully requested all Application-Scope Data by user from AppGrid.\n\t\t Username used: ' + _chalk2.default.blue(userName) + '. \n\t\t Data: ', data);
     }).catch(function (error) {
       logError('Oops! There was an error while requesting all Application-Scope Data by user from AppGrid!', error);
     });
@@ -399,7 +427,7 @@ var exampleAppGridUserData = function exampleAppGridUserData() {
   var getAllApplicationGroupScopeDataByUser = function getAllApplicationGroupScopeDataByUser() {
     logExampleHeader('Requesting All ApplicationGroup-Scope Data by user from AppGrid');
     return _index2.default.userData.getAllApplicationGroupScopeDataByUser(appGridOptions, userName).then(function (data) {
-      console.log('\t\t Successfully requested all ApplicationGroup-Scope Data by user from AppGrid. Username used: ' + _chalk2.default.blue(userName) + '. \n\t\t Data: ', data);
+      console.log('\t\t Successfully requested all ApplicationGroup-Scope Data by user from AppGrid.\n\t\t Username used: ' + _chalk2.default.blue(userName) + '. \n\t\t Data: ', data);
     }).catch(function (error) {
       logError('Oops! There was an error while requesting all ApplicationGroup-Scope Data by user from AppGrid!', error);
     });
@@ -414,9 +442,7 @@ var exampleAppGridUserData = function exampleAppGridUserData() {
     });
   };
 
-  // TODO JASON: Finish updating & implementing the remaining UserData (set) examples
-
-  return getAllApplicationScopeDataByUser().then(getApplicationScopeDataByUserAndKey).then(getAllApplicationGroupScopeDataByUser).then(getApplicationGroupScopeDataByUserAndKey).then(function () {
+  return setApplicationScopeUserData().then(setApplicationScopeUserDataByKey).then(getAllApplicationScopeDataByUser).then(getApplicationScopeDataByUserAndKey).then(getAllApplicationGroupScopeDataByUser).then(getApplicationGroupScopeDataByUserAndKey).then(function () {
     return logExampleCategoryHeader('End AppGrid UserData Examples');
   });
 };
