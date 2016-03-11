@@ -315,6 +315,24 @@ const exampleAppGridContentEntries = () => { // TODO: Update the ids used for th
     .then(() => logExampleCategoryHeader('End AppGrid ContentEntries Examples'));
 };
 
+const exampleAppGridPlugins = () => {
+  logExampleCategoryHeader('AppGrid Plugins Examples:');
+
+  const getAllEnabledPlugins = () => {
+    logExampleHeader('Requesting all enabled plugins from AppGrid');
+    return AppGrid.plugins.getAllEnabledPlugins(appGridOptions)
+      .then((plugins) => {
+        console.log('\t\t Successfully requested all enabled plugins from AppGrid', plugins);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting all enabled plugins from AppGrid!', error);
+      });
+  };
+
+  return getAllEnabledPlugins()
+    .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
+};
+
 const exampleAppGridSessions = () => {
   logExampleCategoryHeader('AppGrid Session Examples:');
   const getAppGridSession = () => {
@@ -437,6 +455,7 @@ const runAllExamples = () => {
     .then(exampleAppGridMetadata)
     .then(exampleAppGridAssets)
     .then(exampleAppGridContentEntries)
+    .then(exampleAppGridPlugins)
     .catch((error) => {
       logError('Oops! There was an unhandled error during one of the examples!', error);
     })

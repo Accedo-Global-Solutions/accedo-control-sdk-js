@@ -311,6 +311,23 @@ var exampleAppGridContentEntries = function exampleAppGridContentEntries() {
   });
 };
 
+var exampleAppGridPlugins = function exampleAppGridPlugins() {
+  logExampleCategoryHeader('AppGrid Plugins Examples:');
+
+  var getAllEnabledPlugins = function getAllEnabledPlugins() {
+    logExampleHeader('Requesting all enabled plugins from AppGrid');
+    return _index2.default.plugins.getAllEnabledPlugins(appGridOptions).then(function (plugins) {
+      console.log('\t\t Successfully requested all enabled plugins from AppGrid', plugins);
+    }).catch(function (error) {
+      logError('Oops! There was an error while requesting all enabled plugins from AppGrid!', error);
+    });
+  };
+
+  return getAllEnabledPlugins().then(function () {
+    return logExampleCategoryHeader('End AppGrid Asset Examples');
+  });
+};
+
 var exampleAppGridSessions = function exampleAppGridSessions() {
   logExampleCategoryHeader('AppGrid Session Examples:');
   var getAppGridSession = function getAppGridSession() {
@@ -415,7 +432,7 @@ var outputLogo = function outputLogo() {
 
 var runAllExamples = function runAllExamples() {
   outputLogo();
-  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents).then(exampleAppGridMetadata).then(exampleAppGridAssets).then(exampleAppGridContentEntries).catch(function (error) {
+  exampleAppGridSessions().then(exampleAppGridLogging).then(exampleAppGridEvents).then(exampleAppGridMetadata).then(exampleAppGridAssets).then(exampleAppGridContentEntries).then(exampleAppGridPlugins).catch(function (error) {
     logError('Oops! There was an unhandled error during one of the examples!', error);
   }).then(function () {
     console.log();

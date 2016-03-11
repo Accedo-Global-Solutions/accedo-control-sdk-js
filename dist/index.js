@@ -22,6 +22,10 @@ var _metadata = require('./metadata');
 
 var metadata = _interopRequireWildcard(_metadata);
 
+var _plugins = require('./plugins');
+
+var plugins = _interopRequireWildcard(_plugins);
+
 var _session = require('./session');
 
 var session = _interopRequireWildcard(_session);
@@ -40,6 +44,7 @@ var api = {
   logger: _logging.logger,
   logUtils: logUtils,
   metadata: metadata,
+  plugins: plugins,
   session: session
 };
 
