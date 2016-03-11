@@ -61,10 +61,6 @@
 
 **The following tasks remain to be done for the initial version of this SDK**
 
-  * **Finish implementing the initial AppGrid functionality**:
-      * User Data (Post) (*In Progress*)
-
-
   * Run ```npm-shrinkwrap```
   
   * Write an example consumer app in ES5 (totally separate from the examples file included in this project)

@@ -1,16 +1,14 @@
-/* eslint-disable no-console, no-unused-expressions, no-unused-vars */
-
-// TODO JASON: remove 'no-unused-vars' from the disable comment above
+/* eslint-disable no-console, no-unused-expressions */
 
 import AppGrid from './dist/index'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 
-console.dir(AppGrid); // TODO JASON: Kill this line
-
+/* // NOTE: Uncomment this block, and the 'debugLogger' line inside of the appGridOptions, below in order to show debug logs in the console.
 const debugLogger = (message, ...metadata) => {
   console.log(chalk.bgBlack.white(`\t\tAppGrid DEBUG: ${message} `), ...metadata);
 };
+*/
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
@@ -19,10 +17,10 @@ const logError = (message, ...metadata) => {
 const exampleUuid = AppGrid.session.generateUuid();
 const downloadsDirectoryName = 'downloads';
 
-const appGridOptions = { // TODO JASON: Finish updating these values
+const appGridOptions = {
   // NOTE: The following properties are required
   appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
-  appId: '560e505de4b0150cbb576df5', // TODO JASON: CRITICAL: MAKE SURE TO UPDATE THIS TO THE PROPER EXAMPLE APPID!!!!!!!1! (Currently this is the VIA-Go dev AppId)
+  appId: '560e505de4b0150cbb576df5', // TODO: CRITICAL: MAKE SURE TO UPDATE THIS TO THE PROPER EXAMPLE APPID!!!!!!!1! (Currently this is the VIA-Go dev AppId)
 
   // NOTE: The following properties are optional
   logLevel: 'info', // This will default to: 'info' if not provided
@@ -36,8 +34,8 @@ const appGridOptions = { // TODO JASON: Finish updating these values
   clientIp: '', // NOTE: If provided, this value will be inserted into the X-FORWARDED-FOR header for all AppGrid API Calls
   sessionId: '', // NOTE: It's ideal to store and reuse the sessionId as much as possible, however a new one will automatically be requested if needed or missing.
   gid: '', // NOTE: Refer to the AppGrid documentation on how to optionally make use of a GID.
-  uuid: exampleUuid, // NOTE: This value should be unique per end-user. If not provided, a new UUID will be generated for each request.
-  debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
+  uuid: exampleUuid // NOTE: This value should be unique per end-user. If not provided, a new UUID will be generated for each request.
+  // debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
 };
 
 const logExampleCategoryHeader = (message) => {
@@ -409,7 +407,7 @@ const exampleAppGridUserData = () => {
   const setApplicationScopeUserData = () => {
     logExampleHeader('Setting Application-Scope User Data on AppGrid');
     return AppGrid.userData.setApplicationScopeUserData(appGridOptions, userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
-      .then((data) => {
+      .then(() => {
         console.log(`\t\t Successfully set Application-Scope User Data on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t User data sent: `, userProfileData);
       })
       .catch((error) => {
@@ -417,10 +415,21 @@ const exampleAppGridUserData = () => {
       });
   };
 
+  const setApplicationGroupScopeUserData = () => {
+    logExampleHeader('Setting ApplicationGroup-Scope User Data on AppGrid');
+    return AppGrid.userData.setApplicationGroupScopeUserData(appGridOptions, userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
+      .then(() => {
+        console.log(`\t\t Successfully set ApplicationGroup-Scope User Data on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t User data sent: `, userProfileData);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while setting ApplicationGroup-Scope User Data on AppGrid!', error);
+      });
+  };
+
   const setApplicationScopeUserDataByKey = () => {
     logExampleHeader('Setting Application-Scope User Data by key on AppGrid');
     return AppGrid.userData.setApplicationScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
-      .then((data) => {
+      .then(() => {
         console.log(`\t\t Successfully set Application-Scope User Data by key on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Key used: ${chalk.blue(dataKeyToSet)} \n\t\t Value sent: ${chalk.blue(dataValueToSet)}`);
       })
       .catch((error) => {
@@ -428,7 +437,16 @@ const exampleAppGridUserData = () => {
       });
   };
 
-  // TODO JASON: Continue with the remaining set calls here
+  const setApplicationGroupScopeUserDataByKey = () => {
+    logExampleHeader('Setting ApplicationGroup-Scope User Data by key on AppGrid');
+    return AppGrid.userData.setApplicationGroupScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
+      .then(() => {
+        console.log(`\t\t Successfully set ApplicationGroup-Scope User Data by key on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Key used: ${chalk.blue(dataKeyToSet)} \n\t\t Value sent: ${chalk.blue(dataValueToSet)}`);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while setting ApplicationGroup-Scope User Data by key on AppGrid!', error);
+      });
+  };
 
   const getAllApplicationScopeDataByUser = () => {
     logExampleHeader('Requesting All Application-Scope Data by user from AppGrid');
@@ -441,17 +459,6 @@ const exampleAppGridUserData = () => {
       });
   };
 
-  const getApplicationScopeDataByUserAndKey = () => {
-    logExampleHeader('Requesting Application-Scope Data by user and key from AppGrid');
-    return AppGrid.userData.getApplicationScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
-      .then((data) => {
-        console.log(`\t\t Successfully requested Application-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
-      })
-      .catch((error) => {
-        logError('Oops! There was an error while requesting Application-Scope Data by user and key from AppGrid!', error);
-      });
-  };
-
   const getAllApplicationGroupScopeDataByUser = () => {
     logExampleHeader('Requesting All ApplicationGroup-Scope Data by user from AppGrid');
     return AppGrid.userData.getAllApplicationGroupScopeDataByUser(appGridOptions, userName)
@@ -460,6 +467,17 @@ const exampleAppGridUserData = () => {
       })
       .catch((error) => {
         logError('Oops! There was an error while requesting all ApplicationGroup-Scope Data by user from AppGrid!', error);
+      });
+  };
+
+  const getApplicationScopeDataByUserAndKey = () => {
+    logExampleHeader('Requesting Application-Scope Data by user and key from AppGrid');
+    return AppGrid.userData.getApplicationScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
+      .then((data) => {
+        console.log(`\t\t Successfully requested Application-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting Application-Scope Data by user and key from AppGrid!', error);
       });
   };
 
@@ -475,10 +493,12 @@ const exampleAppGridUserData = () => {
   };
 
   return setApplicationScopeUserData()
+    .then(setApplicationGroupScopeUserData)
     .then(setApplicationScopeUserDataByKey)
+    .then(setApplicationGroupScopeUserDataByKey)
     .then(getAllApplicationScopeDataByUser)
-    .then(getApplicationScopeDataByUserAndKey)
     .then(getAllApplicationGroupScopeDataByUser)
+    .then(getApplicationScopeDataByUserAndKey)
     .then(getApplicationGroupScopeDataByUserAndKey)
     .then(() => logExampleCategoryHeader('End AppGrid UserData Examples'));
 };
@@ -545,14 +565,12 @@ const outputLogo = () => {
 const runAllExamples = () => {
   outputLogo();
   exampleAppGridSessions()
-    /* // TODO JASON: Uncomment this block!
     .then(exampleAppGridLogging)
     .then(exampleAppGridEvents)
     .then(exampleAppGridMetadata)
     .then(exampleAppGridAssets)
     .then(exampleAppGridContentEntries)
     .then(exampleAppGridPlugins)
-    */
     .then(exampleAppGridUserData)
     .catch((error) => {
       logError('Oops! There was an unhandled error during one of the examples!', error);
@@ -565,5 +583,3 @@ const runAllExamples = () => {
     });
 };
 runAllExamples();
-
-// TODO: Finish implementing and commenting this example file!

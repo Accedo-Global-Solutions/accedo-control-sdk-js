@@ -1,67 +1,53 @@
 import { grab, post } from './apiHelper';
 import { getValidatedOptions } from './options';
 
+const applicationScopePath = 'user';
+const applicationGroupScopePath = 'group';
 
-/* *********************
-   * GET UserData Calls:
-   *********************/
-
-export const getAllApplicationScopeDataByUser = (options, userName) => {
+const getAllDataByUser = (options, scope, userName) => {
   return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/user/${userName}`;
-    validatedOptions.debugLogger(`AppGrid: getAllApplicationScopeDataByUser request: ${requestUrl}`);
+    const requestUrl = `${validatedOptions.appGridUrl}/${scope}/${userName}`;
+    validatedOptions.debugLogger(`AppGrid: getAllDataByUser request: ${requestUrl}`);
     return grab(requestUrl, validatedOptions);
   });
 };
 
-export const getApplicationScopeDataByUserAndKey = (options, userName, key) => {
+const getDataByUserAndKey = (options, scope, userName, key) => {
   return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/user/${userName}/${key}?json=true`;
-    validatedOptions.debugLogger(`AppGrid: getApplicationScopeDataByUserAndKey request: ${requestUrl}`);
+    const requestUrl = `${validatedOptions.appGridUrl}/${scope}/${userName}/${key}?json=true`;
+    validatedOptions.debugLogger(`AppGrid: getDataByUserAndKey request: ${requestUrl}`);
     return grab(requestUrl, validatedOptions);
   });
 };
 
-export const getAllApplicationGroupScopeDataByUser = (options, userName) => {
+const setUserData = (options, scope, userName, data) => {
   return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/group/${userName}`;
-    validatedOptions.debugLogger(`AppGrid: getAllApplicationGroupScopeDataByUser request: ${requestUrl}`);
-    return grab(requestUrl, validatedOptions);
-  });
-};
-
-export const getApplicationGroupScopeDataByUserAndKey = (options, userName, key) => {
-  return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/group/${userName}/${key}?json=true`;
-    validatedOptions.debugLogger(`AppGrid: getApplicationScopeDataByUserAndKey request: ${requestUrl}`);
-    return grab(requestUrl, validatedOptions);
-  });
-};
-
-/* *******************
- * SET UserData Calls:
- *********************/
-
-export const setApplicationScopeUserData = (options, userName, data) => {
-  return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/user/${userName}`;
+    const requestUrl = `${validatedOptions.appGridUrl}/${scope}/${userName}`;
     validatedOptions.debugLogger(`AppGrid: setUserData request: ${requestUrl}`);
     return post(requestUrl, validatedOptions, data);
   });
 };
 
-export const setApplicationScopeUserDataByKey = (options, userName, key, value) => {
+const setUserDataByKey = (options, scope, userName, key, value) => {
   return getValidatedOptions(options).then((validatedOptions) => {
-    const requestUrl = `${validatedOptions.appGridUrl}/user/${userName}/${key}`;
-    validatedOptions.debugLogger(`AppGrid: setApplicationScopeUserDataByKey request: ${requestUrl}`);
+    const requestUrl = `${validatedOptions.appGridUrl}/${scope}/${userName}/${key}`;
+    validatedOptions.debugLogger(`AppGrid: setUserDataByKey request: ${requestUrl}`);
     return post(requestUrl, validatedOptions, value);
   });
 };
 
-// TODO JASON: Finish adding the set API calls for UserData here!
+export const getAllApplicationScopeDataByUser = (options, userName) => getAllDataByUser(options, applicationScopePath, userName);
 
-// Set user data (application group scope)
-//       POST /group/{user}
+export const getAllApplicationGroupScopeDataByUser = (options, userName) => getAllDataByUser(options, applicationGroupScopePath, userName);
 
-// Set user data (group scope) for key
-//       POST /group/{user}/{key}
+export const getApplicationScopeDataByUserAndKey = (options, userName, key) => getDataByUserAndKey(options, applicationScopePath, userName, key);
+
+export const getApplicationGroupScopeDataByUserAndKey = (options, userName, key) => getDataByUserAndKey(options, applicationGroupScopePath, userName, key);
+
+export const setApplicationScopeUserData = (options, userName, data) => setUserData(options, applicationScopePath, userName, data);
+
+export const setApplicationGroupScopeUserData = (options, userName, data) => setUserData(options, applicationGroupScopePath, userName, data);
+
+export const setApplicationScopeUserDataByKey = (options, userName, key, value) => setUserDataByKey(options, applicationScopePath, userName, key, value);
+
+export const setApplicationGroupScopeUserDataByKey = (options, userName, key, value) => setUserDataByKey(options, applicationGroupScopePath, userName, key, value);
