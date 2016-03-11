@@ -9,7 +9,9 @@ const extractJsonAndAddTimestamp = (response) => {
   const time = Date.now();
   return response.json()
     .then((json) => {
-      if (json.error) { throw new Error(`AppGrid GET Request Error. Code: ${json.error.code} Message: ${json.error.message}. Status: ${json.error.status}`); }
+      if (json.error && json.error.code !== '404') {
+        throw new Error(`AppGrid GET Request Error. Code: ${json.error.code} Message: ${json.error.message}. Status: ${json.error.status}`);
+      }
       return { time, json };
     });
 };

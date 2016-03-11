@@ -5,6 +5,7 @@ import { logger, getCurrentTimeOfDayDimValue, getLogLevel } from './logging';
 import * as metadata from './metadata';
 import * as plugins from './plugins';
 import * as session from './session';
+import * as userData from './userData';
 
 const logUtils = {
   getCurrentTimeOfDayDimValue,
@@ -19,7 +20,8 @@ const api = {
   logUtils,
   metadata,
   plugins,
-  session
+  session,
+  userData
 };
 
 export default api;

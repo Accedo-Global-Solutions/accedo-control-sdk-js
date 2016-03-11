@@ -1,4 +1,6 @@
-/* eslint-disable no-console, no-unused-expressions */
+/* eslint-disable no-console, no-unused-expressions, no-unused-vars */
+
+// TODO JASON: remove 'no-unused-vars' from the disable comment above
 
 import AppGrid from './dist/index'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 import chalk from 'chalk';
@@ -388,6 +390,64 @@ const exampleAppGridSessions = () => {
     });
 };
 
+const exampleAppGridUserData = () => {
+  logExampleCategoryHeader('AppGrid UserData Examples:');
+  const userName = 'exampleUser';
+  const dataKeyToRequest = 'name';
+
+  const getAllApplicationScopeDataByUser = () => {
+    logExampleHeader('Requesting All Application-Scope Data by user from AppGrid');
+    return AppGrid.userData.getAllApplicationScopeDataByUser(appGridOptions, userName)
+      .then((data) => {
+        console.log(`\t\t Successfully requested all Application-Scope Data by user from AppGrid. Username used: ${chalk.blue(userName)}. \n\t\t Data: `, data);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting all Application-Scope Data by user from AppGrid!', error);
+      });
+  };
+
+  const getApplicationScopeDataByUserAndKey = () => {
+    logExampleHeader('Requesting Application-Scope Data by user and key from AppGrid');
+    return AppGrid.userData.getApplicationScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
+      .then((data) => {
+        console.log(`\t\t Successfully requested Application-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting Application-Scope Data by user and key from AppGrid!', error);
+      });
+  };
+
+  const getAllApplicationGroupScopeDataByUser = () => {
+    logExampleHeader('Requesting All ApplicationGroup-Scope Data by user from AppGrid');
+    return AppGrid.userData.getAllApplicationGroupScopeDataByUser(appGridOptions, userName)
+      .then((data) => {
+        console.log(`\t\t Successfully requested all ApplicationGroup-Scope Data by user from AppGrid. Username used: ${chalk.blue(userName)}. \n\t\t Data: `, data);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting all ApplicationGroup-Scope Data by user from AppGrid!', error);
+      });
+  };
+
+  const getApplicationGroupScopeDataByUserAndKey = () => {
+    logExampleHeader('Requesting ApplicationGroup-Scope Data by user and key from AppGrid');
+    return AppGrid.userData.getApplicationGroupScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
+      .then((data) => {
+        console.log(`\t\t Successfully requested ApplicationGroup-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting ApplicationGroup-Scope Data by user and key from AppGrid!', error);
+      });
+  };
+
+  // TODO JASON: Finish updating & implementing the remaining UserData (set) examples
+
+  return getAllApplicationScopeDataByUser()
+    .then(getApplicationScopeDataByUserAndKey)
+    .then(getAllApplicationGroupScopeDataByUser)
+    .then(getApplicationGroupScopeDataByUserAndKey)
+    .then(() => logExampleCategoryHeader('End AppGrid UserData Examples'));
+};
+
 const outputLogo = () => {
   console.log();
   console.log();
@@ -430,17 +490,17 @@ const outputLogo = () => {
   console.log(chalk.bgBlack.yellow('    MMMMMMMMMMMMMMMMMMNmdyyyy++syyysssoooosssooooosyydmNMMMMMMMMMMMMMMMMMM '));
   console.log(chalk.bgBlack.yellow('    MMMMMMMMMMMMMMMMMMMMMNdyyyysyhyyyyyyyyyyhyyddddNMMMMMMMMMMMMMMMMMMMMMM '));
   console.log();
-  console.log(chalk.bgBlack.yellow('   $$$$$$\\                       $$$$$$\\            $$\\       $$\\ '));
-  console.log(chalk.bgBlack.yellow('  $$  __$$\\                     $$  __$$\\           \\__|      $$ | '));
-  console.log(chalk.bgBlack.yellow('  $$ /  $$ | $$$$$$\\   $$$$$$\\  $$ /  \\__| $$$$$$\\  $$\\  $$$$$$$ | '));
-  console.log(chalk.bgBlack.yellow('  $$$$$$$$ |$$  __$$\\ $$  __$$\\ $$ |$$$$\\ $$  __$$\\ $$ |$$  __$$ | '));
-  console.log(chalk.bgBlack.yellow('  $$  __$$ |$$ /  $$ |$$ /  $$ |$$ |\\_$$ |$$ |  \\__|$$ |$$ /  $$ | '));
-  console.log(chalk.bgBlack.yellow('  $$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |      $$ |$$ |  $$ | '));
-  console.log(chalk.bgBlack.yellow('  $$ |  $$ |$$$$$$$  |$$$$$$$  |\\$$$$$$  |$$ |      $$ |\\$$$$$$$ | '));
-  console.log(chalk.bgBlack.yellow('  \\__|  \\__|$$  ____/ $$  ____/  \\______/ \\__|      \\__| \\_______| '));
-  console.log(chalk.bgBlack.yellow('            $$ |      $$ | '));
-  console.log(chalk.bgBlack.yellow('            $$ |      $$ | '));
-  console.log(chalk.bgBlack.yellow('            \\__|      \\__| '));
+  console.log(chalk.bgBlack.yellow('       $$$$$$\\                       $$$$$$\\            $$\\       $$\\ '));
+  console.log(chalk.bgBlack.yellow('      $$  __$$\\                     $$  __$$\\           \\__|      $$ | '));
+  console.log(chalk.bgBlack.yellow('      $$ /  $$ | $$$$$$\\   $$$$$$\\  $$ /  \\__| $$$$$$\\  $$\\  $$$$$$$ | '));
+  console.log(chalk.bgBlack.yellow('      $$$$$$$$ |$$  __$$\\ $$  __$$\\ $$ |$$$$\\ $$  __$$\\ $$ |$$  __$$ | '));
+  console.log(chalk.bgBlack.yellow('      $$  __$$ |$$ /  $$ |$$ /  $$ |$$ |\\_$$ |$$ |  \\__|$$ |$$ /  $$ | '));
+  console.log(chalk.bgBlack.yellow('      $$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |      $$ |$$ |  $$ | '));
+  console.log(chalk.bgBlack.yellow('      $$ |  $$ |$$$$$$$  |$$$$$$$  |\\$$$$$$  |$$ |      $$ |\\$$$$$$$ | '));
+  console.log(chalk.bgBlack.yellow('      \\__|  \\__|$$  ____/ $$  ____/  \\______/ \\__|      \\__| \\_______| '));
+  console.log(chalk.bgBlack.yellow('                $$ |      $$ | '));
+  console.log(chalk.bgBlack.yellow('                $$ |      $$ | '));
+  console.log(chalk.bgBlack.yellow('                \\__|      \\__| '));
   console.log();
   console.log(chalk.bgBlack.yellow('********************************************************************************'));
   console.log();
@@ -450,12 +510,15 @@ const outputLogo = () => {
 const runAllExamples = () => {
   outputLogo();
   exampleAppGridSessions()
+    /* // TODO JASON: Uncomment this block!
     .then(exampleAppGridLogging)
     .then(exampleAppGridEvents)
     .then(exampleAppGridMetadata)
     .then(exampleAppGridAssets)
     .then(exampleAppGridContentEntries)
     .then(exampleAppGridPlugins)
+    */
+    .then(exampleAppGridUserData)
     .catch((error) => {
       logError('Oops! There was an unhandled error during one of the examples!', error);
     })

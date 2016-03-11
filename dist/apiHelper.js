@@ -24,7 +24,7 @@ var defaultHeaders = { accept: MIME_TYPE_JSON };
 var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(response) {
   var time = Date.now();
   return response.json().then(function (json) {
-    if (json.error) {
+    if (json.error && json.error.code !== '404') {
       throw new Error('AppGrid GET Request Error. Code: ' + json.error.code + ' Message: ' + json.error.message + '. Status: ' + json.error.status);
     }
     return { time: time, json: json };

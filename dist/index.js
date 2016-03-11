@@ -30,6 +30,10 @@ var _session = require('./session');
 
 var session = _interopRequireWildcard(_session);
 
+var _userData = require('./userData');
+
+var userData = _interopRequireWildcard(_userData);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var logUtils = {
@@ -45,7 +49,8 @@ var api = {
   logUtils: logUtils,
   metadata: metadata,
   plugins: plugins,
-  session: session
+  session: session,
+  userData: userData
 };
 
 exports.default = api;
