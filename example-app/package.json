@@ -4,7 +4,6 @@
   "description": "An example ES5 CLI app for consuming the AppGrid SDK for NodeJS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
