@@ -18,7 +18,7 @@
     "lintTest": "eslint ./test --no-ignore",
     "prepublish": "npm run compile",
     "pretest": "npm run lintTest",
-    "test": "mocha --compilers js:babel-core/register --recursive"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -37,13 +37,13 @@
     "babel-eslint": "^5.0.0",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-stage-2": "^6.5.0",
+    "chai": "^3.5.0",
     "chalk": "^1.1.1",
     "eslint": "^2.3.0",
     "eslint-config-airbnb": "^6.1.0",
     "eslint-plugin-import": "^1.0.3",
     "eslint-plugin-react": "^4.2.0",
     "estraverse-fb": "^1.3.1",
-    "expect": "^1.15.2",
     "mocha": "^2.4.5",
     "rimraf": "^2.5.2"
   },

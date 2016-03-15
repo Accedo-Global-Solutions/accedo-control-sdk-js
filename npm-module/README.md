@@ -56,6 +56,10 @@
 *******************************************************************************
 ```
 
+## $$$$$$$$$$$$ IMPORTANT!!!1! $$$$$$$$$$$$ 
+It is **critical** that we create a new Example AppGrid Profile + AppGroup and update all AppIds, assetIds, and contentEntry Ids in use in this repo.
+This **must** be done before we publicly share this source. This section should also be removed from this file once that has been done.
+
 ## Summary
 TBD
 
@@ -141,4 +145,8 @@ AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
 * [AppGrid User Guide and API Documentation](https://appgrid.cloud.accedo.tv/help)
 
 ## Unit Tests
-  * **Tests**: Add a TODO/JIRA task for implementing Unit Tests for coverage of API functions exposed by this module
+  Mocha unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
+  
+  * Follow the **Getting Started** steps above.
+  * Open a commandline to the ` ./npm-module ` directory in this repo
+  * Run ` npm test `
