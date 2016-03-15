@@ -9,7 +9,7 @@ chai.should();
 
 describe('Assets API Tests', () => {
   it('The API should exist and contain the expected functions', () => {
-    AppGrid.assets.should.be.a('object');
+    AppGrid.assets.should.be.an('object');
     AppGrid.assets.getAllAssets.should.be.a('function');
     AppGrid.assets.getAssetStreamById.should.be.a('function');
   });
