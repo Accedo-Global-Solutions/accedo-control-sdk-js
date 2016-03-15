@@ -35,25 +35,3 @@ describe('Events API Tests', () => {
     }, rententionTimeInSeconds * 1000);
   });
 });
-
-
-/*
-const sendUsageStopEvent = () => {
-  return new Promise((resolve) => {
-    logExampleHeader('Sending a UsageStop Event to AppGrid');
-    const rententionTimeInSeconds = 6;
-    console.log(`\t\t Waiting ${rententionTimeInSeconds} second(s) before sending the UsageStop Event.`);
-    setTimeout(() => {
-      AppGrid.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions)
-        .then(() => {
-          console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
-          resolve();
-        })
-        .catch(() => {
-          logError('Oops! There was an error while sending a UsageStop Event to AppGrid!');
-          resolve();
-        });
-    }, rententionTimeInSeconds * 1000);
-  });
-};
-*/
