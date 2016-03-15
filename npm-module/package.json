@@ -11,16 +11,18 @@
     "compileModule": "babel -d dist/ src/",
     "precompileExample": "npm run lintExample",
     "compileExample": "babel example-es6.js -o example.js",
-    "prerunExample": "npm run compile",
+    "prerunExample": "npm run compile && npm run test",
     "runExample": "node example",
     "lint": "eslint . --ext .js",
     "lintExample": "eslint ./example-es6.js --no-ignore",
+    "lintTest": "eslint ./test --no-ignore",
     "prepublish": "npm run compile",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "npm run lintTest",
+    "test": "mocha --compilers js:babel-core/register --recursive"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://jasondt@bitbucket.org/accedo/appgrid-sdk-web.git"
+    "url": "git@bitbucket.org/accedo/appgrid-sdk-web.git"
   },
   "keywords": [
     "appgrid",
@@ -41,6 +43,8 @@
     "eslint-plugin-import": "^1.0.3",
     "eslint-plugin-react": "^4.2.0",
     "estraverse-fb": "^1.3.1",
+    "expect": "^1.15.2",
+    "mocha": "^2.4.5",
     "rimraf": "^2.5.2"
   },
   "dependencies": {

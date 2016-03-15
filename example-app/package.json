@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/accedo/appgrid-sdk-web.git"
+    "url": "git@bitbucket.org/accedo/appgrid-sdk-web.git"
   },
   "keywords": [
     "appgrid",
