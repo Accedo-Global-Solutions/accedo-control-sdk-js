@@ -48,7 +48,7 @@ var validateSession = function validateSession(options) {
 };
 
 var generateUuid = function generateUuid() {
-  return _uuid2.default.v1();
+  return _uuid2.default.v4();
 };
 
 exports.generateUuid = generateUuid;

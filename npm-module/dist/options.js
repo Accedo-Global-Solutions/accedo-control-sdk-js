@@ -5,24 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getValidatedOptions = undefined;
 
-var _uuid2 = require('uuid');
-
-var _uuid3 = _interopRequireDefault(_uuid2);
-
 var _sessionHelper = require('./sessionHelper');
 
 var sessionHelper = _interopRequireWildcard(_sessionHelper);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var requiredOptions = ['appGridUrl', 'appId'];
 
 var optionalOptionDefaults = {
   logLevel: 'info',
   uuid: function uuid() {
-    return _uuid3.default.v1();
+    return sessionHelper.generateUuid();
   }
 };
 

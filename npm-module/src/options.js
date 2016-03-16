@@ -1,5 +1,3 @@
-import uuid from 'uuid';
-
 import * as sessionHelper from './sessionHelper';
 
 const requiredOptions = [
@@ -9,7 +7,7 @@ const requiredOptions = [
 
 const optionalOptionDefaults = {
   logLevel: 'info',
-  uuid: () => uuid.v1()
+  uuid: () => sessionHelper.generateUuid()
 };
 
 const validateRequiredOption = (options, option) => {
