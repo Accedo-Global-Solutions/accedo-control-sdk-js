@@ -29,7 +29,7 @@ describe('ContentEntries API Tests', () => {
       });
   });
 
-  it('"getEntryById" should should return a valid stream for a valid assetId', (done) => {
+  it('"getEntryById" should should return an entry', (done) => {
     const idToFetch = '56c1de17e4b0b8a18ac01632'; // TODO: Update this contentEntryId to one from the TBD AppGrid Example Profile
     const isPreview = false;
     const atUtcTime = new Date();
@@ -41,7 +41,7 @@ describe('ContentEntries API Tests', () => {
       });
   });
 
-  it('"getEntriesByIds" should should return a valid stream for a valid assetId', (done) => {
+  it('"getEntriesByIds" should should return multiple entries', (done) => {
     const idsToFetch = [ // TODO: Update these contentEntryIds to ones from the TBD AppGrid Example Profile
       '56c1de17e4b0b8a18ac01632',
       '55b8ec42e4b0161a1b30c041'
@@ -55,7 +55,7 @@ describe('ContentEntries API Tests', () => {
       });
   });
 
-  it('"getEntriesByIds" should should return a valid stream for a valid assetId', (done) => {
+  it('"getEntriesByTypeId" should should return multiple entries', (done) => {
     const typeIdToFetch = '55d6fb35e4b09adc64cd6ad2'; // TODO: Update this contentEntryTypeId to one from the TBD AppGrid Example Profile
     const isPreview = false;
     const atUtcTime = new Date();
