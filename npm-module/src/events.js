@@ -12,7 +12,7 @@ export const sendUsageStartEvent = (options) => {
   });
 };
 
-export const sendUsageStopEvent = (retentionTimeInSeconds, options) => {
+export const sendUsageStopEvent = (options, retentionTimeInSeconds) => {
   return getValidatedOptions(options).then((validatedOptions) => {
     const requestUrl = `${validatedOptions.appGridUrl}/event/log`;
     const body = {

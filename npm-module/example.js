@@ -98,7 +98,7 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
   var sendInfoLogMessage = function sendInfoLogMessage() {
     logExampleHeader('Sending an info log message to AppGrid');
     var exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
-    return _index2.default.logger.info(exampleInfoEventOptions, appGridOptions).then(function () {
+    return _index2.default.logger.info(appGridOptions, exampleInfoEventOptions).then(function () {
       console.log('\t\t Successfully sent an info log to AppGrid');
     }).catch(function (error) {
       logError('Oops! There was an error while sending an info log to AppGrid!', error);
@@ -109,7 +109,7 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
     logExampleHeader('Sending an info log message with Metadata to AppGrid');
     var exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
     var exampleInfoMetadata = { someMetadataKey: 'someValue' };
-    return _index2.default.logger.info(exampleInfoEventOptionsWithMetadata, appGridOptions, exampleInfoMetadata).then(function () {
+    return _index2.default.logger.info(appGridOptions, exampleInfoEventOptionsWithMetadata, exampleInfoMetadata).then(function () {
       console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
     }).catch(function (error) {
       logError('Oops! There was an error while sending an info log with Metadata to AppGrid!', error);
@@ -139,7 +139,7 @@ var exampleAppGridEvents = function exampleAppGridEvents() {
       var rententionTimeInSeconds = 6;
       console.log('\t\t Waiting ' + rententionTimeInSeconds + ' second(s) before sending the UsageStop Event.');
       setTimeout(function () {
-        _index2.default.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions).then(function () {
+        _index2.default.events.sendUsageStopEvent(appGridOptions, rententionTimeInSeconds).then(function () {
           console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
           resolve();
         }).catch(function () {

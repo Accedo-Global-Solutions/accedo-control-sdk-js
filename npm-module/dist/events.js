@@ -20,7 +20,7 @@ var sendUsageStartEvent = exports.sendUsageStartEvent = function sendUsageStartE
   });
 };
 
-var sendUsageStopEvent = exports.sendUsageStopEvent = function sendUsageStopEvent(retentionTimeInSeconds, options) {
+var sendUsageStopEvent = exports.sendUsageStopEvent = function sendUsageStopEvent(options, retentionTimeInSeconds) {
   return (0, _options.getValidatedOptions)(options).then(function (validatedOptions) {
     var requestUrl = validatedOptions.appGridUrl + '/event/log';
     var body = {

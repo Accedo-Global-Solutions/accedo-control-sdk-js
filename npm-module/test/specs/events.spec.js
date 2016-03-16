@@ -27,7 +27,7 @@ describe('Events API Tests', () => {
   it('"sendUsageStopEvent" should successfully send a usage stop event to AppGrid after 3 seconds', (done) => {
     const rententionTimeInSeconds = 3;
     setTimeout(() => {
-      AppGrid.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions)
+      AppGrid.events.sendUsageStopEvent(appGridOptions, rententionTimeInSeconds)
         .then(({ status }) => {
           status.should.equal(okStatus);
           done();

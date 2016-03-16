@@ -83,7 +83,7 @@ var getLogLevel = function getLogLevel(options) {
   });
 };
 
-var sendEvent = function sendEvent(level, event, options) {
+var sendEvent = function sendEvent(options, level, event) {
   var requestUrl = options.appGridUrl + '/application/log/' + level;
   options.debugLogger('AppGrid: sendEvent request: ' + requestUrl);
   return (0, _apiHelper.post)(requestUrl, options, event);
@@ -94,7 +94,7 @@ var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
     if (current === 'off') {
       return accumulator;
     } // We don't want a function for 'off'
-    accumulator[current] = function (logEventOptions, options) {
+    accumulator[current] = function (options, logEventOptions) {
       for (var _len = arguments.length, metadata = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
         metadata[_key - 2] = arguments[_key];
       }
@@ -105,8 +105,8 @@ var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
           return;
         }
         var logEvent = getLogEvent(logEventOptions, metadata);
-        options.debugLogger('Sending AppGrid log message:', logEvent);
-        return sendEvent(current, logEvent, validatedOptions);
+        validatedOptions.debugLogger('Sending AppGrid log message:', logEvent);
+        return sendEvent(validatedOptions, current, logEvent);
       });
     };
     return accumulator;

@@ -84,7 +84,7 @@ const exampleAppGridLogging = () => {
   const sendInfoLogMessage = () => {
     logExampleHeader('Sending an info log message to AppGrid');
     const exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
-    return AppGrid.logger.info(exampleInfoEventOptions, appGridOptions)
+    return AppGrid.logger.info(appGridOptions, exampleInfoEventOptions)
       .then(() => {
         console.log('\t\t Successfully sent an info log to AppGrid');
       })
@@ -97,7 +97,7 @@ const exampleAppGridLogging = () => {
     logExampleHeader('Sending an info log message with Metadata to AppGrid');
     const exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
     const exampleInfoMetadata = { someMetadataKey: 'someValue' };
-    return AppGrid.logger.info(exampleInfoEventOptionsWithMetadata, appGridOptions, exampleInfoMetadata)
+    return AppGrid.logger.info(appGridOptions, exampleInfoEventOptionsWithMetadata, exampleInfoMetadata)
       .then(() => {
         console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
       })
@@ -132,7 +132,7 @@ const exampleAppGridEvents = () => {
       const rententionTimeInSeconds = 6;
       console.log(`\t\t Waiting ${rententionTimeInSeconds} second(s) before sending the UsageStop Event.`);
       setTimeout(() => {
-        AppGrid.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions)
+        AppGrid.events.sendUsageStopEvent(appGridOptions, rententionTimeInSeconds)
           .then(() => {
             console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
             resolve();
