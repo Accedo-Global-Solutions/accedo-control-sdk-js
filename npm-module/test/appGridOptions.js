@@ -12,7 +12,7 @@ const testUuid = AppGrid.session.generateUuid();
 
 const appGridOptions = {
   appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
-  appId: '560e505de4b0150cbb576df5', // TODO: CRITICAL: MAKE SURE TO UPDATE THIS TO THE PROPER EXAMPLE APPID!!!!!!!1! (Currently this is the VIA-Go dev AppId)
+  appId: '56ea6a370db1bf032c9df5cb',
   uuid: testUuid
   // debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
 };

@@ -23,7 +23,7 @@ describe('Assets API Tests', () => {
   });
 
   it('"getAssetStreamById" should should return a valid stream for a valid assetId', (done) => {
-    const idToDownload = '5566b04e95a0d55dee44bb0001a5109c7b9be597f66ddfd5'; // TODO: Update this assetId to one from the TBD AppGrid Example Profile
+    const idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b';
     AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
       .then((assetStream) => {
         assetStream.should.be.ok;

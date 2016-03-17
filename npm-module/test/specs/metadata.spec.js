@@ -24,7 +24,7 @@ describe('Metadata API Tests', () => {
   });
 
   it('"getMetadataByKey" should return a valid metadata item', (done) => {
-    const keyToFetch = 'translations'; // TODO: Update the key used here so that it works once we switch to an example AppGrid profile
+    const keyToFetch = 'android';
     AppGrid.metadata.getMetadataByKey(appGridOptions, keyToFetch)
       .then(({ json: metadata }) => {
         metadata.should.be.ok;
@@ -34,8 +34,8 @@ describe('Metadata API Tests', () => {
   });
 
   it('"getMetadataByKeys" should return valid metadata items', (done) => {
-    const keysToFetch = [ // TODO: Update the keys used here so that it works once we switch to an example AppGrid profile
-      'translations',
+    const keysToFetch = [
+      'android',
       'colorScheme'
     ];
     AppGrid.metadata.getMetadataByKeys(appGridOptions, keysToFetch)

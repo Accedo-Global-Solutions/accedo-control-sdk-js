@@ -20,7 +20,7 @@ const downloadsDirectoryName = 'downloads';
 const appGridOptions = {
   // NOTE: The following properties are required
   appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
-  appId: '560e505de4b0150cbb576df5', // TODO: CRITICAL: MAKE SURE TO UPDATE THIS TO THE PROPER EXAMPLE APPID!!!!!!!1! (Currently this is the VIA-Go dev AppId)
+  appId: '56ea6a370db1bf032c9df5cb',
 
   // NOTE: The following properties are optional
   logLevel: 'info', // This will default to: 'info' if not provided
@@ -150,7 +150,7 @@ const exampleAppGridEvents = () => {
     .then(() => logExampleCategoryHeader('End AppGrid Event Examples'));
 };
 
-const exampleAppGridMetadata = () => { // TODO: Update the keys used for these examples so that they work once we switch to an example AppGrid profile
+const exampleAppGridMetadata = () => {
   logExampleCategoryHeader('AppGrid Metadata Examples:');
 
   const getAllMetadata = () => {
@@ -166,7 +166,7 @@ const exampleAppGridMetadata = () => { // TODO: Update the keys used for these e
 
   const getMetadataByKey = () => {
     logExampleHeader('Requesting metadata by key from AppGrid');
-    const keyToFetch = 'translations'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
+    const keyToFetch = 'android'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
     return AppGrid.metadata.getMetadataByKey(appGridOptions, keyToFetch)
       .then((metadata) => {
         console.log(`\t\t Successfully requested metadata by key from AppGrid. Key used: ${chalk.blue(keyToFetch)}. \n\t\t Metadata: `, metadata);
@@ -179,7 +179,7 @@ const exampleAppGridMetadata = () => { // TODO: Update the keys used for these e
   const getMetadataByKeys = () => {
     logExampleHeader('Requesting metadata by multiple keys from AppGrid');
     const keysToFetch = [
-      'translations',
+      'android',
       'color*'
     ];
     return AppGrid.metadata.getMetadataByKeys(appGridOptions, keysToFetch)
@@ -213,8 +213,8 @@ const exampleAppGridAssets = () => {
 
   const getAssetStreamById = () => {
     logExampleHeader('Downloading asset by id from AppGrid');
-    const idToDownload = '5566b04e95a0d55dee44bb0001a5109c7b9be597f66ddfd5'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
-    const fileName = `${downloadsDirectoryName}/favicon.png`;
+    const idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
+    const fileName = `${downloadsDirectoryName}/appLogoLarge.png`;
     return AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
       .then((assetStream) => {
         return new Promise((resolve, reject) => {
@@ -237,7 +237,7 @@ const exampleAppGridAssets = () => {
     .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
 };
 
-const exampleAppGridContentEntries = () => { // TODO: Update the ids used for these examples so that they work once we switch to an example AppGrid profile
+const exampleAppGridContentEntries = () => {
   logExampleCategoryHeader('AppGrid ContentEntries Examples:');
 
   const getAllEntries = () => {
@@ -257,7 +257,7 @@ const exampleAppGridContentEntries = () => { // TODO: Update the ids used for th
 
   const getEntryById = () => {
     logExampleHeader('Requesting a ContentEntry by id from AppGrid');
-    const idToFetch = '56c1de17e4b0b8a18ac01632';
+    const idToFetch = '56ea7bd6935f75032a2fd431';
     const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
     const atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
     return AppGrid.contentEntries.getEntryById(appGridOptions, idToFetch, isPreview, atUtcTime)
@@ -272,8 +272,8 @@ const exampleAppGridContentEntries = () => { // TODO: Update the ids used for th
   const getEntriesByIds = () => {
     logExampleHeader('Requesting ContentEntries by multiple ids from AppGrid');
     const idsToFetch = [
-      '56c1de17e4b0b8a18ac01632',
-      '55b8ec42e4b0161a1b30c041'
+      '56ea7bd6935f75032a2fd431',
+      '56ea7c55935f75032a2fd437'
     ];
     const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
     const countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
@@ -292,7 +292,7 @@ const exampleAppGridContentEntries = () => { // TODO: Update the ids used for th
 
   const getEntriesByTypeId = () => {
     logExampleHeader('Requesting ContentEntries by typeId from AppGrid');
-    const typeIdToFetch = '55d6fb35e4b09adc64cd6ad2';
+    const typeIdToFetch = '56ea7bca935f75032a2fd42c';
     const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
     const countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
     const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
