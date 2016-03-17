@@ -34,6 +34,6 @@ const validateSession = (options) => {
     .catch(() => false);
 };
 
-const generateUuid = () => uuid.v1();
+const generateUuid = () => uuid.v4();
 
 export { generateUuid, getSession, getStatus, validateSession, updateSessionUuid };

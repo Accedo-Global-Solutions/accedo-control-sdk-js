@@ -35,7 +35,7 @@ var downloadsDirectoryName = 'downloads';
 var appGridOptions = {
   // NOTE: The following properties are required
   appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
-  appId: '560e505de4b0150cbb576df5', // TODO: CRITICAL: MAKE SURE TO UPDATE THIS TO THE PROPER EXAMPLE APPID!!!!!!!1! (Currently this is the VIA-Go dev AppId)
+  appId: '56ea6a370db1bf032c9df5cb',
 
   // NOTE: The following properties are optional
   logLevel: 'info', // This will default to: 'info' if not provided
@@ -98,7 +98,7 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
   var sendInfoLogMessage = function sendInfoLogMessage() {
     logExampleHeader('Sending an info log message to AppGrid');
     var exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
-    return _index2.default.logger.info(exampleInfoEventOptions, appGridOptions).then(function () {
+    return _index2.default.logger.info(appGridOptions, exampleInfoEventOptions).then(function () {
       console.log('\t\t Successfully sent an info log to AppGrid');
     }).catch(function (error) {
       logError('Oops! There was an error while sending an info log to AppGrid!', error);
@@ -109,7 +109,7 @@ var exampleAppGridLogging = function exampleAppGridLogging() {
     logExampleHeader('Sending an info log message with Metadata to AppGrid');
     var exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
     var exampleInfoMetadata = { someMetadataKey: 'someValue' };
-    return _index2.default.logger.info(exampleInfoEventOptionsWithMetadata, appGridOptions, exampleInfoMetadata).then(function () {
+    return _index2.default.logger.info(appGridOptions, exampleInfoEventOptionsWithMetadata, exampleInfoMetadata).then(function () {
       console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
     }).catch(function (error) {
       logError('Oops! There was an error while sending an info log with Metadata to AppGrid!', error);
@@ -139,7 +139,7 @@ var exampleAppGridEvents = function exampleAppGridEvents() {
       var rententionTimeInSeconds = 6;
       console.log('\t\t Waiting ' + rententionTimeInSeconds + ' second(s) before sending the UsageStop Event.');
       setTimeout(function () {
-        _index2.default.events.sendUsageStopEvent(rententionTimeInSeconds, appGridOptions).then(function () {
+        _index2.default.events.sendUsageStopEvent(appGridOptions, rententionTimeInSeconds).then(function () {
           console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
           resolve();
         }).catch(function () {
@@ -156,7 +156,6 @@ var exampleAppGridEvents = function exampleAppGridEvents() {
 };
 
 var exampleAppGridMetadata = function exampleAppGridMetadata() {
-  // TODO: Update the keys used for these examples so that they work once we switch to an example AppGrid profile
   logExampleCategoryHeader('AppGrid Metadata Examples:');
 
   var getAllMetadata = function getAllMetadata() {
@@ -170,7 +169,7 @@ var exampleAppGridMetadata = function exampleAppGridMetadata() {
 
   var getMetadataByKey = function getMetadataByKey() {
     logExampleHeader('Requesting metadata by key from AppGrid');
-    var keyToFetch = 'translations'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
+    var keyToFetch = 'android'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
     return _index2.default.metadata.getMetadataByKey(appGridOptions, keyToFetch).then(function (metadata) {
       console.log('\t\t Successfully requested metadata by key from AppGrid. Key used: ' + _chalk2.default.blue(keyToFetch) + '. \n\t\t Metadata: ', metadata);
     }).catch(function (error) {
@@ -180,7 +179,7 @@ var exampleAppGridMetadata = function exampleAppGridMetadata() {
 
   var getMetadataByKeys = function getMetadataByKeys() {
     logExampleHeader('Requesting metadata by multiple keys from AppGrid');
-    var keysToFetch = ['translations', 'color*'];
+    var keysToFetch = ['android', 'color*'];
     return _index2.default.metadata.getMetadataByKeys(appGridOptions, keysToFetch).then(function (metadata) {
       console.log('\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ' + _chalk2.default.blue(keysToFetch.join(', ')) + ' \n\t\t Metadata: ', metadata);
     }).catch(function (error) {
@@ -207,8 +206,8 @@ var exampleAppGridAssets = function exampleAppGridAssets() {
 
   var getAssetStreamById = function getAssetStreamById() {
     logExampleHeader('Downloading asset by id from AppGrid');
-    var idToDownload = '5566b04e95a0d55dee44bb0001a5109c7b9be597f66ddfd5'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
-    var fileName = downloadsDirectoryName + '/favicon.png';
+    var idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
+    var fileName = downloadsDirectoryName + '/appLogoLarge.png';
     return _index2.default.assets.getAssetStreamById(idToDownload, appGridOptions).then(function (assetStream) {
       return new Promise(function (resolve, reject) {
         (0, _fs.existsSync)(downloadsDirectoryName) || (0, _fs.mkdirSync)(downloadsDirectoryName);
@@ -227,7 +226,6 @@ var exampleAppGridAssets = function exampleAppGridAssets() {
 };
 
 var exampleAppGridContentEntries = function exampleAppGridContentEntries() {
-  // TODO: Update the ids used for these examples so that they work once we switch to an example AppGrid profile
   logExampleCategoryHeader('AppGrid ContentEntries Examples:');
 
   var getAllEntries = function getAllEntries() {
@@ -248,7 +246,7 @@ var exampleAppGridContentEntries = function exampleAppGridContentEntries() {
 
   var getEntryById = function getEntryById() {
     logExampleHeader('Requesting a ContentEntry by id from AppGrid');
-    var idToFetch = '56c1de17e4b0b8a18ac01632';
+    var idToFetch = '56ea7bd6935f75032a2fd431';
     var isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
     var atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
     return _index2.default.contentEntries.getEntryById(appGridOptions, idToFetch, isPreview, atUtcTime).then(function (entry) {
@@ -260,7 +258,7 @@ var exampleAppGridContentEntries = function exampleAppGridContentEntries() {
 
   var getEntriesByIds = function getEntriesByIds() {
     logExampleHeader('Requesting ContentEntries by multiple ids from AppGrid');
-    var idsToFetch = ['56c1de17e4b0b8a18ac01632', '55b8ec42e4b0161a1b30c041'];
+    var idsToFetch = ['56ea7bd6935f75032a2fd431', '56ea7c55935f75032a2fd437'];
     var offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
     var countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
     var isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
@@ -279,7 +277,7 @@ var exampleAppGridContentEntries = function exampleAppGridContentEntries() {
 
   var getEntriesByTypeId = function getEntriesByTypeId() {
     logExampleHeader('Requesting ContentEntries by typeId from AppGrid');
-    var typeIdToFetch = '55d6fb35e4b09adc64cd6ad2';
+    var typeIdToFetch = '56ea7bca935f75032a2fd42c';
     var offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
     var countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
     var isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false

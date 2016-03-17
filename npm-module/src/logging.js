@@ -69,7 +69,7 @@ const getLogLevel = (options) => {
     });
 };
 
-const sendEvent = (level, event, options) => {
+const sendEvent = (options, level, event) => {
   const requestUrl = `${options.appGridUrl}/application/log/${level}`;
   options.debugLogger(`AppGrid: sendEvent request: ${requestUrl}`);
   return post(requestUrl, options, event);
@@ -78,14 +78,14 @@ const sendEvent = (level, event, options) => {
 const mapLogLevelNamesToFunctions = () => {
   return Object.keys(logLevelNamesToNumbers).reduce((accumulator, current) => {
     if (current === 'off') { return accumulator; } // We don't want a function for 'off'
-    accumulator[current] = (logEventOptions, options, ...metadata) => {
+    accumulator[current] = (options, logEventOptions, ...metadata) => {
       return getValidatedOptions(options)
         .then((validatedOptions) => {
           const currentLogLevel = logLevelNamesToNumbers[validatedOptions.logLevel];
           if (currentLogLevel > logLevelNamesToNumbers[current]) { return; }
           const logEvent = getLogEvent(logEventOptions, metadata);
-          options.debugLogger('Sending AppGrid log message:', logEvent);
-          return sendEvent(current, logEvent, validatedOptions);
+          validatedOptions.debugLogger('Sending AppGrid log message:', logEvent);
+          return sendEvent(validatedOptions, current, logEvent);
         });
     };
     return accumulator;
