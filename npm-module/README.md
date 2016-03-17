@@ -56,12 +56,8 @@
 *******************************************************************************
 ```
 
-## $$$$$$$$$$$$ IMPORTANT!!!1! $$$$$$$$$$$$ 
-It is **critical** that we create a new Example AppGrid Profile + AppGroup and update all AppIds, assetIds, and contentEntry Ids in use in this repo.
-This **must** be done before we publicly share this source. This section should also be removed from this file once that has been done.
-
 ## Summary
-TBD
+This is the official Accedo AppGrid SDK for NodeJS (Serverside Web). While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with NodeJS; it also encourages the use of Best-Practices (for example: reusing the same SessionId as much as possible). 
 
 ## Getting started
 
@@ -145,7 +141,7 @@ AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
 * [AppGrid User Guide and API Documentation](https://appgrid.cloud.accedo.tv/help)
 
 ## Unit Tests
-  Mocha unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
+  Mocha (with Chai) unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
   
   * Follow the **Getting Started** steps above.
   * Open a commandline to the ` ./npm-module ` directory in this repo

@@ -56,8 +56,8 @@
 *******************************************************************************
 ```
 
-
-**Readme TBD**
+## Summary: 
+See the `README.md` files for each sub-project for more details.
 
 **This repository contains two sub-projects:**
   
