@@ -1,12 +1,8 @@
-// TODO JASON: Enable linting
-// TODO JASON: Finish converting this file to ES5
-// TODO JASON: Run npm shrinkwrap once done
-
 /* eslint-disable no-console, no-unused-expressions */
 
 'use strict';
 
-var AppGrid = require('appgrid');
+var AppGrid = require('appgrid').default;
 var chalk = require('chalk');
 var fs = require('fs');
 var Promise = require('es6-promise').Promise;
@@ -22,6 +18,7 @@ function logError (message, metadata) {
 }
 
 var exampleUuid = AppGrid.session.generateUuid();
+
 var downloadsDirectoryName = 'downloads';
 
 var appGridOptions = {
@@ -129,7 +126,7 @@ var exampleAppGridEvents = function () {
   var sendUsageStartEvent = function () {
     logExampleHeader('Sending a UsageStart Event to AppGrid');
     return AppGrid.events.sendUsageStartEvent(appGridOptions)
-      .then(function () => {
+      .then(function () {
         console.log('\t\t Successfully sent a UsageStart Event to AppGrid');
       })
       .catch(function (error) {
@@ -138,17 +135,17 @@ var exampleAppGridEvents = function () {
   };
 
   var sendUsageStopEvent = function () {
-    return new Promise((resolve) => {
+    return new Promise(function (resolve) {
       logExampleHeader('Sending a UsageStop Event to AppGrid');
       var rententionTimeInSeconds = 6;
-      console.log(`\t\t Waiting ${rententionTimeInSeconds} second(s) before sending the UsageStop Event.`);
-      setTimeout(() => {
+      console.log('\t\t Waiting ' + rententionTimeInSeconds + ' second(s) before sending the UsageStop Event.');
+      setTimeout(function () {
         AppGrid.events.sendUsageStopEvent(appGridOptions, rententionTimeInSeconds)
-          .then(() => {
+          .then(function () {
             console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
             resolve();
           })
-          .catch(() => {
+          .catch(function () {
             logError('Oops! There was an error while sending a UsageStop Event to AppGrid!');
             resolve();
           });
@@ -156,131 +153,144 @@ var exampleAppGridEvents = function () {
     });
   };
 
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid Event Examples');
+  };
+
   return sendUsageStartEvent()
     .then(sendUsageStopEvent)
-    .then(() => logExampleCategoryHeader('End AppGrid Event Examples'));
+    .then(logEndHeader);
 };
 
-var exampleAppGridMetadata = () => {
+var exampleAppGridMetadata = function () {
   logExampleCategoryHeader('AppGrid Metadata Examples:');
 
-  var getAllMetadata = () => {
+  var getAllMetadata = function () {
     logExampleHeader('Requesting all metadata from AppGrid');
     return AppGrid.metadata.getAllMetadata(appGridOptions)
-      .then((metadata) => {
+      .then(function (metadata) {
         console.log('\t\t Successfully requested all metadata from AppGrid', metadata);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting all metadata from AppGrid!', error);
       });
   };
 
-  var getMetadataByKey = () => {
+  var getMetadataByKey = function () {
     logExampleHeader('Requesting metadata by key from AppGrid');
     var keyToFetch = 'android'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
     return AppGrid.metadata.getMetadataByKey(appGridOptions, keyToFetch)
-      .then((metadata) => {
-        console.log(`\t\t Successfully requested metadata by key from AppGrid. Key used: ${chalk.blue(keyToFetch)}. \n\t\t Metadata: `, metadata);
+      .then(function (metadata) {
+        console.log('\t\t Successfully requested metadata by key from AppGrid. Key used: ' + chalk.blue(keyToFetch) + '. \n\t\t Metadata: ', metadata);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting metadata by key from AppGrid!', error);
       });
   };
 
-  var getMetadataByKeys = () => {
+  var getMetadataByKeys = function () {
     logExampleHeader('Requesting metadata by multiple keys from AppGrid');
     var keysToFetch = [
       'android',
       'color*'
     ];
     return AppGrid.metadata.getMetadataByKeys(appGridOptions, keysToFetch)
-      .then((metadata) => {
-        console.log(`\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ${chalk.blue(keysToFetch.join(', '))} \n\t\t Metadata: `, metadata);
+      .then(function (metadata) {
+        console.log('\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ' + chalk.blue(keysToFetch.join(', ')) + ' \n\t\t Metadata: ', metadata);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting metadata by multiple keys from AppGrid!', error);
       });
+  };
+
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid Metadata Examples');
   };
 
   return getAllMetadata()
     .then(getMetadataByKey)
     .then(getMetadataByKeys)
-    .then(() => logExampleCategoryHeader('End AppGrid Metadata Examples'));
+    .then(logEndHeader);
 };
 
-var exampleAppGridAssets = () => {
+var exampleAppGridAssets = function () {
   logExampleCategoryHeader('AppGrid Asset Examples:');
 
-  var getAllAssets = () => {
+  var getAllAssets = function () {
     logExampleHeader('Requesting all assets from AppGrid');
     return AppGrid.assets.getAllAssets(appGridOptions)
-      .then((assets) => {
+      .then(function (assets) {
         console.log('\t\t Successfully requested all assets from AppGrid', assets);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting all assets from AppGrid!', error);
       });
   };
 
-  var getAssetStreamById = () => {
+  var getAssetStreamById = function () {
     logExampleHeader('Downloading asset by id from AppGrid');
     var idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
-    var fileName = `${downloadsDirectoryName}/appLogoLarge.png`;
+    var fileName = downloadsDirectoryName + '/appLogoLarge.png';
     return AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
-      .then((assetStream) => {
-        return new Promise((resolve, reject) => {
-          existsSync(downloadsDirectoryName) || mkdirSync(downloadsDirectoryName);
-          assetStream.pipe(createWriteStream(fileName))
+      .then(function (assetStream) {
+        return new Promise(function (resolve, reject) {
+          fs.existsSync(downloadsDirectoryName) || fs.mkdirSync(downloadsDirectoryName);
+          assetStream.pipe(fs.createWriteStream(fileName))
             .on('close', resolve)
             .on('error', reject);
         });
       })
-      .then(() => {
-        console.log(`\t\t Successfully downloaded an asset by id from AppGrid.\n\t\t AssetId used: ${chalk.blue(idToDownload)}.\n\t\t Filename: ${chalk.blue(fileName)}`);
+      .then(function () {
+        console.log('\t\t Successfully downloaded an asset by id from AppGrid.\n\t\t AssetId used: ' + chalk.blue(idToDownload) + '.\n\t\t Filename: ' + chalk.blue(fileName));
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while downloading an asset by id from AppGrid!', error);
       });
   };
 
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid Asset Examples');
+  };
+
   return getAllAssets()
     .then(getAssetStreamById)
-    .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
+    .then(logEndHeader);
 };
 
-var exampleAppGridContentEntries = () => {
+var exampleAppGridContentEntries = function () {
   logExampleCategoryHeader('AppGrid ContentEntries Examples:');
 
-  var getAllEntries = () => {
+  var getAllEntries = function () {
     logExampleHeader('Requesting all ContentEntries from AppGrid');
     var offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
     var countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
     return AppGrid.contentEntries.getAllEntries(appGridOptions, offset, countOfResults)
-      .then((response) => {
-        var { json: { entries, pagination } } = response;
+      .then(function (response) {
+        var entries = response.json.entries;
+        var pagination = response.json.pagination;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
-        console.log(`\t\t Successfully requested all ContentEntries from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
+        console.log('\t\t Successfully requested all ContentEntries from AppGrid\n\t\t Count of entries received: ' + chalk.blue(entries.length) + ' out of ' + chalk.blue(pagination.total) + ' total entries.');
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting all ContentEntries from AppGrid!', error);
       });
   };
 
-  var getEntryById = () => {
+  var getEntryById = function () {
     logExampleHeader('Requesting a ContentEntry by id from AppGrid');
     var idToFetch = '56ea7bd6935f75032a2fd431';
     var isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
     var atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
     return AppGrid.contentEntries.getEntryById(appGridOptions, idToFetch, isPreview, atUtcTime)
-      .then((entry) => {
-        console.log(`\t\t Successfully requested a ContentEntry by id from AppGrid. Id used: ${chalk.blue(idToFetch)}. \n\t\t ContentEntry: `, entry);
+      .then(function (entry) {
+        console.log('\t\t Successfully requested a ContentEntry by id from AppGrid. Id used: ' + chalk.blue(idToFetch) + '. \n\t\t ContentEntry: ', entry);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting a ContentEntry by id from AppGrid!', error);
       });
   };
 
-  var getEntriesByIds = () => {
+  var getEntriesByIds = function () {
     logExampleHeader('Requesting ContentEntries by multiple ids from AppGrid');
     var idsToFetch = [
       '56ea7bd6935f75032a2fd431',
@@ -291,17 +301,18 @@ var exampleAppGridContentEntries = () => {
     var isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
     var atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
     return AppGrid.contentEntries.getEntriesByIds(appGridOptions, idsToFetch, offset, countOfResults, isPreview, atUtcTime)
-      .then((response) => {
-        var { json: { entries, pagination } } = response;
+      .then(function (response) {
+        var entries = response.json.entries;
+        var pagination = response.json.pagination;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
-        console.log(`\t\t Successfully requested multiple ContentEntries by ids from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
+        console.log('\t\t Successfully requested multiple ContentEntries by ids from AppGrid\n\t\t Count of entries received: ' + chalk.blue(entries.length) + ' out of ' + chalk.blue(pagination.total) + ' total entries.');
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting ContentEntries by multiple ids from AppGrid!', error);
       });
   };
 
-  var getEntriesByTypeId = () => {
+  var getEntriesByTypeId = function () {
     logExampleHeader('Requesting ContentEntries by typeId from AppGrid');
     var typeIdToFetch = '56ea7bca935f75032a2fd42c';
     var offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
@@ -309,97 +320,104 @@ var exampleAppGridContentEntries = () => {
     var isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
     var atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
     return AppGrid.contentEntries.getEntriesByTypeId(appGridOptions, typeIdToFetch, offset, countOfResults, isPreview, atUtcTime)
-      .then((response) => {
-        var { json: { entries, pagination } } = response;
+      .then(function (response) {
+        var entries = response.json.entries;
+        var pagination = response.json.pagination;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
-        console.log(`\t\t Successfully requested ContentEntries by typeId from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
+        console.log('\t\t Successfully requested ContentEntries by typeId from AppGrid\n\t\t Count of entries received: ' + chalk.blue(entries.length) + ' out of ' + chalk.blue(pagination.total) + ' total entries.');
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting ContentEntries by typeId from AppGrid!', error);
       });
+  };
+
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid ContentEntries Examples');
   };
 
   return getAllEntries()
     .then(getEntryById)
     .then(getEntriesByIds)
     .then(getEntriesByTypeId)
-    .then(() => logExampleCategoryHeader('End AppGrid ContentEntries Examples'));
+    .then(logEndHeader);
 };
 
-var exampleAppGridPlugins = () => {
+var exampleAppGridPlugins = function () {
   logExampleCategoryHeader('AppGrid Plugins Examples:');
 
-  var getAllEnabledPlugins = () => {
+  var getAllEnabledPlugins = function () {
     logExampleHeader('Requesting all enabled plugins from AppGrid');
     return AppGrid.plugins.getAllEnabledPlugins(appGridOptions)
-      .then((plugins) => {
+      .then(function (plugins) {
         console.log('\t\t Successfully requested all enabled plugins from AppGrid', plugins);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting all enabled plugins from AppGrid!', error);
       });
   };
 
   return getAllEnabledPlugins()
-    .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
+    .then(function () { logExampleCategoryHeader('End AppGrid Asset Examples'); });
 };
 
-var exampleAppGridSessions = () => {
+var exampleAppGridSessions = function () {
   logExampleCategoryHeader('AppGrid Session Examples:');
-  var getAppGridSession = () => {
+  var getAppGridSession = function () {
     logExampleHeader('Requesting a new Session from AppGrid');
     return AppGrid.session.getSession(appGridOptions)
-      .then((newSessionId) => {
-        console.log(`\t\t Successfully requested a new Session from AppGrid.\n\t\t   SessionId: ${chalk.blue(newSessionId)}`);
+      .then(function (newSessionId) {
+        console.log('\t\t Successfully requested a new Session from AppGrid.\n\t\t   SessionId: ' + chalk.blue(newSessionId));
         appGridOptions.sessionId = newSessionId; // NOTE: Sessions should be reused as much as possible.
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting a new Session from AppGrid!', error);
       });
   };
-  var getAppGridStatus = () => {
+  var getAppGridStatus = function () {
     logExampleHeader('Requesting AppGrid\'s Status');
     return AppGrid.session.getStatus(appGridOptions)
-      .then((response) => {
+      .then(function (response) {
         console.log('\t\t Successfully requested the status from AppGrid', response);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting the status from AppGrid!', error);
       });
   };
-  var validateAppGridSession = () => {
-    logExampleHeader(`Validating an AppGrid Session for the following SessionId: \n\t\t  ${chalk.blue(appGridOptions.sessionId)}`);
+  var validateAppGridSession = function () {
+    logExampleHeader('Validating an AppGrid Session for the following SessionId: \n\t\t  ' + chalk.blue(appGridOptions.sessionId));
     return AppGrid.session.validateSession(appGridOptions)
-      .then((isValid) => {
-        console.log(`\t\t Is this AppGrid Session valid? ${chalk.blue(isValid)}`);
+      .then(function (isValid) {
+        console.log('\t\t Is this AppGrid Session valid? ' + chalk.blue(isValid));
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while attempting to validate the AppGrid Session!', error);
       });
   };
-  var updateAppGridSessionUuid = () => {
+  var updateAppGridSessionUuid = function () {
     var newUuid = AppGrid.session.generateUuid();
-    logExampleHeader(`Updating the UUID associated with an AppGrid Session\n\t\t For the following SessionId: ${chalk.blue(appGridOptions.sessionId)} \n\t\t With the following UUID: ${chalk.blue(newUuid)}`);
+    logExampleHeader('Updating the UUID associated with an AppGrid Session\n\t\t For the following SessionId: ' + chalk.blue(appGridOptions.sessionId) + ' \n\t\t With the following UUID: ' + chalk.blue(newUuid));
     appGridOptions.uuid = newUuid;
     return AppGrid.session.updateSessionUuid(appGridOptions)
-      .then((response) => {
+      .then(function (response) {
         console.log('\t\t Successfully updated the UUID associated with this AppGrid Session', response);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while attempting to update the UUID associated with this AppGrid Session!', error);
       });
+  };
+
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid Session Examples');
   };
 
   return getAppGridSession()
     .then(getAppGridStatus)
     .then(validateAppGridSession)
     .then(updateAppGridSessionUuid)
-    .then(() => {
-      logExampleCategoryHeader('End AppGrid Session Examples');
-    });
+    .then(logEndHeader);
 };
 
-var exampleAppGridUserData = () => {
+var exampleAppGridUserData = function () {
   logExampleCategoryHeader('AppGrid UserData Examples:');
   var userName = 'exampleUser';
   var dataKeyToRequest = 'name';
@@ -415,92 +433,96 @@ var exampleAppGridUserData = () => {
     ]
   };
 
-  var setApplicationScopeUserData = () => {
+  var setApplicationScopeUserData = function () {
     logExampleHeader('Setting Application-Scope User Data on AppGrid');
     return AppGrid.userData.setApplicationScopeUserData(appGridOptions, userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
-      .then(() => {
-        console.log(`\t\t Successfully set Application-Scope User Data on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t User data sent: `, userProfileData);
+      .then(function () {
+        console.log('\t\t Successfully set Application-Scope User Data on AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '. \n\t\t User data sent: ', userProfileData);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while setting Application-Scope User Data on AppGrid!', error);
       });
   };
 
-  var setApplicationGroupScopeUserData = () => {
+  var setApplicationGroupScopeUserData = function () {
     logExampleHeader('Setting ApplicationGroup-Scope User Data on AppGrid');
     return AppGrid.userData.setApplicationGroupScopeUserData(appGridOptions, userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
-      .then(() => {
-        console.log(`\t\t Successfully set ApplicationGroup-Scope User Data on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t User data sent: `, userProfileData);
+      .then(function () {
+        console.log('\t\t Successfully set ApplicationGroup-Scope User Data on AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '. \n\t\t User data sent: ', userProfileData);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while setting ApplicationGroup-Scope User Data on AppGrid!', error);
       });
   };
 
-  var setApplicationScopeUserDataByKey = () => {
+  var setApplicationScopeUserDataByKey = function () {
     logExampleHeader('Setting Application-Scope User Data by key on AppGrid');
     return AppGrid.userData.setApplicationScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
-      .then(() => {
-        console.log(`\t\t Successfully set Application-Scope User Data by key on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Key used: ${chalk.blue(dataKeyToSet)} \n\t\t Value sent: ${chalk.blue(dataValueToSet)}`);
+      .then(function () {
+        console.log('\t\t Successfully set Application-Scope User Data by key on AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '.\n\t\t Key used: ' + chalk.blue(dataKeyToSet) + '  \n\t\t Value sent: ' + chalk.blue(dataValueToSet));
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while setting Application-Scope User Data by key on AppGrid!', error);
       });
   };
 
-  var setApplicationGroupScopeUserDataByKey = () => {
+  var setApplicationGroupScopeUserDataByKey = function () {
     logExampleHeader('Setting ApplicationGroup-Scope User Data by key on AppGrid');
     return AppGrid.userData.setApplicationGroupScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
-      .then(() => {
-        console.log(`\t\t Successfully set ApplicationGroup-Scope User Data by key on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Key used: ${chalk.blue(dataKeyToSet)} \n\t\t Value sent: ${chalk.blue(dataValueToSet)}`);
+      .then(function () {
+        console.log('\t\t Successfully set ApplicationGroup-Scope User Data by key on AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '.\n\t\t Key used: ' + chalk.blue(dataKeyToSet) + ' \n\t\t Value sent: ' + chalk.blue(dataValueToSet));
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while setting ApplicationGroup-Scope User Data by key on AppGrid!', error);
       });
   };
 
-  var getAllApplicationScopeDataByUser = () => {
+  var getAllApplicationScopeDataByUser = function () {
     logExampleHeader('Requesting All Application-Scope Data by user from AppGrid');
     return AppGrid.userData.getAllApplicationScopeDataByUser(appGridOptions, userName)
-      .then((data) => {
-        console.log(`\t\t Successfully requested all Application-Scope Data by user from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t Data: `, data);
+      .then(function (data) {
+        console.log('\t\t Successfully requested all Application-Scope Data by user from AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '. \n\t\t Data: ', data);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting all Application-Scope Data by user from AppGrid!', error);
       });
   };
 
-  var getAllApplicationGroupScopeDataByUser = () => {
+  var getAllApplicationGroupScopeDataByUser = function () {
     logExampleHeader('Requesting All ApplicationGroup-Scope Data by user from AppGrid');
     return AppGrid.userData.getAllApplicationGroupScopeDataByUser(appGridOptions, userName)
-      .then((data) => {
-        console.log(`\t\t Successfully requested all ApplicationGroup-Scope Data by user from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t Data: `, data);
+      .then(function (data) {
+        console.log('\t\t Successfully requested all ApplicationGroup-Scope Data by user from AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '. \n\t\t Data: ', data);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting all ApplicationGroup-Scope Data by user from AppGrid!', error);
       });
   };
 
-  var getApplicationScopeDataByUserAndKey = () => {
+  var getApplicationScopeDataByUserAndKey = function () {
     logExampleHeader('Requesting Application-Scope Data by user and key from AppGrid');
     return AppGrid.userData.getApplicationScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
-      .then((data) => {
-        console.log(`\t\t Successfully requested Application-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
+      .then(function (data) {
+        console.log('\t\t Successfully requested Application-Scope Data by user and key from AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '.\n\t\t Data key used: ' + chalk.blue(dataKeyToRequest) + '. \n\t\t Data: ', data);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting Application-Scope Data by user and key from AppGrid!', error);
       });
   };
 
-  var getApplicationGroupScopeDataByUserAndKey = () => {
+  var getApplicationGroupScopeDataByUserAndKey = function () {
     logExampleHeader('Requesting ApplicationGroup-Scope Data by user and key from AppGrid');
     return AppGrid.userData.getApplicationGroupScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
-      .then((data) => {
-        console.log(`\t\t Successfully requested ApplicationGroup-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
+      .then(function (data) {
+        console.log('\t\t Successfully requested ApplicationGroup-Scope Data by user and key from AppGrid.\n\t\t Username used: ' + chalk.blue(userName) + '.\n\t\t Data key used: ' + chalk.blue(dataKeyToRequest) + '. \n\t\t Data: ', data);
       })
-      .catch((error) => {
+      .catch(function (error) {
         logError('Oops! There was an error while requesting ApplicationGroup-Scope Data by user and key from AppGrid!', error);
       });
+  };
+
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid UserData Examples');
   };
 
   return setApplicationScopeUserData()
@@ -511,7 +533,7 @@ var exampleAppGridUserData = () => {
     .then(getAllApplicationGroupScopeDataByUser)
     .then(getApplicationScopeDataByUserAndKey)
     .then(getApplicationGroupScopeDataByUserAndKey)
-    .then(() => logExampleCategoryHeader('End AppGrid UserData Examples'));
+    .then(logEndHeader);
 };
 
 function outputLogo () {
@@ -536,7 +558,7 @@ function outputLogo () {
   console.log(chalk.bgBlack.yellow('********************************************************************************'));
   console.log();
   console.log();
-};
+}
 
 function runAllExamples () {
   outputLogo();
