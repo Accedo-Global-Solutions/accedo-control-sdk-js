@@ -4,6 +4,9 @@
   "description": "An example ES5 CLI app for consuming the AppGrid SDK for NodeJS",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint . --ext .js",
+    "prestart": "npm run lint",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,12 @@
   "homepage": "http://appgrid.accedo.tv/",
   "private": true,
   "devDependencies": {
+    "eslint": "^2.4.0",
+    "eslint-config-airbnb": "^6.1.0"
   },
   "dependencies": {
+    "appgrid": "^1.0.0",
+    "chalk": "^1.1.1",
+    "es6-promise": "^3.1.2"
   }
 }

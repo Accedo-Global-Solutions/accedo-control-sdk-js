@@ -56,9 +56,17 @@
 *******************************************************************************
 ```
 
+## Summary
+This is an ES5 example app for illustrating how to use the ``` appgrid ``` NPM module. 
+Please read the ` README.md ` file under `../npm-module` for more details about the module.
 
-**Readme TBD**
+## Getting started with the example app
 
-**The following tasks remain to be done**
+  * Clone this repo locally
+  * Open a commandline to the ` ./example-app ` directory in this repo
+  * Run ` npm install `
+  * To run the examples, execute the following command: ``` npm start ```.
+
+## The following tasks remain to be done
   
-  * Write an example consumer app in ES5 (totally separate from the examples file included in this project)
+  * Finish updating this ES5 example app
