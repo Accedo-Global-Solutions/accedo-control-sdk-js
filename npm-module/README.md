@@ -69,12 +69,6 @@ This is the official Accedo AppGrid SDK for NodeJS (Serverside Web). While AppGr
 ## How to use/Examples
 Refer to the ```examples-es6.js``` file for comprehensive examples that cover all of the APIs exported by this module.
 
-**IMPORTANT NOTE FOR ES5 CLIENTS**: Your `require` statement must look like this:
-
- ```javascript
-  var AppGrid = require('appgrid').default; // The .default suffix is required unless you use ES6.
- ```
-
 #### Options object (required for each call)
 An options object must be passed to each AppGrid call. Here's an example (_refer to ```example-es6.js``` for more details_):
 ```javascript
