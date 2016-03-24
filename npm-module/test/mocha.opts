@@ -1,5 +1,4 @@
 --timeout 20000
---compilers js:babel-core/register
 --recursive
 --colors
 --reporter nyan

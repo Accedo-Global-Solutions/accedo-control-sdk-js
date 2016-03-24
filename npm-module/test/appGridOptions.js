@@ -1,6 +1,6 @@
 // NOTE: Refer to the ../example-es6.js file for more details around the appGridOptions object and its properties.
 
-import AppGrid from '../dist/index.js';
+import AppGrid from '../src/index';
 
 /* // NOTE: Uncomment this block, and the 'debugLogger' line inside of the appGridOptions, below in order to show debug logs in the console.
  const debugLogger = (message, ...metadata) => {
