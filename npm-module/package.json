@@ -13,7 +13,7 @@
     "precompileExample": "npm run lintExample",
     "compileExample": "rollup -c rollup.config.example.js",
     "prerunExample": "npm run compile && npm run test",
-    "runExample": "node example",
+    "runExample": "node build/example",
     "lint": "eslint . --ext .js",
     "lintExample": "eslint ./example-es6.js --no-ignore",
     "lintTest": "eslint ./test --no-ignore",

@@ -5,6 +5,7 @@ export default {
   entry: './example-es6.js',
   plugins: [babel(), multiEntry()],
   format: 'cjs',
-  dest: './example.js',
-  sourceMap: false
+  intro: 'require("source-map-support").install();',
+  dest: './build/example.js',
+  sourceMap: true
 };
