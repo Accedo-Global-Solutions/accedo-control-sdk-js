@@ -1,7 +1,10 @@
-import config from './rollup.config';
+import baseConfig from './rollup.config';
 
-config.format = 'umd';
-config.dest = 'dist/bundle.umd.js';
-config.moduleName = 'appgrid';
+const additionalConfig = {
+  format: 'umd',
+  dest: 'dist/bundle.umd.js',
+  moduleName: 'appgrid'
+};
 
+const config = Object.assign({}, baseConfig, additionalConfig);
 export default config;

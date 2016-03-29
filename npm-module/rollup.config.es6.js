@@ -1,6 +1,9 @@
-import config from './rollup.config';
+import baseConfig from './rollup.config';
 
-config.format = 'es6';
-config.dest = 'dist/bundle.es6.js';
+const additionalConfig = {
+  format: 'es6',
+  dest: 'dist/bundle.es6.js',
+};
 
+const config = Object.assign({}, baseConfig, additionalConfig);
 export default config;
