@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 import chai from 'chai';
-import AppGrid from '../../dist/index.js';
+import AppGrid from '../../src/index';
 
 import appGridOptions from '../appGridOptions';
 

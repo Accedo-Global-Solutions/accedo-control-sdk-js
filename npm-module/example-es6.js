@@ -1,6 +1,6 @@
 /* eslint-disable no-console, no-unused-expressions */
 
-import AppGrid from './dist/index'; // NOTE: this would normally be: import AppGrid from 'appgrid';
+import AppGrid from './dist/bundle.es6'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 
