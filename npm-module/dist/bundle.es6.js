@@ -397,7 +397,7 @@ var getConcatenatedCode = function getConcatenatedCode() {
 
 var getCurrentTimeOfDayDimValue = function getCurrentTimeOfDayDimValue() {
   var currentHour = new Date().getHours();
-  var result = undefined;
+  var result = void 0;
   if (currentHour >= 1 && currentHour <= 5) {
     result = '01-05'; // NOTE: These strings are expected by AppGrid...
   } else if (currentHour >= 5 && currentHour <= 9) {

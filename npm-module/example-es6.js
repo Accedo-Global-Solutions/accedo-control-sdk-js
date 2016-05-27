@@ -1,8 +1,8 @@
 /* eslint-disable no-console, no-unused-expressions */
 
-import AppGrid from './dist/bundle.es6'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
+import AppGrid from './dist/bundle.es6'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 
 /* // NOTE: Uncomment this block, and the 'debugLogger' line inside of the appGridOptions, below in order to show debug logs in the console.
 const debugLogger = (message, ...metadata) => {
