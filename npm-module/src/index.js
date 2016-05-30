@@ -3,6 +3,7 @@ import * as contentEntries from './contentEntries';
 import * as events from './events';
 import { logger, getCurrentTimeOfDayDimValue, getLogLevel } from './logging';
 import * as metadata from './metadata';
+import * as profile from './profile';
 import * as plugins from './plugins';
 import * as session from './session';
 import * as userData from './userData';
@@ -19,6 +20,7 @@ const api = {
   logger,
   logUtils,
   metadata,
+  profile,
   plugins,
   session,
   userData

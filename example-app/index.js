@@ -162,6 +162,28 @@ var exampleAppGridEvents = function () {
     .then(logEndHeader);
 };
 
+var exampleAppGridProfile = function () {
+  logExampleCategoryHeader('AppGrid Profile Examples:');
+
+  var getProfileInfo = function () {
+    logExampleHeader('Requesting Profile information from AppGrid');
+    return AppGrid.profile.getProfileInfo(appGridOptions)
+      .then(function (data) {
+        console.log('\t\t Successfully requested Profile information from AppGrid.\n\t\t Profile info: ', data);
+      })
+      .catch(function (error) {
+        logError('Oops! There was an error while requesting Profile information from AppGrid!', error);
+      });
+  };
+
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid Profile Examples');
+  };
+
+  return getProfileInfo()
+    .then(logEndHeader);
+};
+
 var exampleAppGridMetadata = function () {
   logExampleCategoryHeader('AppGrid Metadata Examples:');
 
@@ -564,6 +586,7 @@ function runAllExamples () {
   outputLogo();
   exampleAppGridSessions()
     .then(exampleAppGridLogging)
+    .then(exampleAppGridProfile)
     .then(exampleAppGridEvents)
     .then(exampleAppGridMetadata)
     .then(exampleAppGridAssets)

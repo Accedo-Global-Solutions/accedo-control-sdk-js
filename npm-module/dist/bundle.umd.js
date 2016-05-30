@@ -522,6 +522,18 @@ var metadata = Object.freeze({
     getMetadataByKeys: getMetadataByKeys
   });
 
+  var getProfileInfo = function getProfileInfo(options) {
+    return getValidatedOptions(options).then(function (validatedOptions) {
+      var requestUrl = validatedOptions.appGridUrl + '/profile';
+      validatedOptions.debugLogger('AppGrid: getProfileInfo request: ' + requestUrl);
+      return grab(requestUrl, validatedOptions);
+    });
+  };
+
+var profile = Object.freeze({
+    getProfileInfo: getProfileInfo
+  });
+
   var getAllEnabledPlugins = function getAllEnabledPlugins(options) {
     return getValidatedOptions(options).then(function (validatedOptions) {
       var requestUrl = validatedOptions.appGridUrl + '/plugins';
@@ -654,6 +666,7 @@ var userData = Object.freeze({
     logger: logger,
     logUtils: logUtils,
     metadata: metadata,
+    profile: profile,
     plugins: plugins,
     session: session,
     userData: userData
