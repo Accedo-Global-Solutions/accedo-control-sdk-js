@@ -1,6 +1,6 @@
 {
   "name": "appgrid-cli-example",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An example ES5 CLI app for consuming the AppGrid SDK for NodeJS",
   "main": "index.js",
   "scripts": {
