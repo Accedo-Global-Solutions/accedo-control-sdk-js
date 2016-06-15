@@ -2,7 +2,7 @@
 
 'use strict';
 
-var AppGrid = require('appgrid');
+var AppGrid = require('../npm-module/'); // NOTE normally you'd use require('appgrid')
 var chalk = require('chalk');
 var fs = require('fs');
 var Promise = require('es6-promise').Promise;

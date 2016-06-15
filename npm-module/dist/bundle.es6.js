@@ -2,9 +2,7 @@ import fetch from 'isomorphic-fetch';
 import qs from 'qs';
 import uuid from 'uuid';
 
-var babelHelpers = {};
-
-babelHelpers.extends = Object.assign || function (target) {
+var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 
@@ -17,8 +15,6 @@ babelHelpers.extends = Object.assign || function (target) {
 
   return target;
 };
-
-babelHelpers;
 
 var MIME_TYPE_JSON = 'application/json';
 var credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
@@ -75,7 +71,7 @@ var getQueryString = function getQueryString(options) {
   if (options.gid) {
     defaultQs.gid = options.gid;
   }
-  var qsObject = babelHelpers.extends({}, existingQs, defaultQs);
+  var qsObject = _extends({}, existingQs, defaultQs);
   var queryString = qs.stringify(qsObject);
   return queryString;
 };
@@ -89,11 +85,11 @@ var getRequestUrlWithQueryString = function getRequestUrlWithQueryString(url, op
 };
 
 var getExtraHeaders = function getExtraHeaders(options) {
-  return babelHelpers.extends({}, getForwardedForHeader(options), getSessionHeader(options), getNoCacheHeader(options));
+  return _extends({}, getForwardedForHeader(options), getSessionHeader(options), getNoCacheHeader(options));
 };
 
 var getFetchRequest = function getFetchRequest(url, options) {
-  var headers = babelHelpers.extends({}, defaultHeaders, getExtraHeaders(options));
+  var headers = _extends({}, defaultHeaders, getExtraHeaders(options));
   var requestUrl = getRequestUrlWithQueryString(url, options);
   options.debugLogger('Sending a GET request to: ' + requestUrl + '. With the following headers: ', headers);
   return fetch(requestUrl, { credentials: credentials, headers: headers });
@@ -115,7 +111,7 @@ var grabRaw = function grabRaw(url, options) {
 var post = function post(url, options) {
   var body = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-  var headers = babelHelpers.extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(options));
+  var headers = _extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(options));
   var requestUrl = getRequestUrlWithQueryString(url, options);
   options.debugLogger('Sending a POST request to: ' + requestUrl + '. With the following headers and body: ', headers, body);
   var requestOptions = {
