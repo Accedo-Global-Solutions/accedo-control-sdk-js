@@ -139,6 +139,21 @@
     });
   };
 
+  var rawGetStatus = function rawGetStatus(options) {
+    return grab(options.appGridUrl + '/status', options);
+  };
+
+  var getStatus = function getStatus(options) {
+    return getValidatedOptions(options).then(rawGetStatus);
+  };
+
+
+
+  var application = Object.freeze({
+    getStatus: getStatus,
+    rawGetStatus: rawGetStatus
+  });
+
   var getSession = function getSession(options) {
     options.debugLogger('AppGrid: Requesting a new session for the following UUID: ' + options.uuid);
     var requestUrl = options.appGridUrl + '/session';
@@ -154,16 +169,11 @@
     });
   };
 
-  var getStatus = function getStatus(options) {
-    var requestUrl = options.appGridUrl + '/status';
-    return grab(requestUrl, options);
-  };
-
   var validateSession = function validateSession(options) {
     if (!options.sessionId) {
       return Promise.resolve(false);
     }
-    return getStatus(options).then(function (response) {
+    return rawGetStatus(options).then(function (response) {
       return !response.json.error;
     }).catch(function () {
       return false;
@@ -548,12 +558,8 @@ var plugins = Object.freeze({
     });
   };
 
-  var generateUuid$1 = generateUuid;
   var getSession$1 = function getSession$$(options) {
     return invokeSessionHelperFunctionWithValidatedOptions(options, getSession, true);
-  };
-  var getStatus$1 = function getStatus$$(options) {
-    return invokeSessionHelperFunctionWithValidatedOptions(options, getStatus);
   };
   var validateSession$1 = function validateSession$$(options) {
     return invokeSessionHelperFunctionWithValidatedOptions(options, validateSession, true);
@@ -565,11 +571,10 @@ var plugins = Object.freeze({
 
 
   var session = Object.freeze({
-    generateUuid: generateUuid$1,
     getSession: getSession$1,
-    getStatus: getStatus$1,
     updateSessionUuid: updateSessionUuid$1,
-    validateSession: validateSession$1
+    validateSession: validateSession$1,
+    generateUuid: generateUuid
   });
 
   var applicationScopePath = 'user';
@@ -665,6 +670,7 @@ var userData = Object.freeze({
     profile: profile,
     plugins: plugins,
     session: session,
+    application: application,
     userData: userData
   };
 
