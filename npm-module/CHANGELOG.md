@@ -1,4 +1,4 @@
-# 2.0.0
+# (not yet in a release)
 
 BREAKING: Appgrid.session.getStatus was moved to Appgrid.application.getStatus
 
