@@ -13,27 +13,9 @@ describe('Session API Tests', () => {
   it('The API should exist and contain the expected functions', () => {
     AppGrid.session.should.be.an('object');
     AppGrid.session.getSession.should.be.a('function');
-    AppGrid.session.getStatus.should.be.a('function');
     AppGrid.session.validateSession.should.be.a('function');
     AppGrid.session.generateUuid.should.be.a('function');
     AppGrid.session.updateSessionUuid.should.be.a('function');
-  });
-
-  it('"getSession" should return a new session from AppGrid', (done) => {
-    AppGrid.session.getSession(appGridOptions)
-      .then((newSessionId) => {
-        newSessionId.should.be.ok;
-        appGridOptions.sessionId = newSessionId;
-        done();
-      });
-  });
-
-  it('"getStatus" should return the status AppGrid', (done) => {
-    AppGrid.session.getStatus(appGridOptions)
-      .then(({ json: { status } }) => {
-        status.should.be.ok;
-        done();
-      });
   });
 
   it('"validateSession" should return false for an invalid session', (done) => {
