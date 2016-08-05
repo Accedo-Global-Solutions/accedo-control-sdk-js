@@ -39,7 +39,8 @@
     "import/no-named-as-default": 0,
     "import/export": 2,
     "import/no-duplicates": 2,
-    "import/imports-first": 2
+    "import/imports-first": 2,
+    "import/prefer-default-export": 0
   },
   "settings": { "import/parser": "babel-eslint" }
 }

@@ -1,4 +1,4 @@
-/* eslint-disable no-console, no-unused-expressions, import/no-unresolved */
+/* eslint-disable no-console, no-unused-expressions, import/no-unresolved, import/no-extraneous-dependencies */
 
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
