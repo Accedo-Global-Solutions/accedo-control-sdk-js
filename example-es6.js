@@ -240,21 +240,6 @@ const exampleAppGridAssets = () => {
 const exampleAppGridContentEntries = () => {
   logExampleCategoryHeader('AppGrid ContentEntries Examples:');
 
-  const getAllEntries = () => {
-    logExampleHeader('Requesting all ContentEntries from AppGrid');
-    const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
-    const countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
-    return AppGrid.contentEntries.getAllEntries(appGridOptions, offset, countOfResults)
-      .then((response) => {
-        const { json: { entries, pagination } } = response;
-        // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
-        console.log(`\t\t Successfully requested all ContentEntries from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
-      })
-      .catch((error) => {
-        logError('Oops! There was an error while requesting all ContentEntries from AppGrid!', error);
-      });
-  };
-
   const getEntryById = () => {
     logExampleHeader('Requesting a ContentEntry by id from AppGrid');
     const idToFetch = '56ea7bd6935f75032a2fd431';
@@ -269,17 +254,29 @@ const exampleAppGridContentEntries = () => {
       });
   };
 
+  const getEntries = () => {
+    logExampleHeader('Requesting all ContentEntries from AppGrid');
+    const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
+    const size = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
+    return AppGrid.contentEntries.getEntries(appGridOptions, { offset, size })
+      .then((response) => {
+        const { json: { entries, pagination } } = response;
+        // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
+        console.log(`\t\t Successfully requested all ContentEntries from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting all ContentEntries from AppGrid!', error);
+      });
+  };
+
   const getEntriesByIds = () => {
     logExampleHeader('Requesting ContentEntries by multiple ids from AppGrid');
-    const idsToFetch = [
-      '56ea7bd6935f75032a2fd431',
-      '56ea7c55935f75032a2fd437'
-    ];
-    const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
-    const countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
-    const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
-    const atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
-    return AppGrid.contentEntries.getEntriesByIds(appGridOptions, idsToFetch, offset, countOfResults, isPreview, atUtcTime)
+    const params = {
+      id: ['56ea7bd6935f75032a2fd431', '56ea7c55935f75032a2fd437'],
+      size: 50,
+      at: new Date()
+    };
+    return AppGrid.contentEntries.getEntries(appGridOptions, params)
       .then((response) => {
         const { json: { entries, pagination } } = response;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
@@ -292,12 +289,12 @@ const exampleAppGridContentEntries = () => {
 
   const getEntriesByTypeId = () => {
     logExampleHeader('Requesting ContentEntries by typeId from AppGrid');
-    const typeIdToFetch = '56ea7bca935f75032a2fd42c';
-    const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
-    const countOfResults = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
-    const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
-    const atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
-    return AppGrid.contentEntries.getEntriesByTypeId(appGridOptions, typeIdToFetch, offset, countOfResults, isPreview, atUtcTime)
+    const params = {
+      size: 50,
+      typeId: '56ea7bca935f75032a2fd42c',
+      at: new Date()
+    };
+    return AppGrid.contentEntries.getEntries(appGridOptions, params)
       .then((response) => {
         const { json: { entries, pagination } } = response;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
@@ -308,8 +305,8 @@ const exampleAppGridContentEntries = () => {
       });
   };
 
-  return getAllEntries()
-    .then(getEntryById)
+  return getEntryById()
+    .then(getEntries)
     .then(getEntriesByIds)
     .then(getEntriesByTypeId)
     .then(() => logExampleCategoryHeader('End AppGrid ContentEntries Examples'));
