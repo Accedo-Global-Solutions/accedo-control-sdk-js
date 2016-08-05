@@ -395,16 +395,6 @@ var exampleAppGridSessions = function () {
         logError('Oops! There was an error while requesting a new Session from AppGrid!', error);
       });
   };
-  var getAppGridStatus = function () {
-    logExampleHeader('Requesting AppGrid\'s Status');
-    return AppGrid.session.getStatus(appGridOptions)
-      .then(function (response) {
-        console.log('\t\t Successfully requested the status from AppGrid', response);
-      })
-      .catch(function (error) {
-        logError('Oops! There was an error while requesting the status from AppGrid!', error);
-      });
-  };
   var validateAppGridSession = function () {
     logExampleHeader('Validating an AppGrid Session for the following SessionId: \n\t\t  ' + chalk.blue(appGridOptions.sessionId));
     return AppGrid.session.validateSession(appGridOptions)
@@ -433,9 +423,29 @@ var exampleAppGridSessions = function () {
   };
 
   return getAppGridSession()
-    .then(getAppGridStatus)
     .then(validateAppGridSession)
     .then(updateAppGridSessionUuid)
+    .then(logEndHeader);
+};
+
+var exampleAppGridApplication = function () {
+  logExampleCategoryHeader('AppGrid Application Examples:');
+  var getAppGridStatus = function () {
+    logExampleHeader('Requesting the AppGrid Application Status');
+    return AppGrid.application.getStatus(appGridOptions)
+      .then(function (response) {
+        console.log('\t\t Successfully requested the status from AppGrid', response);
+      })
+      .catch(function (error) {
+        logError('Oops! There was an error while requesting the status from AppGrid!', error);
+      });
+  };
+
+  var logEndHeader = function () {
+    logExampleCategoryHeader('End AppGrid Application Examples');
+  };
+
+  return getAppGridStatus()
     .then(logEndHeader);
 };
 
@@ -585,6 +595,7 @@ function outputLogo () {
 function runAllExamples () {
   outputLogo();
   exampleAppGridSessions()
+    .then(exampleAppGridApplication)
     .then(exampleAppGridLogging)
     .then(exampleAppGridProfile)
     .then(exampleAppGridEvents)

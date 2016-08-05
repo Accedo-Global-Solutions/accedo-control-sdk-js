@@ -343,16 +343,6 @@ const exampleAppGridSessions = () => {
         logError('Oops! There was an error while requesting a new Session from AppGrid!', error);
       });
   };
-  const getAppGridStatus = () => {
-    logExampleHeader('Requesting AppGrid\'s Status');
-    return AppGrid.session.getStatus(appGridOptions)
-      .then((response) => {
-        console.log('\t\t Successfully requested the status from AppGrid', response);
-      })
-      .catch((error) => {
-        logError('Oops! There was an error while requesting the status from AppGrid!', error);
-      });
-  };
   const validateAppGridSession = () => {
     logExampleHeader(`Validating an AppGrid Session for the following SessionId: \n\t\t  ${chalk.blue(appGridOptions.sessionId)}`);
     return AppGrid.session.validateSession(appGridOptions)
@@ -377,12 +367,28 @@ const exampleAppGridSessions = () => {
   };
 
   return getAppGridSession()
-    .then(getAppGridStatus)
     .then(validateAppGridSession)
     .then(updateAppGridSessionUuid)
     .then(() => {
       logExampleCategoryHeader('End AppGrid Session Examples');
     });
+};
+
+const exampleAppGridApplication = () => {
+  logExampleCategoryHeader('AppGrid Application Examples:');
+  const getAppGridStatus = () => {
+    logExampleHeader('Requesting the AppGrid Application Status');
+    return AppGrid.application.getStatus(appGridOptions)
+      .then((response) => {
+        console.log('\t\t Successfully requested the status from AppGrid', response);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting the status from AppGrid!', error);
+      });
+  };
+
+  return getAppGridStatus()
+    .then(() => { logExampleCategoryHeader('End AppGrid Application Examples'); });
 };
 
 const exampleAppGridUserData = () => {
@@ -562,6 +568,7 @@ const outputLogo = () => {
 const runAllExamples = () => {
   outputLogo();
   exampleAppGridSessions()
+    .then(exampleAppGridApplication)
     .then(exampleAppGridLogging)
     .then(exampleAppGridEvents)
     .then(exampleAppGridMetadata)
