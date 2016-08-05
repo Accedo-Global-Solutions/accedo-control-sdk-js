@@ -18,8 +18,8 @@ const validateRequiredOption = (options, option) => {
 
 const setDefaultOptionValueIfNeeded = (options, option) => {
   if (options[option]) { return; }
-  options[option] = (typeof optionalOptionDefaults[option] === 'function') ?
-    options[option] = optionalOptionDefaults[option]() : options[option] = optionalOptionDefaults[option];
+  const defaultOption = optionalOptionDefaults[option];
+  options[option] = (typeof defaultOption === 'function') ? defaultOption() : defaultOption;
   options.debugLogger(`AppGrid: Default value of: ${options[option]} was used for: ${option}`);
 };
 

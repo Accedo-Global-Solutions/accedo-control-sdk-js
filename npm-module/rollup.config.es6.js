@@ -1,7 +1,7 @@
 import baseConfig from './rollup.config';
 
 const additionalConfig = {
-  format: 'es6',
+  format: 'es',
   dest: 'dist/bundle.es6.js'
 };
 

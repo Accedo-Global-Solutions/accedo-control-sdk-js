@@ -189,7 +189,8 @@ var setDefaultOptionValueIfNeeded = function setDefaultOptionValueIfNeeded(optio
   if (options[option]) {
     return;
   }
-  options[option] = typeof optionalOptionDefaults[option] === 'function' ? options[option] = optionalOptionDefaults[option]() : options[option] = optionalOptionDefaults[option];
+  var defaultOption = optionalOptionDefaults[option];
+  options[option] = typeof defaultOption === 'function' ? defaultOption() : defaultOption;
   options.debugLogger('AppGrid: Default value of: ' + options[option] + ' was used for: ' + option);
 };
 
@@ -265,87 +266,56 @@ var assets = Object.freeze({
   getAssetStreamById: getAssetStreamById
 });
 
-var defaultCountOfResults = 20;
+var getRequestUrl = function getRequestUrl(url, path, _ref) {
+  var id = _ref.id;
+  var preview = _ref.preview;
+  var at = _ref.at;
+  var typeId = _ref.typeId;
+  var offset = _ref.offset;
+  var size = _ref.size;
 
-var getPaginationQueryParams = function getPaginationQueryParams(offset, countOfResults) {
-  return 'offset=' + offset + '&size=' + countOfResults;
+  var qsParams = {};
+  // The id array must be turned into CSV
+  if (id && id.length) {
+    qsParams.id = '' + id.join(',');
+  }
+  // preview is only useful when true
+  if (preview) {
+    qsParams.preview = true;
+  }
+  // at is either a string, or a method with toISOString (like a Date) that we use for formatting
+  if (typeof at === 'string') {
+    qsParams.at = at;
+  } else if (at && at.toISOString) {
+    qsParams.at = at.toISOString();
+  }
+  // Add curated and non-curated params
+  var queryString = qs.stringify(_extends({}, qsParams, { typeId: typeId, offset: offset, size: size }));
+  return url + '/' + path + '?' + queryString;
 };
 
-var getEntryRequestUrl = function getEntryRequestUrl(validatedOptions, relativePath, isPreview, atUtcTime, ids, typeId) {
-  var requestUrl = validatedOptions.appGridUrl + '/' + relativePath;
-  var qsObject = {};
-  if (ids && ids.length) {
-    qsObject.id = '' + ids.join(',');
-  }
-  if (typeId) {
-    qsObject.typeId = typeId;
-  }
-  if (isPreview) {
-    qsObject.preview = true;
-  }
-  if (atUtcTime) {
-    qsObject.at = atUtcTime.toISOString();
-  }
-  var queryString = qs.stringify(qsObject);
-  requestUrl += '?' + queryString;
-  return requestUrl;
-};
-
-var getAllEntries = function getAllEntries(options) {
-  var offset = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-  var countOfResults = arguments.length <= 2 || arguments[2] === undefined ? defaultCountOfResults : arguments[2];
-
-  return getValidatedOptions(options).then(function (validatedOptions) {
-    var requestUrl = validatedOptions.appGridUrl + '/content/entries?' + getPaginationQueryParams(offset, countOfResults);
-    validatedOptions.debugLogger('AppGrid: getAllEntries request: ' + requestUrl);
-    return grab(requestUrl, validatedOptions);
+// params may contain any/several of { id, preview, at, typeId, offset, size }
+var getEntries = function getEntries(unValidatedOptions, params) {
+  return getValidatedOptions(unValidatedOptions).then(function (options) {
+    var requestUrl = getRequestUrl(options.appGridUrl, 'content/entries', params);
+    options.debugLogger('AppGrid: getEntries request: ' + requestUrl);
+    return grab(requestUrl, options);
   });
 };
 
-var getEntryById = function getEntryById(options, id) {
-  var isPreview = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-  var atUtcTime = arguments[3];
-
-  return getValidatedOptions(options).then(function (validatedOptions) {
-    var requestUrl = getEntryRequestUrl(validatedOptions, 'content/entry/' + id, isPreview, atUtcTime);
-    validatedOptions.debugLogger('AppGrid: getEntryById request: ' + requestUrl);
-    return grab(requestUrl, validatedOptions);
+var getEntryById = function getEntryById(unValidatedOptions, id, preview, at) {
+  return getValidatedOptions(unValidatedOptions).then(function (options) {
+    var requestUrl = getRequestUrl(options.appGridUrl, 'content/entry/' + id, { preview: preview, at: at });
+    options.debugLogger('AppGrid: getEntryById request: ' + requestUrl);
+    return grab(requestUrl, options);
   });
 };
 
-var getEntriesByIds = function getEntriesByIds(options, ids) {
-  var offset = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
-  var countOfResults = arguments.length <= 3 || arguments[3] === undefined ? defaultCountOfResults : arguments[3];
-  var isPreview = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
-  var atUtcTime = arguments[5];
 
-  return getValidatedOptions(options).then(function (validatedOptions) {
-    var requestUrl = getEntryRequestUrl(validatedOptions, 'content/entries', isPreview, atUtcTime, ids);
-    requestUrl += '&' + getPaginationQueryParams(offset, countOfResults);
-    validatedOptions.debugLogger('AppGrid: getEntriesByIds request: ' + requestUrl);
-    return grab(requestUrl, validatedOptions);
-  });
-};
-
-var getEntriesByTypeId = function getEntriesByTypeId(options, typeId) {
-  var offset = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
-  var countOfResults = arguments.length <= 3 || arguments[3] === undefined ? defaultCountOfResults : arguments[3];
-  var isPreview = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
-  var atUtcTime = arguments[5];
-
-  return getValidatedOptions(options).then(function (validatedOptions) {
-    var requestUrl = getEntryRequestUrl(validatedOptions, 'content/entries', isPreview, atUtcTime, null, typeId);
-    requestUrl += '&' + getPaginationQueryParams(offset, countOfResults);
-    validatedOptions.debugLogger('AppGrid: getEntriesByTypeId request: ' + requestUrl);
-    return grab(requestUrl, validatedOptions);
-  });
-};
 
 var contentEntries = Object.freeze({
-  getAllEntries: getAllEntries,
-  getEntryById: getEntryById,
-  getEntriesByIds: getEntriesByIds,
-  getEntriesByTypeId: getEntriesByTypeId
+  getEntries: getEntries,
+  getEntryById: getEntryById
 });
 
 var sendUsageStartEvent = function sendUsageStartEvent(options) {
