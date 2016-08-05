@@ -144,5 +144,5 @@ AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
   Mocha (with Chai) unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
 
   * Follow the **Getting Started** steps above.
-  * Open a commandline to the ` ./npm-module ` directory in this repo
+  * On a terminal, got to the ` ./npm-module ` directory in this repo
   * Run ` npm test `

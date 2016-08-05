@@ -6,6 +6,7 @@ import * as metadata from './metadata';
 import * as profile from './profile';
 import * as plugins from './plugins';
 import * as session from './session';
+import * as application from './application';
 import * as userData from './userData';
 
 const logUtils = {
@@ -23,6 +24,7 @@ const api = {
   profile,
   plugins,
   session,
+  application,
   userData
 };
 

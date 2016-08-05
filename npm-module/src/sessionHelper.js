@@ -1,7 +1,8 @@
-// NOTE: This file contains the "private" Session functions for us by other API files.
+// NOTE: This file contains the "private" Session functions for use by other API files.
 // The corresponding "public" functions can be found in: session.js
 
 import uuid from 'uuid';
+import { rawGetStatus } from './application';
 
 import { grab, post } from './apiHelper';
 
@@ -20,14 +21,9 @@ const updateSessionUuid = (options) => {
   });
 };
 
-const getStatus = (options) => {
-  const requestUrl = `${options.appGridUrl}/status`;
-  return grab(requestUrl, options);
-};
-
 const validateSession = (options) => {
   if (!options.sessionId) { return Promise.resolve(false); }
-  return getStatus(options)
+  return rawGetStatus(options)
     .then((response) => {
       return !response.json.error;
     })
@@ -36,4 +32,4 @@ const validateSession = (options) => {
 
 const generateUuid = () => uuid.v4();
 
-export { generateUuid, getSession, getStatus, validateSession, updateSessionUuid };
+export { generateUuid, getSession, validateSession, updateSessionUuid };
