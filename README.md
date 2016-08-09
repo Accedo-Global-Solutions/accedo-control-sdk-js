@@ -62,15 +62,14 @@ This is the official Accedo AppGrid SDK for NodeJS (Serverside Web). While AppGr
 ## Getting started
 
   * Clone this repo locally
-  * Open a commandline to the ` ./npm-module ` directory in this repo
-  * Run ` npm install `
-  * To run the examples, execute the following command: ``` npm run runExample ```. **NOTE**: This will clean and rebuild the dist folder
+  * Run `npm install`
+  * To run the examples, execute the following command: `npm run runExample`. **NOTE**: This will clean and rebuild the dist folder
 
 ## How to use/Examples
-Refer to the ```examples-es6.js``` file for comprehensive examples that cover all of the APIs exported by this module.
+Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
 
 #### Options object (required for each call)
-An options object must be passed to each AppGrid call. Here's an example (_refer to ```example-es6.js``` for more details_):
+An options object must be passed to each AppGrid call. Here's an example (_refer to `example-es6.js` for more details_):
 ```javascript
 import AppGrid from 'appgrid';
 
@@ -144,5 +143,4 @@ AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
   Mocha (with Chai) unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
 
   * Follow the **Getting Started** steps above.
-  * On a terminal, got to the ` ./npm-module ` directory in this repo
-  * Run ` npm test `
+  * Run `npm test`
