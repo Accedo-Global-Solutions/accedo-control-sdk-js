@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('isomorphic-fetch'), require('qs'), require('uuid')) :
   typeof define === 'function' && define.amd ? define(['isomorphic-fetch', 'qs', 'uuid'], factory) :
   (global.appgrid = factory(global.fetch,global.qs,global.uuid));
-}(this, function (fetch,qs,uuid) { 'use strict';
+}(this, (function (fetch,qs,uuid) { 'use strict';
 
   fetch = 'default' in fetch ? fetch['default'] : fetch;
   qs = 'default' in qs ? qs['default'] : qs;
@@ -646,4 +646,4 @@ var userData = Object.freeze({
 
   return api;
 
-}));
+})));
