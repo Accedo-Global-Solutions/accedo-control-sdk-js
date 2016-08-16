@@ -14,6 +14,7 @@ describe('ContentEntries API Tests', () => {
   it('The API should exist and contain the expected functions', () => {
     AppGrid.contentEntries.should.be.an('object');
     AppGrid.contentEntries.getEntryById.should.be.a('function');
+    AppGrid.contentEntries.getEntryByAlias.should.be.a('function');
     AppGrid.contentEntries.getEntries.should.be.a('function');
   });
 
@@ -26,7 +27,19 @@ describe('ContentEntries API Tests', () => {
         entry.should.be.ok;
         entry._meta.id.should.equal(idToFetch);
         done();
-      });
+      })
+      .catch(done);
+  });
+
+  it('"getEntryByAlias" should return an entry', (done) => {
+    const alias = 'greg';
+    AppGrid.contentEntries.getEntryByAlias(appGridOptions, alias)
+      .then(({ json: entry }) => {
+        entry.should.be.ok;
+        entry._meta.entryAlias.should.equal(alias);
+        done();
+      })
+      .catch(done);
   });
 
   it('"getEntries" should return at least one entry', (done) => {
@@ -35,7 +48,8 @@ describe('ContentEntries API Tests', () => {
       .then(({ json: { entries } }) => {
         entries.length.should.be.greaterThan(0);
         done();
-      });
+      })
+      .catch(done);
   });
 
   it('"getEntries" with the id param should return multiple entries', (done) => {
@@ -49,7 +63,8 @@ describe('ContentEntries API Tests', () => {
       .then(({ json: { entries } }) => {
         entries.length.should.be.equal(params.id.length);
         done();
-      });
+      })
+      .catch(done);
   });
 
   it('"getEntries" with the typeId param should return multiple entries', (done) => {
@@ -62,6 +77,7 @@ describe('ContentEntries API Tests', () => {
       .then(({ json: { entries } }) => {
         entries.length.should.be.greaterThan(0);
         done();
-      });
+      })
+      .catch(done);
   });
 });

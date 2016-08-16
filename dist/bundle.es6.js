@@ -249,13 +249,14 @@ var assets = Object.freeze({
   getAssetStreamById: getAssetStreamById
 });
 
-var getRequestUrl = function getRequestUrl(url, path, _ref) {
-  var id = _ref.id;
-  var preview = _ref.preview;
-  var at = _ref.at;
-  var typeId = _ref.typeId;
-  var offset = _ref.offset;
-  var size = _ref.size;
+var getRequestUrl = function getRequestUrl(url, path) {
+  var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+  var id = params.id;
+  var preview = params.preview;
+  var at = params.at;
+  var typeId = params.typeId;
+  var offset = params.offset;
+  var size = params.size;
 
   var qsParams = {};
   // The id array must be turned into CSV
@@ -277,29 +278,35 @@ var getRequestUrl = function getRequestUrl(url, path, _ref) {
   return url + '/' + path + '?' + queryString;
 };
 
-// params should contain any/several of { id, preview, at, typeId, offset, size }
-var getEntries = function getEntries(unValidatedOptions, params) {
-  return getValidatedOptions(unValidatedOptions).then(function (options) {
-    var requestUrl = getRequestUrl(options.appGridUrl, 'content/entries', params);
-    options.debugLogger('AppGrid: getEntries request: ' + requestUrl);
+var validateAndRequest = function validateAndRequest(opts, path, params) {
+  return getValidatedOptions(opts).then(function (options) {
+    var requestUrl = getRequestUrl(options.appGridUrl, path, params);
+    options.debugLogger('AppGrid request: ' + requestUrl);
     return grab(requestUrl, options);
   });
 };
 
+// params should contain any/several of { id, preview, at, typeId, offset, size }
+var getEntries = function getEntries(opts, params) {
+  return validateAndRequest(opts, 'content/entries', params);
+};
+
 // params should contain any/several of { preview, at }
-var getEntryById = function getEntryById(unValidatedOptions, id, params) {
-  return getValidatedOptions(unValidatedOptions).then(function (options) {
-    var requestUrl = getRequestUrl(options.appGridUrl, 'content/entry/' + id, params);
-    options.debugLogger('AppGrid: getEntryById request: ' + requestUrl);
-    return grab(requestUrl, options);
-  });
+var getEntryById = function getEntryById(opts, id, params) {
+  return validateAndRequest(opts, 'content/entry/' + id, params);
+};
+
+// params should contain any/several of { preview, at }
+var getEntryByAlias = function getEntryByAlias(opts, alias, params) {
+  return validateAndRequest(opts, 'content/entry/alias/' + alias, params);
 };
 
 
 
 var contentEntries = Object.freeze({
   getEntries: getEntries,
-  getEntryById: getEntryById
+  getEntryById: getEntryById,
+  getEntryByAlias: getEntryByAlias
 });
 
 var sendUsageEvent = function sendUsageEvent(options, eventType, retentionTime) {

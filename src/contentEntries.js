@@ -3,7 +3,8 @@ import qs from 'qs';
 import { grab } from './apiHelper';
 import { getValidatedOptions } from './options';
 
-const getRequestUrl = (url, path, { id, preview, at, typeId, offset, size }) => {
+const getRequestUrl = (url, path, params = {}) => {
+  const { id, preview, at, typeId, offset, size } = params;
   const qsParams = {};
   // The id array must be turned into CSV
   if (id && id.length) { qsParams.id = `${id.join(',')}`; }
@@ -20,20 +21,21 @@ const getRequestUrl = (url, path, { id, preview, at, typeId, offset, size }) => 
   return `${url}/${path}?${queryString}`;
 };
 
-// params should contain any/several of { id, preview, at, typeId, offset, size }
-export const getEntries = (unValidatedOptions, params) => {
-  return getValidatedOptions(unValidatedOptions).then((options) => {
-    const requestUrl = getRequestUrl(options.appGridUrl, 'content/entries', params);
-    options.debugLogger(`AppGrid: getEntries request: ${requestUrl}`);
+const validateAndRequest = (opts, path, params) =>
+  getValidatedOptions(opts).then((options) => {
+    const requestUrl = getRequestUrl(options.appGridUrl, path, params);
+    options.debugLogger(`AppGrid request: ${requestUrl}`);
     return grab(requestUrl, options);
   });
-};
+
+// params should contain any/several of { id, preview, at, typeId, offset, size }
+export const getEntries = (opts, params) =>
+  validateAndRequest(opts, 'content/entries', params);
 
 // params should contain any/several of { preview, at }
-export const getEntryById = (unValidatedOptions, id, params) => {
-  return getValidatedOptions(unValidatedOptions).then((options) => {
-    const requestUrl = getRequestUrl(options.appGridUrl, `content/entry/${id}`, params);
-    options.debugLogger(`AppGrid: getEntryById request: ${requestUrl}`);
-    return grab(requestUrl, options);
-  });
-};
+export const getEntryById = (opts, id, params) =>
+  validateAndRequest(opts, `content/entry/${id}`, params);
+
+// params should contain any/several of { preview, at }
+export const getEntryByAlias = (opts, alias, params) =>
+  validateAndRequest(opts, `content/entry/alias/${alias}`, params);
