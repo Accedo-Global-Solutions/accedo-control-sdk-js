@@ -6,7 +6,7 @@ const sendUsageEvent = (options, eventType, retentionTime) =>
     const requestUrl = `${validatedOptions.appGridUrl}/event/log`;
     const body = { eventType };
     if (retentionTime !== undefined) { body.retentionTime = retentionTime; }
-    validatedOptions.debugLogger(`AppGrid: sendUsageStartEvent request: ${requestUrl}`);
+    validatedOptions.debugLogger(`AppGrid: sendUsageEvent request: ${eventType} | ${retentionTime} | ${requestUrl}`);
     return post(requestUrl, validatedOptions, body);
   })
 ;

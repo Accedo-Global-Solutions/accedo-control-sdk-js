@@ -2,7 +2,8 @@
 
 - MINOR: automatically generated docs
 - MINOR: add Express-compatible middleware to handle the session propagation and re-creation on expiry
-- MAJOR: throughout the APIs, use dictionary parameters as in AppGrid.contentEntries.getEntries rather than multiple params
+- MAJOR: have APIs usable without the first options parameter, and a way to define them once for all successive calls
+- MAJOR: throughout the APIs, use dictionary parameters as in AppGrid.contentEntries.getEntries rather than multiple optional params
 
 # in master, unreleased
 
