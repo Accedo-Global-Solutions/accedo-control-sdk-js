@@ -80,4 +80,17 @@ describe('ContentEntries API Tests', () => {
       })
       .catch(done);
   });
+
+  it('"getEntries" with the alias param should return multiple entries', (done) => {
+    const params = {
+      ...paginationOptions,
+      alias: ['greg', 'erik']
+    };
+    AppGrid.contentEntries.getEntries(appGridOptions, params)
+      .then(({ json: { entries } }) => {
+        entries.length.should.be.greaterThan(0);
+        done();
+      })
+      .catch(done);
+  });
 });
