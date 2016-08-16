@@ -310,7 +310,7 @@ var assets = Object.freeze({
     return url + '/' + path + '?' + queryString;
   };
 
-  // params may contain any/several of { id, preview, at, typeId, offset, size }
+  // params should contain any/several of { id, preview, at, typeId, offset, size }
   var getEntries = function getEntries(unValidatedOptions, params) {
     return getValidatedOptions(unValidatedOptions).then(function (options) {
       var requestUrl = getRequestUrl(options.appGridUrl, 'content/entries', params);
@@ -319,9 +319,10 @@ var assets = Object.freeze({
     });
   };
 
-  var getEntryById = function getEntryById(unValidatedOptions, id, preview, at) {
+  // params should contain any/several of { preview, at }
+  var getEntryById = function getEntryById(unValidatedOptions, id, params) {
     return getValidatedOptions(unValidatedOptions).then(function (options) {
-      var requestUrl = getRequestUrl(options.appGridUrl, 'content/entry/' + id, { preview: preview, at: at });
+      var requestUrl = getRequestUrl(options.appGridUrl, 'content/entry/' + id, params);
       options.debugLogger('AppGrid: getEntryById request: ' + requestUrl);
       return grab(requestUrl, options);
     });

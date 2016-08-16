@@ -21,7 +21,7 @@ describe('ContentEntries API Tests', () => {
     const idToFetch = '56ea7bd6935f75032a2fd431';
     const isPreview = false;
     const atUtcTime = new Date();
-    AppGrid.contentEntries.getEntryById(appGridOptions, idToFetch, isPreview, atUtcTime)
+    AppGrid.contentEntries.getEntryById(appGridOptions, idToFetch, { isPreview, atUtcTime })
       .then(({ json: entry }) => {
         entry.should.be.ok;
         entry._meta.id.should.equal(idToFetch);

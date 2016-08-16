@@ -245,7 +245,7 @@ const exampleAppGridContentEntries = () => {
     const idToFetch = '56ea7bd6935f75032a2fd431';
     const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
     const atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
-    return AppGrid.contentEntries.getEntryById(appGridOptions, idToFetch, isPreview, atUtcTime)
+    return AppGrid.contentEntries.getEntryById(appGridOptions, idToFetch, { isPreview, atUtcTime })
       .then((entry) => {
         console.log(`\t\t Successfully requested a ContentEntry by id from AppGrid. Id used: ${chalk.blue(idToFetch)}. \n\t\t ContentEntry: `, entry);
       })
