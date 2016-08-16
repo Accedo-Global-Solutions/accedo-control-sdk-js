@@ -258,9 +258,10 @@ var assets = Object.freeze({
   var getRequestUrl = function getRequestUrl(url, path) {
     var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
     var id = params.id;
+    var typeId = params.typeId;
+    var alias = params.alias;
     var preview = params.preview;
     var at = params.at;
-    var typeId = params.typeId;
     var offset = params.offset;
     var size = params.size;
 
@@ -268,6 +269,10 @@ var assets = Object.freeze({
     // The id array must be turned into CSV
     if (id && id.length) {
       qsParams.id = '' + id.join(',');
+    }
+    // The alias array must be turned into CSV
+    if (alias && alias.length) {
+      qsParams.alias = '' + alias.join(',');
     }
     // preview is only useful when true
     if (preview) {
@@ -292,7 +297,8 @@ var assets = Object.freeze({
     });
   };
 
-  // params should contain any/several of { id, preview, at, typeId, offset, size }
+  // params should contain any/several of { id, alias, preview, at, typeId, offset, size }
+  // do not use id, alias or typeId at the same time - behaviour would be ungaranteed
   var getEntries = function getEntries(opts, params) {
     return validateAndRequest(opts, 'content/entries', params);
   };
