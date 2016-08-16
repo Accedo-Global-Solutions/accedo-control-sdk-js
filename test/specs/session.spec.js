@@ -17,7 +17,7 @@ describe('Session API Tests', () => {
   });
 
   it('"validateSession" should return false for an invalid session', (done) => {
-    const invalidSessionOptions = { ...appGridOptions, sessionId: 'BirdUp' };
+    const invalidSessionOptions = { ...appGridOptions, sessionId: null };
     AppGrid.session.validateSession(invalidSessionOptions)
       .then((isValid) => {
         isValid.should.be.false;

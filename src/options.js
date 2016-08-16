@@ -25,12 +25,11 @@ const setDefaultOptionValueIfNeeded = (options, option) => {
 
 const getDebugOutput = (options) => {
   const noOp = () => {};
-  if (!options || !options.debugLogger || typeof options.debugLogger !== 'function') { return noOp; }
+  if (!options || typeof options.debugLogger !== 'function') { return noOp; }
   return options.debugLogger;
 };
 
-const getNewSession = (options, failOnInvalidSession) => {
-  if (failOnInvalidSession) { throw new Error('This AppGrid API call requires a valid session!'); }
+const getNewSession = (options) => {
   options.debugLogger('AppGrid: Requesting a new Session');
   return sessionHelper.getSession(options)
     .then((sessionId) => {
@@ -43,25 +42,22 @@ const validateAndUpdateSessionIdIfNeeded = (options, isSessionValidationSkipped,
   if (isSessionValidationSkipped) { return Promise.resolve(options); }
   return sessionHelper.validateSession(options)
     .then((isValid) => {
-      if (!isValid) { return getNewSession(options, failOnInvalidSession); }
+      if (!isValid) {
+        if (failOnInvalidSession) { throw new Error('This AppGrid API call requires a valid session!'); }
+        return getNewSession(options);
+      }
       options.debugLogger('AppGrid: Session is valid.');
       return options;
     });
 };
 
 export const getValidatedOptions = (options, isSessionValidationSkipped, failOnInvalidSession) => {
-  return new Promise((resolve, reject) => {
-    if (!options) {
-      reject(new Error('The options object was falsey'));
-      return;
-    }
-    options.debugLogger = getDebugOutput(options);
-    requiredOptions.forEach((option) => validateRequiredOption(options, option));
-    Object.keys(optionalOptionDefaults).forEach((option) => setDefaultOptionValueIfNeeded(options, option));
-    validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession)
-      .then((validatedOptions) => {
-        resolve(validatedOptions);
-      })
-      .catch(reject);
-  });
+  if (!options) {
+    return Promise.reject(new Error('The options object was falsey'));
+  }
+
+  options.debugLogger = getDebugOutput(options);
+  requiredOptions.forEach((option) => validateRequiredOption(options, option));
+  Object.keys(optionalOptionDefaults).forEach((option) => setDefaultOptionValueIfNeeded(options, option));
+  return validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession);
 };

@@ -3,13 +3,14 @@
 - MINOR: automatically generated docs
 - MINOR: add Express-compatible middleware to handle the session propagation and re-creation on expiry
 - MAJOR: have APIs usable without the first options parameter, and a way to define them once for all successive calls
-- MAJOR: throughout the APIs, use dictionary parameters as in AppGrid.contentEntries.getEntries rather than multiple optional params
-- MAJOR: validateSession does not call the application.getStatus API any more
+- MINOR: validateSession may be able to check the session has expired or not before making any call ?
 
 # in master, unreleased
 
-- MAJOR: Appgrid.session.getStatus was moved to Appgrid.application.getStatus
-- MAJOR: AppGrid.contentEntries.getEntries replaces getAllEntries, getEntriesByTypeId and getEntriesByIds
+- MAJOR: getStatus was moved from Appgrid.session to Appgrid.application
+- MAJOR: getEntries replaces getAllEntries, getEntriesByTypeId and getEntriesByIds
+- MAJOR: validateSession used to call the getStatus API and yield something depending on it. Now it only checks there exists a sessionId in the options.
+- MAJOR: throughout the APIs, use dictionary parameters as in getEntries rather than multiple optional params
 - MISC: Renamed this library and repo name, this is the SDK for Node.js, not for "the web".
 
 # 1.1.1

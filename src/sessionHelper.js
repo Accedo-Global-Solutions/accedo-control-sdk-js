@@ -2,7 +2,6 @@
 // The corresponding "public" functions can be found in: session.js
 
 import uuid from 'uuid';
-import { rawGetStatus } from './application';
 
 import { grab, post } from './apiHelper';
 
@@ -16,18 +15,12 @@ const getSession = (options) => {
 
 const updateSessionUuid = (options) => {
   const requestUrl = `${options.appGridUrl}/session`;
-  return post(requestUrl, options).then((response) => {
-    return response;
-  });
+  return post(requestUrl, options);
 };
 
 const validateSession = (options) => {
-  if (!options.sessionId) { return Promise.resolve(false); }
-  return rawGetStatus(options)
-    .then((response) => {
-      return !response.json.error;
-    })
-    .catch(() => false);
+  // just check there is a session id for now
+  return Promise.resolve(!!options.sessionId);
 };
 
 const generateUuid = () => uuid.v4();

@@ -1,8 +1,8 @@
 import { grab, post } from './apiHelper';
 import { getValidatedOptions } from './options';
 
-const applicationScopePath = 'user';
-const applicationGroupScopePath = 'group';
+const APPLICATION_SCOPE = 'user';
+const APPLICATION_GROUP_SCOPE = 'group';
 
 const getAllDataByUser = (options, scope, userName) => {
   return getValidatedOptions(options).then((validatedOptions) => {
@@ -36,18 +36,18 @@ const setUserDataByKey = (options, scope, userName, key, value) => {
   });
 };
 
-export const getAllApplicationScopeDataByUser = (options, userName) => getAllDataByUser(options, applicationScopePath, userName);
+export const getAllApplicationScopeDataByUser = (options, userName) => getAllDataByUser(options, APPLICATION_SCOPE, userName);
 
-export const getAllApplicationGroupScopeDataByUser = (options, userName) => getAllDataByUser(options, applicationGroupScopePath, userName);
+export const getAllApplicationGroupScopeDataByUser = (options, userName) => getAllDataByUser(options, APPLICATION_GROUP_SCOPE, userName);
 
-export const getApplicationScopeDataByUserAndKey = (options, userName, key) => getDataByUserAndKey(options, applicationScopePath, userName, key);
+export const getApplicationScopeDataByUserAndKey = (options, userName, key) => getDataByUserAndKey(options, APPLICATION_SCOPE, userName, key);
 
-export const getApplicationGroupScopeDataByUserAndKey = (options, userName, key) => getDataByUserAndKey(options, applicationGroupScopePath, userName, key);
+export const getApplicationGroupScopeDataByUserAndKey = (options, userName, key) => getDataByUserAndKey(options, APPLICATION_GROUP_SCOPE, userName, key);
 
-export const setApplicationScopeUserData = (options, userName, data) => setUserData(options, applicationScopePath, userName, data);
+export const setApplicationScopeUserData = (options, userName, data) => setUserData(options, APPLICATION_SCOPE, userName, data);
 
-export const setApplicationGroupScopeUserData = (options, userName, data) => setUserData(options, applicationGroupScopePath, userName, data);
+export const setApplicationGroupScopeUserData = (options, userName, data) => setUserData(options, APPLICATION_GROUP_SCOPE, userName, data);
 
-export const setApplicationScopeUserDataByKey = (options, userName, key, value) => setUserDataByKey(options, applicationScopePath, userName, key, value);
+export const setApplicationScopeUserDataByKey = (options, userName, key, value) => setUserDataByKey(options, APPLICATION_SCOPE, userName, key, value);
 
-export const setApplicationGroupScopeUserDataByKey = (options, userName, key, value) => setUserDataByKey(options, applicationGroupScopePath, userName, key, value);
+export const setApplicationGroupScopeUserDataByKey = (options, userName, key, value) => setUserDataByKey(options, APPLICATION_GROUP_SCOPE, userName, key, value);

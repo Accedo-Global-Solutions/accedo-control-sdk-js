@@ -133,21 +133,6 @@ var post = function post(url, options) {
   });
 };
 
-var rawGetStatus = function rawGetStatus(options) {
-  return grab(options.appGridUrl + '/status', options);
-};
-
-var getStatus = function getStatus(options) {
-  return getValidatedOptions(options).then(rawGetStatus);
-};
-
-
-
-var application = Object.freeze({
-  getStatus: getStatus,
-  rawGetStatus: rawGetStatus
-});
-
 var getSession = function getSession(options) {
   options.debugLogger('AppGrid: Requesting a new session for the following UUID: ' + options.uuid);
   var requestUrl = options.appGridUrl + '/session';
@@ -158,20 +143,12 @@ var getSession = function getSession(options) {
 
 var updateSessionUuid = function updateSessionUuid(options) {
   var requestUrl = options.appGridUrl + '/session';
-  return post(requestUrl, options).then(function (response) {
-    return response;
-  });
+  return post(requestUrl, options);
 };
 
 var validateSession = function validateSession(options) {
-  if (!options.sessionId) {
-    return Promise.resolve(false);
-  }
-  return rawGetStatus(options).then(function (response) {
-    return !response.json.error;
-  }).catch(function () {
-    return false;
-  });
+  // just check there is a session id for now
+  return Promise.resolve(!!options.sessionId);
 };
 
 var generateUuid = function generateUuid() {
@@ -206,16 +183,13 @@ var setDefaultOptionValueIfNeeded = function setDefaultOptionValueIfNeeded(optio
 
 var getDebugOutput = function getDebugOutput(options) {
   var noOp = function noOp() {};
-  if (!options || !options.debugLogger || typeof options.debugLogger !== 'function') {
+  if (!options || typeof options.debugLogger !== 'function') {
     return noOp;
   }
   return options.debugLogger;
 };
 
-var getNewSession = function getNewSession(options, failOnInvalidSession) {
-  if (failOnInvalidSession) {
-    throw new Error('This AppGrid API call requires a valid session!');
-  }
+var getNewSession = function getNewSession(options) {
   options.debugLogger('AppGrid: Requesting a new Session');
   return getSession(options).then(function (sessionId) {
     options.sessionId = sessionId;
@@ -229,7 +203,10 @@ var validateAndUpdateSessionIdIfNeeded = function validateAndUpdateSessionIdIfNe
   }
   return validateSession(options).then(function (isValid) {
     if (!isValid) {
-      return getNewSession(options, failOnInvalidSession);
+      if (failOnInvalidSession) {
+        throw new Error('This AppGrid API call requires a valid session!');
+      }
+      return getNewSession(options);
     }
     options.debugLogger('AppGrid: Session is valid.');
     return options;
@@ -237,22 +214,18 @@ var validateAndUpdateSessionIdIfNeeded = function validateAndUpdateSessionIdIfNe
 };
 
 var getValidatedOptions = function getValidatedOptions(options, isSessionValidationSkipped, failOnInvalidSession) {
-  return new Promise(function (resolve, reject) {
-    if (!options) {
-      reject(new Error('The options object was falsey'));
-      return;
-    }
-    options.debugLogger = getDebugOutput(options);
-    requiredOptions.forEach(function (option) {
-      return validateRequiredOption(options, option);
-    });
-    Object.keys(optionalOptionDefaults).forEach(function (option) {
-      return setDefaultOptionValueIfNeeded(options, option);
-    });
-    validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession).then(function (validatedOptions) {
-      resolve(validatedOptions);
-    }).catch(reject);
+  if (!options) {
+    return Promise.reject(new Error('The options object was falsey'));
+  }
+
+  options.debugLogger = getDebugOutput(options);
+  requiredOptions.forEach(function (option) {
+    return validateRequiredOption(options, option);
   });
+  Object.keys(optionalOptionDefaults).forEach(function (option) {
+    return setDefaultOptionValueIfNeeded(options, option);
+  });
+  return validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession);
 };
 
 var getAllAssets = function getAllAssets(options) {
@@ -329,27 +302,24 @@ var contentEntries = Object.freeze({
   getEntryById: getEntryById
 });
 
-var sendUsageStartEvent = function sendUsageStartEvent(options) {
+var sendUsageEvent = function sendUsageEvent(options, eventType, retentionTime) {
   return getValidatedOptions(options).then(function (validatedOptions) {
     var requestUrl = validatedOptions.appGridUrl + '/event/log';
-    var body = {
-      eventType: 'START'
-    };
-    validatedOptions.debugLogger('AppGrid: sendUsageStartEvent request: ' + requestUrl);
+    var body = { eventType: eventType };
+    if (retentionTime !== undefined) {
+      body.retentionTime = retentionTime;
+    }
+    validatedOptions.debugLogger('AppGrid: sendUsageEvent request: ' + eventType + ' | ' + retentionTime + ' | ' + requestUrl);
     return post(requestUrl, validatedOptions, body);
   });
 };
 
+var sendUsageStartEvent = function sendUsageStartEvent(options) {
+  return sendUsageEvent(options, 'START');
+};
+
 var sendUsageStopEvent = function sendUsageStopEvent(options, retentionTimeInSeconds) {
-  return getValidatedOptions(options).then(function (validatedOptions) {
-    var requestUrl = validatedOptions.appGridUrl + '/event/log';
-    var body = {
-      eventType: 'QUIT',
-      retentionTime: retentionTimeInSeconds
-    };
-    validatedOptions.debugLogger('AppGrid: sendUsageStopEvent request: ' + requestUrl);
-    return post(requestUrl, validatedOptions, body);
-  });
+  return sendUsageEvent(options, 'QUIT', retentionTimeInSeconds);
 };
 
 var events = Object.freeze({
@@ -542,8 +512,23 @@ var session = Object.freeze({
   generateUuid: generateUuid
 });
 
-var applicationScopePath = 'user';
-var applicationGroupScopePath = 'group';
+var rawGetStatus = function rawGetStatus(options) {
+  return grab(options.appGridUrl + '/status', options);
+};
+
+var getStatus = function getStatus(options) {
+  return getValidatedOptions(options).then(rawGetStatus);
+};
+
+
+
+var application = Object.freeze({
+  getStatus: getStatus,
+  rawGetStatus: rawGetStatus
+});
+
+var APPLICATION_SCOPE = 'user';
+var APPLICATION_GROUP_SCOPE = 'group';
 
 var getAllDataByUser = function getAllDataByUser(options, scope, userName) {
   return getValidatedOptions(options).then(function (validatedOptions) {
@@ -578,35 +563,35 @@ var setUserDataByKey = function setUserDataByKey(options, scope, userName, key, 
 };
 
 var getAllApplicationScopeDataByUser = function getAllApplicationScopeDataByUser(options, userName) {
-  return getAllDataByUser(options, applicationScopePath, userName);
+  return getAllDataByUser(options, APPLICATION_SCOPE, userName);
 };
 
 var getAllApplicationGroupScopeDataByUser = function getAllApplicationGroupScopeDataByUser(options, userName) {
-  return getAllDataByUser(options, applicationGroupScopePath, userName);
+  return getAllDataByUser(options, APPLICATION_GROUP_SCOPE, userName);
 };
 
 var getApplicationScopeDataByUserAndKey = function getApplicationScopeDataByUserAndKey(options, userName, key) {
-  return getDataByUserAndKey(options, applicationScopePath, userName, key);
+  return getDataByUserAndKey(options, APPLICATION_SCOPE, userName, key);
 };
 
 var getApplicationGroupScopeDataByUserAndKey = function getApplicationGroupScopeDataByUserAndKey(options, userName, key) {
-  return getDataByUserAndKey(options, applicationGroupScopePath, userName, key);
+  return getDataByUserAndKey(options, APPLICATION_GROUP_SCOPE, userName, key);
 };
 
 var setApplicationScopeUserData = function setApplicationScopeUserData(options, userName, data) {
-  return setUserData(options, applicationScopePath, userName, data);
+  return setUserData(options, APPLICATION_SCOPE, userName, data);
 };
 
 var setApplicationGroupScopeUserData = function setApplicationGroupScopeUserData(options, userName, data) {
-  return setUserData(options, applicationGroupScopePath, userName, data);
+  return setUserData(options, APPLICATION_GROUP_SCOPE, userName, data);
 };
 
 var setApplicationScopeUserDataByKey = function setApplicationScopeUserDataByKey(options, userName, key, value) {
-  return setUserDataByKey(options, applicationScopePath, userName, key, value);
+  return setUserDataByKey(options, APPLICATION_SCOPE, userName, key, value);
 };
 
 var setApplicationGroupScopeUserDataByKey = function setApplicationGroupScopeUserDataByKey(options, userName, key, value) {
-  return setUserDataByKey(options, applicationGroupScopePath, userName, key, value);
+  return setUserDataByKey(options, APPLICATION_GROUP_SCOPE, userName, key, value);
 };
 
 var userData = Object.freeze({
