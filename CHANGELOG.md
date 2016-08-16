@@ -4,6 +4,7 @@
 - MINOR: add Express-compatible middleware to handle the session propagation and re-creation on expiry
 - MAJOR: have APIs usable without the first options parameter, and a way to define them once for all successive calls
 - MINOR: validateSession may be able to check the session has expired or not before making any call ?
+- MINOR: add getEntryByTypeAlias when available in prod
 
 # in master, unreleased
 
