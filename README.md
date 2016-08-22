@@ -3,44 +3,6 @@
 ```
 *******************************************************************************
 
-    MMMMMMMMMMMMMMMMMMMMMMNNNhhyysyyyyyyyyyyyshhdNNNMMMMMMMMMMMMMMMMMMMMMM
-    MMMMMMMMMMMMMMMMMMNdhyysoooooooooooooooooooooosyyddNMMMMMMMMMMMMMMMMMM
-    MMMMMMMMMMMMMMMmmhysoooooooooooooooooooooooooooooosyhNNMMMMMMMMMMMMMMM
-    MMMMMMMMMMMMNmysoooooooooooooooooooooooooooooooooooooosymNMMMMMMMMMMMM
-    MMMMMMMMMMNhyooooooooooooooooooooooooooooooooooooooooooooyhNMMMMMMMMMM
-    MMMMMMMMNhsooooooooooooooooooooooooooooooooooooooooooooooooyhNMMMMMMMM
-    MMMMMMNhsooooooooooooooooooooooooooooooooooooooooooooooooooo+shNMMMMMM
-    MMMMMmyooooooooooooooooooooooooooooooooooooooooooooooooooooooooydMMMMM
-    MMMMsyoooooooooooooooooo+++oooooooooooooooo+++ooooooooooooooooooyyMMMM
-    MMMdyooooooooooooooo/-`     `-/oooooooo/-`     `-/oooooooooooooooyhMMM
-    MMhhoooooooooooooo+.           .+oooo+.           .+ooooooooooooooydMM
-    Mdhoooooooooooooo+`             `+oo+`             `+oooooooooooooohdM
-    Ndooooooooooooooo:               :oo:               /oooooooooooooooym
-    dyooooooooooooooo/               /oo:               /ooooooooooooooosm
-    hooooooooooooooooo.             .ooo/`             .oooooooooooooooood
-    doooooooooooooooooo:`         `:oo+.             `:ooooooooooooooooood
-    d+oooooooooooooooooo+/-.```.-/+o/.    `-/-.```.-/+oooooooooooooooooo+d
-    d+oooooooooooooooooooooooooooo/.    `:+oooooooooooooooooooooooossooo+d
-    d+oooooooooooooooooo+/-.```.-.    `:+oo+/-.```.-/+oooooooosssyyyyyoo+d
-    doooooooooooooooooo:`           `-+oo+:`         `:ooossyyys+:..sysood
-    hooooooooooooooooo.             .ooo+.         `.:+syyso/-`     -sysoy
-    myooooooooooooooo/               /oo:      .-/osyso/-`     .+o-  :syyd
-    myooooooooooooooo:               :oo: `-/osyyyyo.`    -/+` `oys.  /yyh
-    Mdhoooooooooooooo+`             `oosssyys+/-`/yy:     .syo` .sys`  /yy
-    MMdyoooooooooooooo+.        `.:+syyso/-`      +ys-     -yy+  .syo`.:sy
-    MMMhyooooooooooooooo/-. `-/osyysyy+`     /o+  `oys.     :yy/ `+yysyyyy
-    MMMMyyooooooooooooooossyyys+/-``+yy-     :sy/  `syo`    `oyysyyyshhdmN
-    MMMMMdyooooooooooosyyso/-`   `  `oys.     /so.  .syo.:+syyyssssydNNMMM
-    MMMMMMNysooooooooosyy-     `os+  .sys.     `   `-oyyyyyssooo+smNMMMMMM
-    MMMMMMMMNhyoooooooosys.     :yy/  .syo`     :+syyyssoooooooshdMMMMMMMM
-    MMMMMMMMMMNhyooooooosys`     /ys:  -sy+`    .syysooooooooshNMMMMMMMMMM
-    MMMMMMMMMMMMNmyooooooyyo      +ys:-+syy/`-/+syyysoooooyhmNMMMMMMMMMMMM
-    MMMMMMMMMMMMMMMNNyssooyy/   `-+yyyyyssyyyyyssooooossydNMMMMMMMMMMMMMMM
-    MMMMMMMMMMMMMMMMMMNmdyyyy++syyysssoooosssooooosyydmNMMMMMMMMMMMMMMMMMM
-    MMMMMMMMMMMMMMMMMMMMMNdyyyysyhyyyyyyyyyyhyyddddNMMMMMMMMMMMMMMMMMMMMMM
-
-
-
        $$$$$$\                       $$$$$$\            $$\       $$\
       $$  __$$\                     $$  __$$\           \__|      $$ |
       $$ /  $$ | $$$$$$\   $$$$$$\  $$ /  \__| $$$$$$\  $$\  $$$$$$$ |
@@ -57,7 +19,9 @@
 ```
 
 ## Summary
-This is the official Accedo AppGrid SDK for Node.js . While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with NodeJS; it also encourages the use of Best-Practices (for example: reusing the same SessionId as much as possible).
+This is the official Accedo AppGrid SDK for Node.js . While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with Node.js; it also encourages the use of Best Practices (for example: reusing the same SessionId for a client, but different clients for different devices).
+
+Check the CHANGELOG.md file to find out what changed between versions.
 
 ## Getting started
 
@@ -65,48 +29,57 @@ This is the official Accedo AppGrid SDK for Node.js . While AppGrid exposes a se
   * Run `npm install`
   * To run the examples, execute the following command: `npm run runExample`. **NOTE**: This will clean and rebuild the dist folder
 
-## How to use/Examples
+## How to use / examples
 Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
 
-#### Options object (required for each call)
-An options object must be passed to each AppGrid call. Here's an example (_refer to `example-es6.js` for more details_):
+#### Creating an AppGrid client instance
+An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
+
 ```javascript
-import AppGrid from 'appgrid';
+import appgridClientFactory from 'appgrid';
 
-const appGridOptions = {
-  // NOTE: The following properties are required
-  appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
-  appId: 'someValidAppGridApplicationId',
-  // NOTE: The following properties are optional
-  logLevel: 'info'
-  sessionId: '', // NOTE: It's ideal to store and reuse the sessionId as much as possible, however a new one will automatically be requested if needed or missing.
-  uuid: exampleUuid // NOTE: This value should be unique per end-user. If not provided, a new UUID will be generated for each request.
-};
-
-
+const client = agClientFactory({
+  appKey: 'YOUR_APPGRID_APPLICATION_KEY',
+  uuid: 'A_DEVICE_UUID',
+  // if there is already a session for this appKey/uuid tuple, provide it
+  sessionKey: 'AN_EXISTING_SESSION_KEY',
+  // gid can be passed as well, it will be used for all API calls
+  gid: 'SOME_GROUP_ID',
+  // turn on the SDK debug logs by adding a log function such as this one
+  // log(...args) { console.log(...args); },
+});
 ```
 
+You should create a new client for every device that needs to access the AppGrid APIs.
+
+**DO NOT** reuse a single client, in your Node server, to relay requests from various consumers.
+
+If you are triggering some AppGrid API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's uuid (typically you would persist a consumer uuid via the cookies, or as a request parameter in your server APIs).
+
 #### Get a new AppGrid SessionId
+
+This lets you manually create a new session, that will be stored for reuse onto this client instance.
+Note that any API call that needs a session will trigger this method implicitly if no session is attached to the client yet.
+
 ```javascript
-AppGrid.session.getSession(appGridOptions)
+client.createSession()
   .then((newSessionId) => {
     console.log(`\t\t Successfully requested a new Session from AppGrid.\n\t\t   SessionId: ${newSessionId}`);
-    appGridOptions.sessionId = newSessionId; // NOTE: Sessions should be reused as much as possible.
   })
   .catch((error) => {
-    console.error('Oops! There was an error while requesting a new Session from AppGrid!', error);
+    // TODO handle error
   });
 
 ```
 
 #### Get all AppGrid Metadata associated with your AppId
 ```javascript
-AppGrid.metadata.getAllMetadata(appGridOptions)
+client.getAllMetadata()
   .then((metadata) => {
     console.log('\t\t Successfully requested all metadata from AppGrid', metadata);
   })
   .catch((error) => {
-    logError('Oops! There was an error while requesting all metadata from AppGrid!', error);
+    // TODO handle error
   });
 ```
 
@@ -118,7 +91,7 @@ import { createWriteStream } from 'fs';
 const idToDownload = 'someValidAssetId';
 const fileName = `downloads/someFilename.png`;
 
-AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
+client.getAssetStreamById(idToDownload)
   .then((assetStream) => {
     return new Promise((resolve, reject) => {
       assetStream.pipe(createWriteStream(fileName))
@@ -130,7 +103,7 @@ AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
     console.log(`\t\t Successfully downloaded an asset by id from AppGrid.\n\t\t AssetId used: ${idToDownload}.\n\t\t Filename: ${fileName}`);
   })
   .catch((error) => {
-    console.error('Oops! There was an error while downloading an asset by id from AppGrid!', error);
+    // TODO handle error
   });
 ```
 
