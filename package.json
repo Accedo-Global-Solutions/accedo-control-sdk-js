@@ -20,7 +20,8 @@
     "prepublish": "npm run compile",
     "pretest": "npm run lintTest && rollup -c rollup.config.test.js",
     "test": "mocha --opts ./test/mocha.opts build/test-bundle.js",
-    "doc": "documentation build src/index.js --format md > API.md"
+    "docmd": "documentation build src/index.js -c doc_config.yml --format html -o htmldoc",
+    "doc": "documentation build src/index.js -c doc_config.yml --format md > API.md"
   },
   "repository": {
     "type": "git",

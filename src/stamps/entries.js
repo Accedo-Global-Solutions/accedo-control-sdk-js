@@ -28,16 +28,20 @@ function request(path, params) {
   return this.withSessionHandling(() => grab(pathWithQs, this.props.config));
 }
 
-/** @function client */
 const stamp = stampit()
 .methods({
   /**
    * Get all the content entries, based on the given parameters.
-   * params should contain any/several of { id, alias, preview, at, typeId, offset, size }
-   * do not use id, alias or typeId at the same time - behaviour would be ungaranteed
+   * **DO NOT** use several of id, alias and typeId at the same time - behaviour would be ungaranteed.
    * @param {object} [params] a parameters object
+   * @param {boolean} [params.preview] when true, get the preview version
+   * @param {string|date} [params.at] when given, get the version at the given time
+   * @param {array} [params.id] an array of entry ids (strings)
+   * @param {array} [params.alias] an array of entry aliases (strings)
+   * @param {string} [params.typeId] only return entries matching this type id
+   * @param {number|string} [params.size] limit to that many results per page (limits as per AppGrid API, currently 1 to 50, default 20)
+   * @param {number|string} [params.offset] offset the result by that many pages
    * @return {promise}  a promise of an array of entries (objects)
-   * @memberof client
    */
   getEntries(params) {
     return request.call(this, '/content/entries', params);
@@ -45,11 +49,11 @@ const stamp = stampit()
 
   /**
    * Get one content entry by id, based on the given parameters.
-   * params should contain any/several of { preview, at }
    * @param {string} id the entry id
    * @param {object} [params] a parameters object
+   * @param {boolean} [params.preview] when true, get the preview version
+   * @param {string|date} [params.at] when given, get the version at the given time
    * @return {promise}  a promise of an entry (object)
-   * @memberof client
    */
   getEntryById(id, params) {
     return request.call(this, `/content/entry/${id}`, params);
@@ -57,12 +61,11 @@ const stamp = stampit()
 
   /**
    * Get one content entry, based on the given parameters.
-   * params should contain any/several of { preview, at }
-   * do not use id, alias or typeId at the same time - behaviour would be ungaranteed
    * @param {object} alias the entry alias
    * @param {object} [params] a parameters object
+   * @param {boolean} [params.preview] when true, get the preview version
+   * @param {string|date} [params.at] when given, get the version at the given time
    * @return {promise}  a promise of an entry (object)
-   * @memberof client
    */
   getEntryByAlias(alias, params) {
     return request.call(this, `/content/entry/alias/${alias}`, params);

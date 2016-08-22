@@ -58,25 +58,28 @@ function postLog(level, log) {
   return this.withSessionHandling(() => post(`/application/log/${level}`, this.props.config, log));
 }
 
-/** @function client */
 const stamp = stampit()
 .methods({
   /**
    * Get the current log level
    * @return {promise}  a promise of the log level (string)
-   * @memberof client
    */
   getLogLevel() {
     return request.call(this, '/application/log/level').then(json => json.logLevel);
   },
   /**
-   * Send a log with the given level, details and extra metadata
-   * details should include { message, facilityCode, errorCode, dim1, dim2, dim3, dim4 }
+   * Send a log with the given level, details and extra metadata.
    * @param {string} level the log level
-   * @param {object} details the information about the log
+   * @param {object} details the log information
+   * @param {string} details.message the log message
+   * @param {string} details.facilityCode the facility code
+   * @param {errorCode} details.errorCode the error code
+   * @param {string} details.dim1 the dimension 1 information
+   * @param {string} details.dim2 the dimension 2 information
+   * @param {string} details.dim3 the dimension 3 information
+   * @param {string} details.dim4 the dimension 4 information
    * @param {array} [metadata] an array of extra metadata (will go through JSON.stringify)
    * @return {promise}  a promise of the success of the operation
-   * @memberof client
    */
   sendLog(level, details, ...metadata) {
     if (!LOG_LEVELS.includes(level)) { return Promise.reject('Unsupported log level'); }

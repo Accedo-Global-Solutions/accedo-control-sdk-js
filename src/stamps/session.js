@@ -1,14 +1,10 @@
 import stampit from 'stampit';
 import { grab } from '../apiHelper';
 
-/**
- * @function client
- */
 const stamp = stampit().methods({
   /**
    * Returns the currently stored sessionKey for this client instance
    * @return {string}  the sessionKey, if any
-   * @memberof client
    */
   getSessionKey() {
     return this.props.config.sessionKey;
@@ -17,7 +13,6 @@ const stamp = stampit().methods({
   /**
    * Create a session and store it for reuse in this client instance
    * @return {promise}  a promise of a string, the sessionKey
-   * @memberof client
    */
   createSession() {
     // ignore the potential existing session
@@ -38,7 +33,6 @@ const stamp = stampit().methods({
    * @private
    * @param {function} next a function that returns a promise
    * @return {promise}  a promise of the result of the next function
-   * @memberof client
    */
   withSessionHandling(next) {
     // existing session
