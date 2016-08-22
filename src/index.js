@@ -1,4 +1,7 @@
+import uuidLib from 'uuid';
 import stamp from './stamps/appgridClient';
+
+export { getCurrentTimeOfDayDimValue } from './stamps/appLog';
 
 const noop = () => {};
 
@@ -18,3 +21,5 @@ const factory = (config) => {
 };
 
 export default factory;
+
+export const generateUuid = () => uuidLib.v4();

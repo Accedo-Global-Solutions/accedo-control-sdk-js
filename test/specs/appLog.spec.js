@@ -1,5 +1,5 @@
 import chai from 'chai';
-import factory from '../../src';
+import factory from '../../src/index';
 import { getCurrentTimeOfDayDimValue } from '../../src/stamps/appLog';
 
 chai.should();

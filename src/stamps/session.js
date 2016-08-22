@@ -1,8 +1,5 @@
-import uuidLib from 'uuid';
 import stampit from 'stampit';
 import { grab } from '../apiHelper';
-
-export const generateUuid = () => uuidLib.v4();
 
 const stamp = stampit().methods({
   getSessionKey() {

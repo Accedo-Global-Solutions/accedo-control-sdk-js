@@ -1,12 +1,13 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('isomorphic-fetch'), require('qs'), require('uuid')) :
-  typeof define === 'function' && define.amd ? define(['isomorphic-fetch', 'qs', 'uuid'], factory) :
-  (global.appgrid = factory(global.fetch,global.qs,global.uuid));
-}(this, (function (fetch,qs,uuid) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('uuid'), require('stampit'), require('qs'), require('isomorphic-fetch')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'uuid', 'stampit', 'qs', 'isomorphic-fetch'], factory) :
+  (factory((global.appgrid = global.appgrid || {}),global.uuidLib,global.stampit,global.qs,global.fetch));
+}(this, (function (exports,uuidLib,stampit,qs,fetch) { 'use strict';
 
-  fetch = 'default' in fetch ? fetch['default'] : fetch;
+  uuidLib = 'default' in uuidLib ? uuidLib['default'] : uuidLib;
+  stampit = 'default' in stampit ? stampit['default'] : stampit;
   qs = 'default' in qs ? qs['default'] : qs;
-  uuid = 'default' in uuid ? uuid['default'] : uuid;
+  fetch = 'default' in fetch ? fetch['default'] : fetch;
 
   var _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -23,18 +24,9 @@
   };
 
   var MIME_TYPE_JSON = 'application/json';
+  var HOST = 'https://appgrid-api.cloud.accedo.tv';
   var credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
   var defaultHeaders = { accept: MIME_TYPE_JSON };
-
-  var extractJsonAndAddTimestamp = function extractJsonAndAddTimestamp(response) {
-    var time = Date.now();
-    return response.json().then(function (json) {
-      if (json.error && json.error.code !== '404') {
-        throw new Error('AppGrid GET Request Error. Code: ' + json.error.code + ' Message: ' + json.error.message + '. Status: ' + json.error.status);
-      }
-      return { time: time, json: json };
-    });
-  };
 
   var getForwardedForHeader = function getForwardedForHeader(_ref) {
     var clientIp = _ref.clientIp;
@@ -46,217 +38,133 @@
   };
 
   var getSessionHeader = function getSessionHeader(_ref2) {
-    var sessionId = _ref2.sessionId;
+    var sessionKey = _ref2.sessionKey;
 
-    if (!sessionId) {
+    if (!sessionKey) {
       return {};
     }
-    return { 'X-SESSION': sessionId };
-  };
-
-  var getNoCacheHeader = function getNoCacheHeader(_ref3) {
-    var noCache = _ref3.noCache;
-
-    if (!noCache) {
-      return {};
-    }
-    return { 'X-NO-CACHE': 'true' };
+    return { 'X-SESSION': sessionKey };
   };
 
   var getContentTypeHeader = function getContentTypeHeader() {
     return { 'Content-Type': MIME_TYPE_JSON };
   };
 
-  var getQueryString = function getQueryString(options) {
+  var getQueryString = function getQueryString(config) {
     var existingQs = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     var defaultQs = {
-      appKey: options.appId,
-      uuid: options.uuid
+      appKey: config.appKey,
+      uuid: config.uuid
     };
-    if (options.gid) {
-      defaultQs.gid = options.gid;
+    if (config.gid) {
+      defaultQs.gid = config.gid;
     }
     var qsObject = _extends({}, existingQs, defaultQs);
     var queryString = qs.stringify(qsObject);
     return queryString;
   };
 
-  var getRequestUrlWithQueryString = function getRequestUrlWithQueryString(url, options) {
-    var splitUrl = url.split('?');
-    var urlWithoutQs = splitUrl[0];
+  var getRequestUrlWithQueryString = function getRequestUrlWithQueryString(path, config) {
+    var splitUrl = path.split('?');
+    var pathWithoutQs = splitUrl[0];
     var existingQs = qs.parse(splitUrl[1]);
-    var queryString = getQueryString(options, existingQs);
-    return urlWithoutQs + '?' + queryString;
+    var queryString = getQueryString(config, existingQs);
+    return '' + HOST + pathWithoutQs + '?' + queryString;
   };
 
   var getExtraHeaders = function getExtraHeaders(options) {
-    return _extends({}, getForwardedForHeader(options), getSessionHeader(options), getNoCacheHeader(options));
+    return _extends({}, getForwardedForHeader(options), getSessionHeader(options));
   };
 
-  var getFetchRequest = function getFetchRequest(url, options) {
-    var headers = _extends({}, defaultHeaders, getExtraHeaders(options));
-    var requestUrl = getRequestUrlWithQueryString(url, options);
-    options.debugLogger('Sending a GET request to: ' + requestUrl + '. With the following headers: ', headers);
+  var getFetch = function getFetch(path, config) {
+    var headers = _extends({}, defaultHeaders, getExtraHeaders(config));
+    var requestUrl = getRequestUrlWithQueryString(path, config);
+    config.log('Sending a GET request to: ' + requestUrl + ' with the following headers', headers);
     return fetch(requestUrl, { credentials: credentials, headers: headers });
   };
 
-  var grab = function grab(url, options) {
-    return getFetchRequest(url, options).then(extractJsonAndAddTimestamp).then(function (response) {
-      options.debugLogger('GET response: ', response);
+  var grab = function grab(path, config) {
+    config.log('Requesting', path);
+    return getFetch(path, config).then(function (res) {
+      return res.json();
+    }).then(function (response) {
+      config.log('GET response', response);
       return response;
     });
   };
 
-  var grabRaw = function grabRaw(url, options) {
-    return getFetchRequest(url, options).then(function (response) {
+  var grabRaw = function grabRaw(path, config) {
+    return getFetch(path, config).then(function (response) {
       return response.body;
     });
   };
 
-  var post = function post(url, options) {
+  var post = function post(path, config) {
     var body = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-    var headers = _extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(options));
-    var requestUrl = getRequestUrlWithQueryString(url, options);
-    options.debugLogger('Sending a POST request to: ' + requestUrl + '. With the following headers and body: ', headers, body);
-    var requestOptions = {
+    var headers = _extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(config));
+    var requestUrl = getRequestUrlWithQueryString(path, config);
+    config.log('Sending a POST request to: ' + requestUrl + '. With the following headers and body: ', headers, body);
+    var options = {
       headers: headers,
       credentials: credentials,
       method: 'post',
       body: JSON.stringify(body)
     };
-    return fetch(requestUrl, requestOptions).then(function (_ref4) {
-      var status = _ref4.status;
-      var statusText = _ref4.statusText;
+    return fetch(requestUrl, options).then(function (_ref3) {
+      var status = _ref3.status;
+      var statusText = _ref3.statusText;
 
       if (status !== 200) {
         throw new Error('AppGrid POST request returned a non-200 response. Status Code: ' + status + '. Status Text: ' + statusText);
       }
       var result = { status: status, statusText: statusText };
-      options.debugLogger('POST response: ', result);
+      config.log('POST response: ', { status: status, statusText: statusText });
       return result;
     });
   };
 
-  var getSession = function getSession(options) {
-    options.debugLogger('AppGrid: Requesting a new session for the following UUID: ' + options.uuid);
-    var requestUrl = options.appGridUrl + '/session';
-    return grab(requestUrl, options).then(function (response) {
-      return response.json.sessionKey;
-    });
-  };
+  var stamp$2 = stampit().methods({
+    getSessionKey: function getSessionKey() {
+      return this.props.config.sessionKey;
+    },
+    createSession: function createSession() {
+      var _this = this;
 
-  var updateSessionUuid = function updateSessionUuid(options) {
-    var requestUrl = options.appGridUrl + '/session';
-    return post(requestUrl, options);
-  };
+      // ignore the potential existing session
+      this.props.config.sessionKey = null;
+      return grab('/session', this.props.config).then(function (json) {
+        var sessionKey = json.sessionKey;
+        // update the context of this client, adding the session key
 
-  var validateSession = function validateSession(options) {
-    // just check there is a session id for now
-    return Promise.resolve(!!options.sessionId);
-  };
+        _this.props.config.sessionKey = sessionKey;
+        return sessionKey;
+      });
+    },
+    withSessionHandling: function withSessionHandling(next) {
+      var _this2 = this;
 
-  var generateUuid = function generateUuid() {
-    return uuid.v4();
-  };
+      // existing session
+      if (this.getSessionKey()) {
+        return next().then(function (json) {
+          var error = json.error;
 
-  var requiredOptions = ['appGridUrl', 'appId'];
-
-  var optionalOptionDefaults = {
-    logLevel: 'info',
-    uuid: function uuid() {
-      return generateUuid();
-    }
-  };
-
-  var validateRequiredOption = function validateRequiredOption(options, option) {
-    if (options[option]) {
-      return;
-    }
-    var errorMessage = 'AppGrid Fatal Error: Required option: ' + option + ' was not found.';
-    throw new Error(errorMessage);
-  };
-
-  var setDefaultOptionValueIfNeeded = function setDefaultOptionValueIfNeeded(options, option) {
-    if (options[option]) {
-      return;
-    }
-    var defaultOption = optionalOptionDefaults[option];
-    options[option] = typeof defaultOption === 'function' ? defaultOption() : defaultOption;
-    options.debugLogger('AppGrid: Default value of: ' + options[option] + ' was used for: ' + option);
-  };
-
-  var getDebugOutput = function getDebugOutput(options) {
-    var noOp = function noOp() {};
-    if (!options || typeof options.debugLogger !== 'function') {
-      return noOp;
-    }
-    return options.debugLogger;
-  };
-
-  var getNewSession = function getNewSession(options) {
-    options.debugLogger('AppGrid: Requesting a new Session');
-    return getSession(options).then(function (sessionId) {
-      options.sessionId = sessionId;
-      return options;
-    });
-  };
-
-  var validateAndUpdateSessionIdIfNeeded = function validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession) {
-    if (isSessionValidationSkipped) {
-      return Promise.resolve(options);
-    }
-    return validateSession(options).then(function (isValid) {
-      if (!isValid) {
-        if (failOnInvalidSession) {
-          throw new Error('This AppGrid API call requires a valid session!');
-        }
-        return getNewSession(options);
+          if (error && error.status === '401') {
+            // expired - recreate one
+            return _this2.createSession().then(next);
+          }
+          // otherwise keep going
+          return json;
+        });
       }
-      options.debugLogger('AppGrid: Session is valid.');
-      return options;
-    });
-  };
-
-  var getValidatedOptions = function getValidatedOptions(options, isSessionValidationSkipped, failOnInvalidSession) {
-    if (!options) {
-      return Promise.reject(new Error('The options object was falsey'));
+      // no session - create it first, then launch the next action
+      return this.createSession().then(next);
     }
-
-    options.debugLogger = getDebugOutput(options);
-    requiredOptions.forEach(function (option) {
-      return validateRequiredOption(options, option);
-    });
-    Object.keys(optionalOptionDefaults).forEach(function (option) {
-      return setDefaultOptionValueIfNeeded(options, option);
-    });
-    return validateAndUpdateSessionIdIfNeeded(options, isSessionValidationSkipped, failOnInvalidSession);
-  };
-
-  var getAllAssets = function getAllAssets(options) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/asset';
-      validatedOptions.debugLogger('AppGrid: getAllAssets request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
-    });
-  };
-
-  var getAssetStreamById = function getAssetStreamById(id, options) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/asset/' + id;
-      validatedOptions.debugLogger('AppGrid: getAssetStreamById request: ' + requestUrl);
-      return grabRaw(requestUrl, validatedOptions);
-    });
-  };
-
-var assets = Object.freeze({
-    getAllAssets: getAllAssets,
-    getAssetStreamById: getAssetStreamById
   });
 
-  var getRequestUrl = function getRequestUrl(url, path) {
-    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+  function getPathWithQs(path) {
+    var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
     var id = params.id;
     var typeId = params.typeId;
     var alias = params.alias;
@@ -286,123 +194,120 @@ var assets = Object.freeze({
     }
     // Add curated and non-curated params
     var queryString = qs.stringify(_extends({}, qsParams, { typeId: typeId, offset: offset, size: size }));
-    return url + '/' + path + '?' + queryString;
-  };
+    return path + '?' + queryString;
+  }
 
-  var validateAndRequest = function validateAndRequest(opts, path, params) {
-    return getValidatedOptions(opts).then(function (options) {
-      var requestUrl = getRequestUrl(options.appGridUrl, path, params);
-      options.debugLogger('AppGrid request: ' + requestUrl);
-      return grab(requestUrl, options);
+  function request(path, params) {
+    var _this = this;
+
+    var pathWithQs = getPathWithQs(path, params);
+    return this.withSessionHandling(function () {
+      return grab(pathWithQs, _this.props.config);
     });
-  };
+  }
 
-  // params should contain any/several of { id, alias, preview, at, typeId, offset, size }
-  // do not use id, alias or typeId at the same time - behaviour would be ungaranteed
-  var getEntries = function getEntries(opts, params) {
-    return validateAndRequest(opts, 'content/entries', params);
-  };
+  var stamp$1 = stampit().methods({
+    // params should contain any/several of { id, alias, preview, at, typeId, offset, size }
+    // do not use id, alias or typeId at the same time - behaviour would be ungaranteed
 
-  // params should contain any/several of { preview, at }
-  var getEntryById = function getEntryById(opts, id, params) {
-    return validateAndRequest(opts, 'content/entry/' + id, params);
-  };
-
-  // params should contain any/several of { preview, at }
-  var getEntryByAlias = function getEntryByAlias(opts, alias, params) {
-    return validateAndRequest(opts, 'content/entry/alias/' + alias, params);
-  };
+    getEntries: function getEntries(params) {
+      return request.call(this, '/content/entries', params);
+    },
 
 
+    // params should contain any/several of { preview, at }
+    getEntryById: function getEntryById(id, params) {
+      return request.call(this, '/content/entry/' + id, params);
+    },
 
-  var contentEntries = Object.freeze({
-    getEntries: getEntries,
-    getEntryById: getEntryById,
-    getEntryByAlias: getEntryByAlias
-  });
 
-  var sendUsageEvent = function sendUsageEvent(options, eventType, retentionTime) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/event/log';
-      var body = { eventType: eventType };
-      if (retentionTime !== undefined) {
-        body.retentionTime = retentionTime;
-      }
-      validatedOptions.debugLogger('AppGrid: sendUsageEvent request: ' + eventType + ' | ' + retentionTime + ' | ' + requestUrl);
-      return post(requestUrl, validatedOptions, body);
+    // params should contain any/several of { preview, at }
+    getEntryByAlias: function getEntryByAlias(alias, params) {
+      return request.call(this, '/content/entry/alias/' + alias, params);
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
+
+  var stamp$3 = stampit().methods({
+    getApplicationStatus: function getApplicationStatus() {
+      var _this = this;
+
+      return this.withSessionHandling(function () {
+        return grab('/status', _this.props.config);
+      });
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
+
+  var stamp$4 = stampit().methods({
+    getAllAssets: function getAllAssets() {
+      var _this = this;
+
+      return this.withSessionHandling(function () {
+        return grab('/asset', _this.props.config);
+      });
+    },
+    getAssetStreamById: function getAssetStreamById(id) {
+      // note this method does not need a session
+      return grabRaw('/asset/' + id, this.props.config);
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
+
+  function sendUsageEvent(eventType, retentionTime) {
+    var _this = this;
+
+    var payload = { eventType: eventType };
+    if (retentionTime !== undefined) {
+      payload.retentionTime = retentionTime;
+    }
+    return this.withSessionHandling(function () {
+      return post('/event/log', _this.props.config, payload);
     });
-  };
+  }
 
-  var sendUsageStartEvent = function sendUsageStartEvent(options) {
-    return sendUsageEvent(options, 'START');
-  };
+  var stamp$5 = stampit().methods({
+    sendUsageStartEvent: function sendUsageStartEvent() {
+      return sendUsageEvent.call(this, 'START');
+    },
+    sendUsageStopEvent: function sendUsageStopEvent(retentionTimeInSeconds) {
+      return sendUsageEvent.call(this, 'QUIT', retentionTimeInSeconds);
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
 
-  var sendUsageStopEvent = function sendUsageStopEvent(options, retentionTimeInSeconds) {
-    return sendUsageEvent(options, 'QUIT', retentionTimeInSeconds);
-  };
+  var DEBUG = 'debug';
+  var INFO = 'info';
+  var WARN = 'warn';
+  var ERROR = 'error';
 
-var events = Object.freeze({
-    sendUsageStartEvent: sendUsageStartEvent,
-    sendUsageStopEvent: sendUsageStopEvent
-  });
-
-  var logLevelNamesToNumbers = {
-    debug: 0,
-    info: 1,
-    warn: 2,
-    error: 3,
-    off: 10
-  };
+  var LOG_LEVELS = [DEBUG, INFO, WARN, ERROR];
 
   var getConcatenatedCode = function getConcatenatedCode() {
     var facilityCode = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
     var errorCode = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-    return parseInt('' + facilityCode + errorCode);
+    return parseInt('' + facilityCode + errorCode, 10);
   };
 
-  var getCurrentTimeOfDayDimValue = function getCurrentTimeOfDayDimValue() {
-    var currentHour = new Date().getHours();
-    var result = void 0;
-    if (currentHour >= 1 && currentHour <= 5) {
-      result = '01-05'; // NOTE: These strings are expected by AppGrid...
-    } else if (currentHour >= 5 && currentHour <= 9) {
-        result = '05-09';
-      } else if (currentHour >= 9 && currentHour <= 13) {
-        result = '09-13';
-      } else if (currentHour >= 13 && currentHour <= 17) {
-        result = '13-17';
-      } else if (currentHour >= 17 && currentHour <= 21) {
-        result = '17-21';
-      } else if (currentHour >= 21 || currentHour < 1) {
-        result = '21-01';
-      }
-    return result;
-  };
-
-  var errorTransformer = function errorTransformer(key, val) {
-    return !(val instanceof Error) ? val : val.name + ': ' + val.message + ' | ' + val.stack;
-  };
-
-  var getLogMessage = function getLogMessage(message, metadataObjects) {
-    var logMessage = message;
-    if (metadataObjects.length) {
-      logMessage += '| Metadata: ' + JSON.stringify(metadataObjects, errorTransformer);
-    }
-    return logMessage;
+  var getLogMessage = function getLogMessage(message, metadata) {
+    return message + (!metadata ? '' : ' | Metadata: ' + JSON.stringify(metadata));
   };
 
   var getLogEvent = function getLogEvent() {
-    var logEventOptions = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-    var metadataObjects = arguments[1];
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var metadata = arguments[1];
 
-    var message = getLogMessage(logEventOptions.message, metadataObjects);
-    var code = getConcatenatedCode(logEventOptions.facilityCode, logEventOptions.errorCode);
+    var message = getLogMessage(options.message, metadata);
+    var code = getConcatenatedCode(options.facilityCode, options.errorCode);
     var dimensions = {
-      dim1: logEventOptions.dim1,
-      dim2: logEventOptions.dim2,
-      dim3: logEventOptions.dim3,
-      dim4: logEventOptions.dim4
+      dim1: options.dim1,
+      dim2: options.dim2,
+      dim3: options.dim3,
+      dim4: options.dim4
     };
     return {
       code: code,
@@ -411,238 +316,208 @@ var events = Object.freeze({
     };
   };
 
-  var getLogLevel = function getLogLevel(options) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/application/log/level';
-      return grab(requestUrl, options).then(function (response) {
-        return response.json.logLevel;
+  var getCurrentTimeOfDayDimValue = function getCurrentTimeOfDayDimValue() {
+    var hour = new Date().getHours();
+    // NOTE: These strings are expected by AppGrid
+    switch (true) {
+      case hour >= 1 && hour < 5:
+        return '01-05';
+      case hour >= 5 && hour < 9:
+        return '05-09';
+      case hour >= 9 && hour < 13:
+        return '09-13';
+      case hour >= 13 && hour < 17:
+        return '13-17';
+      case hour >= 17 && hour < 21:
+        return '17-21';
+      default:
+        return '21-01';
+    }
+  };
+
+  function request$1(path) {
+    var _this = this;
+
+    return this.withSessionHandling(function () {
+      return grab(path, _this.props.config);
+    });
+  }
+
+  function postLog(level, log) {
+    var _this2 = this;
+
+    return this.withSessionHandling(function () {
+      return post('/application/log/' + level, _this2.props.config, log);
+    });
+  }
+
+  var stamp$6 = stampit().methods({
+    getLogLevel: function getLogLevel() {
+      return request$1.call(this, '/application/log/level').then(function (json) {
+        return json.logLevel;
       });
+    },
+    sendLog: function sendLog(level, options) {
+      if (!LOG_LEVELS.includes(level)) {
+        return Promise.reject('Unsupported log level');
+      }
+
+      for (var _len = arguments.length, metadata = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+        metadata[_key - 2] = arguments[_key];
+      }
+
+      var log = getLogEvent(options, metadata);
+      return postLog.call(this, level, log);
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
+
+  var stamp$7 = stampit().methods({
+    getAllEnabledPlugins: function getAllEnabledPlugins() {
+      var _this = this;
+
+      return this.withSessionHandling(function () {
+        return grab('/plugins', _this.props.config);
+      });
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
+
+  var stamp$8 = stampit().methods({
+    getProfileInfo: function getProfileInfo() {
+      var _this = this;
+
+      return this.withSessionHandling(function () {
+        return grab('/profile', _this.props.config);
+      });
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
+
+  function request$2(path) {
+    var _this = this;
+
+    return this.withSessionHandling(function () {
+      return grab(path, _this.props.config);
     });
-  };
+  }
 
-  var sendEvent = function sendEvent(options, level, event) {
-    var requestUrl = options.appGridUrl + '/application/log/' + level;
-    options.debugLogger('AppGrid: sendEvent request: ' + requestUrl);
-    return post(requestUrl, options, event);
-  };
-
-  var mapLogLevelNamesToFunctions = function mapLogLevelNamesToFunctions() {
-    return Object.keys(logLevelNamesToNumbers).reduce(function (accumulator, current) {
-      if (current === 'off') {
-        return accumulator;
-      } // We don't want a function for 'off'
-      accumulator[current] = function (options, logEventOptions) {
-        for (var _len = arguments.length, metadata = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-          metadata[_key - 2] = arguments[_key];
-        }
-
-        return getValidatedOptions(options).then(function (validatedOptions) {
-          var currentLogLevel = logLevelNamesToNumbers[validatedOptions.logLevel];
-          if (currentLogLevel > logLevelNamesToNumbers[current]) {
-            return;
-          }
-          var logEvent = getLogEvent(logEventOptions, metadata);
-          validatedOptions.debugLogger('Sending AppGrid log message:', logEvent);
-          return sendEvent(validatedOptions, current, logEvent);
-        });
-      };
-      return accumulator;
-    }, {});
-  };
-
-  var logger = mapLogLevelNamesToFunctions();
-
-  var getAllMetadata = function getAllMetadata(options) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/metadata';
-      validatedOptions.debugLogger('AppGrid: getAllMetadata request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
-    });
-  };
-
-  var getMetadataByKey = function getMetadataByKey(options, key) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/metadata/' + key;
-      validatedOptions.debugLogger('AppGrid: getMetadataByKey request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
-    });
-  };
-
-  var getMetadataByKeys = function getMetadataByKeys(options, keys) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/metadata/' + keys.join(',');
-      validatedOptions.debugLogger('AppGrid: getMetadataByKeys request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
-    });
-  };
-
-var metadata = Object.freeze({
-    getAllMetadata: getAllMetadata,
-    getMetadataByKey: getMetadataByKey,
-    getMetadataByKeys: getMetadataByKeys
-  });
-
-  var getProfileInfo = function getProfileInfo(options) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/profile';
-      validatedOptions.debugLogger('AppGrid: getProfileInfo request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
-    });
-  };
-
-var profile = Object.freeze({
-    getProfileInfo: getProfileInfo
-  });
-
-  var getAllEnabledPlugins = function getAllEnabledPlugins(options) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/plugins';
-      validatedOptions.debugLogger('AppGrid: getAllEnabledPlugins request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
-    });
-  };
-
-var plugins = Object.freeze({
-    getAllEnabledPlugins: getAllEnabledPlugins
-  });
-
-  var invokeSessionHelperFunctionWithValidatedOptions = function invokeSessionHelperFunctionWithValidatedOptions(options, helperFunction, isSessionValidationSkipped, failOnInvalidSession) {
-    return getValidatedOptions(options, isSessionValidationSkipped, failOnInvalidSession).then(function (validatedOptions) {
-      return helperFunction(validatedOptions);
-    });
-  };
-
-  var getSession$1 = function getSession$$(options) {
-    return invokeSessionHelperFunctionWithValidatedOptions(options, getSession, true);
-  };
-  var validateSession$1 = function validateSession$$(options) {
-    return invokeSessionHelperFunctionWithValidatedOptions(options, validateSession, true);
-  };
-  var updateSessionUuid$1 = function updateSessionUuid$$(options) {
-    return invokeSessionHelperFunctionWithValidatedOptions(options, updateSessionUuid, false, true);
-  };
-
-
-
-  var session = Object.freeze({
-    getSession: getSession$1,
-    updateSessionUuid: updateSessionUuid$1,
-    validateSession: validateSession$1,
-    generateUuid: generateUuid
-  });
-
-  var rawGetStatus = function rawGetStatus(options) {
-    return grab(options.appGridUrl + '/status', options);
-  };
-
-  var getStatus = function getStatus(options) {
-    return getValidatedOptions(options).then(rawGetStatus);
-  };
-
-
-
-  var application = Object.freeze({
-    getStatus: getStatus,
-    rawGetStatus: rawGetStatus
-  });
+  var stamp$9 = stampit().methods({
+    getAllMetadata: function getAllMetadata() {
+      return request$2.call(this, '/metadata');
+    },
+    getMetadataByKey: function getMetadataByKey(key) {
+      return request$2.call(this, '/metadata/' + key);
+    },
+    getMetadataByKeys: function getMetadataByKeys(keys) {
+      return request$2.call(this, '/metadata/' + keys.join(','));
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
 
   var APPLICATION_SCOPE = 'user';
   var APPLICATION_GROUP_SCOPE = 'group';
 
-  var getAllDataByUser = function getAllDataByUser(options, scope, userName) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/' + scope + '/' + userName;
-      validatedOptions.debugLogger('AppGrid: getAllDataByUser request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
+  function requestGet(path) {
+    var _this = this;
+
+    return this.withSessionHandling(function () {
+      return grab(path, _this.props.config);
+    });
+  }
+
+  function requestPost(path, data) {
+    var _this2 = this;
+
+    return this.withSessionHandling(function () {
+      return post(path, _this2.props.config, data);
+    });
+  }
+
+  function getAllDataByUser(scope, userName) {
+    return requestGet.call(this, '/' + scope + '/' + userName);
+  }
+
+  function getDataByUserAndKey(scope, userName, key) {
+    return requestGet.call(this, '/' + scope + '/' + userName + '/' + key + '?json=true');
+  }
+
+  function setUserData(scope, userName, data) {
+    return requestPost.call(this, '/' + scope + '/' + userName, data);
+  }
+
+  function setUserDataByKey(scope, userName, key, data) {
+    return requestPost.call(this, '/' + scope + '/' + userName + '/' + key, data);
+  }
+
+  var stamp$10 = stampit().methods({
+    getAllApplicationScopeDataByUser: function getAllApplicationScopeDataByUser(userName) {
+      return getAllDataByUser.call(this, APPLICATION_SCOPE, userName);
+    },
+    getAllApplicationGroupScopeDataByUser: function getAllApplicationGroupScopeDataByUser(userName) {
+      return getAllDataByUser.call(this, APPLICATION_GROUP_SCOPE, userName);
+    },
+    getApplicationScopeDataByUserAndKey: function getApplicationScopeDataByUserAndKey(userName, key) {
+      return getDataByUserAndKey.call(this, APPLICATION_SCOPE, userName, key);
+    },
+    getApplicationGroupScopeDataByUserAndKey: function getApplicationGroupScopeDataByUserAndKey(userName, key) {
+      return getDataByUserAndKey.call(this, APPLICATION_GROUP_SCOPE, userName, key);
+    },
+    setApplicationScopeUserData: function setApplicationScopeUserData(userName, data) {
+      return setUserData.call(this, APPLICATION_SCOPE, userName, data);
+    },
+    setApplicationGroupScopeUserData: function setApplicationGroupScopeUserData(userName, data) {
+      return setUserData.call(this, APPLICATION_GROUP_SCOPE, userName, data);
+    },
+    setApplicationScopeUserDataByKey: function setApplicationScopeUserDataByKey(userName, key, value) {
+      return setUserDataByKey.call(this, APPLICATION_SCOPE, userName, key, value);
+    },
+    setApplicationGroupScopeUserDataByKey: function setApplicationGroupScopeUserDataByKey(userName, key, value) {
+      return setUserDataByKey.call(this, APPLICATION_GROUP_SCOPE, userName, key, value);
+    }
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(stamp$2);
+
+  var stamp = stampit().compose(stamp$2, stamp$1, stamp$3, stamp$4, stamp$5, stamp$6, stamp$7, stamp$8, stamp$9, stamp$10);
+
+  var noop = function noop() {};
+
+  // an AppGrid Client is usable if there is a known sessionKey or both an uuid and an appKey
+  var checkUsability = function checkUsability() {
+    var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    return !!config.sessionKey || config.uuid && config.appKey;
+  };
+
+  var factory = function factory(config) {
+    var uuid = config.uuid;
+    var gid = config.gid;
+    var appKey = config.appKey;
+    var sessionKey = config.sessionKey;
+    var _config$log = config.log;
+    var log = _config$log === undefined ? noop : _config$log;
+
+    if (!checkUsability(config)) {
+      throw new Error('You must provide at least a sessionKey, or both a uuid and an appKey');
+    }
+
+    return stamp({
+      props: { config: { uuid: uuid, gid: gid, appKey: appKey, sessionKey: sessionKey, log: log } }
     });
   };
 
-  var getDataByUserAndKey = function getDataByUserAndKey(options, scope, userName, key) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/' + scope + '/' + userName + '/' + key + '?json=true';
-      validatedOptions.debugLogger('AppGrid: getDataByUserAndKey request: ' + requestUrl);
-      return grab(requestUrl, validatedOptions);
-    });
+  var generateUuid = function generateUuid() {
+    return uuidLib.v4();
   };
 
-  var setUserData = function setUserData(options, scope, userName, data) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/' + scope + '/' + userName;
-      validatedOptions.debugLogger('AppGrid: setUserData request: ' + requestUrl);
-      return post(requestUrl, validatedOptions, data);
-    });
-  };
+  exports['default'] = factory;
+  exports.generateUuid = generateUuid;
+  exports.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
 
-  var setUserDataByKey = function setUserDataByKey(options, scope, userName, key, value) {
-    return getValidatedOptions(options).then(function (validatedOptions) {
-      var requestUrl = validatedOptions.appGridUrl + '/' + scope + '/' + userName + '/' + key;
-      validatedOptions.debugLogger('AppGrid: setUserDataByKey request: ' + requestUrl);
-      return post(requestUrl, validatedOptions, value);
-    });
-  };
-
-  var getAllApplicationScopeDataByUser = function getAllApplicationScopeDataByUser(options, userName) {
-    return getAllDataByUser(options, APPLICATION_SCOPE, userName);
-  };
-
-  var getAllApplicationGroupScopeDataByUser = function getAllApplicationGroupScopeDataByUser(options, userName) {
-    return getAllDataByUser(options, APPLICATION_GROUP_SCOPE, userName);
-  };
-
-  var getApplicationScopeDataByUserAndKey = function getApplicationScopeDataByUserAndKey(options, userName, key) {
-    return getDataByUserAndKey(options, APPLICATION_SCOPE, userName, key);
-  };
-
-  var getApplicationGroupScopeDataByUserAndKey = function getApplicationGroupScopeDataByUserAndKey(options, userName, key) {
-    return getDataByUserAndKey(options, APPLICATION_GROUP_SCOPE, userName, key);
-  };
-
-  var setApplicationScopeUserData = function setApplicationScopeUserData(options, userName, data) {
-    return setUserData(options, APPLICATION_SCOPE, userName, data);
-  };
-
-  var setApplicationGroupScopeUserData = function setApplicationGroupScopeUserData(options, userName, data) {
-    return setUserData(options, APPLICATION_GROUP_SCOPE, userName, data);
-  };
-
-  var setApplicationScopeUserDataByKey = function setApplicationScopeUserDataByKey(options, userName, key, value) {
-    return setUserDataByKey(options, APPLICATION_SCOPE, userName, key, value);
-  };
-
-  var setApplicationGroupScopeUserDataByKey = function setApplicationGroupScopeUserDataByKey(options, userName, key, value) {
-    return setUserDataByKey(options, APPLICATION_GROUP_SCOPE, userName, key, value);
-  };
-
-var userData = Object.freeze({
-    getAllApplicationScopeDataByUser: getAllApplicationScopeDataByUser,
-    getAllApplicationGroupScopeDataByUser: getAllApplicationGroupScopeDataByUser,
-    getApplicationScopeDataByUserAndKey: getApplicationScopeDataByUserAndKey,
-    getApplicationGroupScopeDataByUserAndKey: getApplicationGroupScopeDataByUserAndKey,
-    setApplicationScopeUserData: setApplicationScopeUserData,
-    setApplicationGroupScopeUserData: setApplicationGroupScopeUserData,
-    setApplicationScopeUserDataByKey: setApplicationScopeUserDataByKey,
-    setApplicationGroupScopeUserDataByKey: setApplicationGroupScopeUserDataByKey
-  });
-
-  var logUtils = {
-    getCurrentTimeOfDayDimValue: getCurrentTimeOfDayDimValue,
-    getLogLevel: getLogLevel
-  };
-
-  var api = {
-    assets: assets,
-    contentEntries: contentEntries,
-    events: events,
-    logger: logger,
-    logUtils: logUtils,
-    metadata: metadata,
-    profile: profile,
-    plugins: plugins,
-    session: session,
-    application: application,
-    userData: userData
-  };
-
-  return api;
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
