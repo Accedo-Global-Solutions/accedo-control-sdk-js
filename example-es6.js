@@ -1,42 +1,21 @@
-/* eslint-disable no-console, no-unused-expressions, import/no-unresolved, import/no-extraneous-dependencies */
+/* eslint-disable no-console, import/no-unresolved, import/no-extraneous-dependencies */
 
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
-import AppGrid from './dist/bundle.es6'; // NOTE: this would normally be: import AppGrid from 'appgrid';
-
-/* // NOTE: Uncomment this block, and the 'debugLogger' line inside of the appGridOptions, below in order to show debug logs in the console.
-const debugLogger = (message, ...metadata) => {
-  console.log(chalk.bgBlack.white(`\t\tAppGrid DEBUG: ${message} `), ...metadata);
-};
-*/
+import agClientFactory, { generateUuid, getCurrentTimeOfDayDimValue } from './dist/bundle.es6'; // NOTE: this would normally be: import AppGrid from 'appgrid';
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
 };
 
-const exampleUuid = AppGrid.session.generateUuid();
+const exampleUuid = generateUuid();
 const downloadsDirectoryName = 'downloads';
 
-const appGridOptions = {
-  // NOTE: The following properties are required
-  appGridUrl: 'https://appgrid-api.cloud.accedo.tv',
-  appId: '56ea6a370db1bf032c9df5cb',
-
-  // NOTE: The following properties are optional
-  logLevel: 'info', // This will default to: 'info' if not provided
-  /* Here are the possible values for logLevel (NOTE: there is a corresponding AppGrid.logger.'level' function for each, apart from 'off') :
-     debug,
-     info,
-     warn,
-     error,
-     off
-  */
-  clientIp: '', // NOTE: If provided, this value will be inserted into the X-FORWARDED-FOR header for all AppGrid API Calls
-  sessionId: '', // NOTE: It's ideal to store and reuse the sessionId as much as possible, however a new one will automatically be requested if needed or missing.
-  gid: '', // NOTE: Refer to the AppGrid documentation on how to optionally make use of a GID.
-  uuid: exampleUuid // NOTE: This value should be unique per end-user. If not provided, a new UUID will be generated for each request.
-  // debugLogger // NOTE: This is for capturing any debug messages from the AppGrid library. If not defined, a no-op will be used instead.
-};
+const client = agClientFactory({
+  appKey: '56ea6a370db1bf032c9df5cb',
+  uuid: exampleUuid,
+  // log(...args) { console.log(...args); },
+});
 
 const logExampleCategoryHeader = (message) => {
   console.log();
@@ -63,7 +42,7 @@ const exampleAppGridLogging = () => {
       dim1: middlewareSourceCode,
       dim2: noneViewName,
       dim3: deviceType,
-      dim4: AppGrid.logUtils.getCurrentTimeOfDayDimValue()
+      dim4: getCurrentTimeOfDayDimValue()
     };
   };
   const logFacilityCode = 13;
@@ -71,10 +50,9 @@ const exampleAppGridLogging = () => {
 
   const getLogLevel = () => {
     logExampleHeader('Requesting the current LogLevel from AppGrid');
-    return AppGrid.logUtils.getLogLevel(appGridOptions)
+    return client.getLogLevel()
       .then((logLevelResponse) => {
         console.log(`\t\t Successfully got the current LogLevel from AppGrid: ${chalk.blue(logLevelResponse)}`);
-        appGridOptions.logLevel = logLevelResponse;
       })
       .catch((error) => {
         logError('Oops! There was an error while requesting the current LogLevel from AppGrid!', error);
@@ -84,7 +62,7 @@ const exampleAppGridLogging = () => {
   const sendInfoLogMessage = () => {
     logExampleHeader('Sending an info log message to AppGrid');
     const exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
-    return AppGrid.logger.info(appGridOptions, exampleInfoEventOptions)
+    return client.sendLog('info', exampleInfoEventOptions)
       .then(() => {
         console.log('\t\t Successfully sent an info log to AppGrid');
       })
@@ -97,7 +75,7 @@ const exampleAppGridLogging = () => {
     logExampleHeader('Sending an info log message with Metadata to AppGrid');
     const exampleInfoEventOptionsWithMetadata = getLogEventOptions('This is an info log entry with Metadata!', logFacilityCode);
     const exampleInfoMetadata = { someMetadataKey: 'someValue' };
-    return AppGrid.logger.info(appGridOptions, exampleInfoEventOptionsWithMetadata, exampleInfoMetadata)
+    return client.sendLog('info', exampleInfoEventOptionsWithMetadata, exampleInfoMetadata)
       .then(() => {
         console.log('\t\t Successfully sent an info log with Metadata to AppGrid');
       })
@@ -117,7 +95,7 @@ const exampleAppGridEvents = () => {
 
   const sendUsageStartEvent = () => {
     logExampleHeader('Sending a UsageStart Event to AppGrid');
-    return AppGrid.events.sendUsageStartEvent(appGridOptions)
+    return client.sendUsageStartEvent()
       .then(() => {
         console.log('\t\t Successfully sent a UsageStart Event to AppGrid');
       })
@@ -132,7 +110,7 @@ const exampleAppGridEvents = () => {
       const rententionTimeInSeconds = 6;
       console.log(`\t\t Waiting ${rententionTimeInSeconds} second(s) before sending the UsageStop Event.`);
       setTimeout(() => {
-        AppGrid.events.sendUsageStopEvent(appGridOptions, rententionTimeInSeconds)
+        client.sendUsageStopEvent(rententionTimeInSeconds)
           .then(() => {
             console.log('\t\t Successfully sent a UsageStop Event to AppGrid');
             resolve();
@@ -155,7 +133,7 @@ const exampleAppGridMetadata = () => {
 
   const getAllMetadata = () => {
     logExampleHeader('Requesting all metadata from AppGrid');
-    return AppGrid.metadata.getAllMetadata(appGridOptions)
+    return client.getAllMetadata()
       .then((metadata) => {
         console.log('\t\t Successfully requested all metadata from AppGrid', metadata);
       })
@@ -167,7 +145,7 @@ const exampleAppGridMetadata = () => {
   const getMetadataByKey = () => {
     logExampleHeader('Requesting metadata by key from AppGrid');
     const keyToFetch = 'android'; // NOTE: The key can be any valid metadata property, including subproperties such as: "someKey.someSubKey" and wildcards, such as: "someKe*"
-    return AppGrid.metadata.getMetadataByKey(appGridOptions, keyToFetch)
+    return client.getMetadataByKey(keyToFetch)
       .then((metadata) => {
         console.log(`\t\t Successfully requested metadata by key from AppGrid. Key used: ${chalk.blue(keyToFetch)}. \n\t\t Metadata: `, metadata);
       })
@@ -182,7 +160,7 @@ const exampleAppGridMetadata = () => {
       'android',
       'color*'
     ];
-    return AppGrid.metadata.getMetadataByKeys(appGridOptions, keysToFetch)
+    return client.getMetadataByKeys(keysToFetch)
       .then((metadata) => {
         console.log(`\t\t Successfully requested metadata by multiple keys from AppGrid. Keys used: ${chalk.blue(keysToFetch.join(', '))} \n\t\t Metadata: `, metadata);
       })
@@ -202,7 +180,7 @@ const exampleAppGridAssets = () => {
 
   const getAllAssets = () => {
     logExampleHeader('Requesting all assets from AppGrid');
-    return AppGrid.assets.getAllAssets(appGridOptions)
+    return client.getAllAssets()
       .then((assets) => {
         console.log('\t\t Successfully requested all assets from AppGrid', assets);
       })
@@ -215,10 +193,10 @@ const exampleAppGridAssets = () => {
     logExampleHeader('Downloading asset by id from AppGrid');
     const idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
     const fileName = `${downloadsDirectoryName}/appLogoLarge.png`;
-    return AppGrid.assets.getAssetStreamById(idToDownload, appGridOptions)
+    return client.getAssetStreamById(idToDownload)
       .then((assetStream) => {
         return new Promise((resolve, reject) => {
-          existsSync(downloadsDirectoryName) || mkdirSync(downloadsDirectoryName);
+          if (!existsSync(downloadsDirectoryName)) { mkdirSync(downloadsDirectoryName); }
           assetStream.pipe(createWriteStream(fileName))
             .on('close', resolve)
             .on('error', reject);
@@ -245,7 +223,7 @@ const exampleAppGridContentEntries = () => {
     const idToFetch = '56ea7bd6935f75032a2fd431';
     const isPreview = false; // NOTE: This is an optional parameter. It can be true or false. If set to true the response will return the latest values for this Entry whether it is published or not. Default is false
     const atUtcTime = new Date(); // NOTE: This is an optional parameter. Used to get Entry preview for specific moment of time in past or future. Value is a Date object. Can not be used if "isPreview" is set to true.
-    return AppGrid.contentEntries.getEntryById(appGridOptions, idToFetch, { isPreview, atUtcTime })
+    return client.getEntryById(idToFetch, { isPreview, atUtcTime })
       .then((entry) => {
         console.log(`\t\t Successfully requested a ContentEntry by id from AppGrid. Id used: ${chalk.blue(idToFetch)}. \n\t\t ContentEntry: `, entry);
       })
@@ -258,9 +236,9 @@ const exampleAppGridContentEntries = () => {
     logExampleHeader('Requesting all ContentEntries from AppGrid');
     const offset = 0; // NOTE: This is the pagination offset used by the AppGrid API. Default is: 0.
     const size = 50; // NOTE: This is used by the AppGrid API to determine the size of the response. Default is: 30
-    return AppGrid.contentEntries.getEntries(appGridOptions, { offset, size })
+    return client.getEntries({ offset, size })
       .then((response) => {
-        const { json: { entries, pagination } } = response;
+        const { entries, pagination } = response;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
         console.log(`\t\t Successfully requested all ContentEntries from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
       })
@@ -276,9 +254,9 @@ const exampleAppGridContentEntries = () => {
       size: 50,
       at: new Date()
     };
-    return AppGrid.contentEntries.getEntries(appGridOptions, params)
+    return client.getEntries(params)
       .then((response) => {
-        const { json: { entries, pagination } } = response;
+        const { entries, pagination } = response;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
         console.log(`\t\t Successfully requested multiple ContentEntries by ids from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
       })
@@ -294,9 +272,9 @@ const exampleAppGridContentEntries = () => {
       typeId: '56ea7bca935f75032a2fd42c',
       at: new Date()
     };
-    return AppGrid.contentEntries.getEntries(appGridOptions, params)
+    return client.getEntries(params)
       .then((response) => {
-        const { json: { entries, pagination } } = response;
+        const { entries, pagination } = response;
         // NOTE: For a production usage, additional pagination-handling logic would be required to ensure that all entries are fetched.
         console.log(`\t\t Successfully requested ContentEntries by typeId from AppGrid\n\t\t Count of entries recieved: ${chalk.blue(entries.length)} out of ${chalk.blue(pagination.total)} total entries.`);
       })
@@ -317,7 +295,7 @@ const exampleAppGridPlugins = () => {
 
   const getAllEnabledPlugins = () => {
     logExampleHeader('Requesting all enabled plugins from AppGrid');
-    return AppGrid.plugins.getAllEnabledPlugins(appGridOptions)
+    return client.getAllEnabledPlugins()
       .then((plugins) => {
         console.log('\t\t Successfully requested all enabled plugins from AppGrid', plugins);
       })
@@ -334,41 +312,16 @@ const exampleAppGridSessions = () => {
   logExampleCategoryHeader('AppGrid Session Examples:');
   const getAppGridSession = () => {
     logExampleHeader('Requesting a new Session from AppGrid');
-    return AppGrid.session.getSession(appGridOptions)
+    return client.createSession()
       .then((newSessionId) => {
         console.log(`\t\t Successfully requested a new Session from AppGrid.\n\t\t   SessionId: ${chalk.blue(newSessionId)}`);
-        appGridOptions.sessionId = newSessionId; // NOTE: Sessions should be reused as much as possible.
       })
       .catch((error) => {
         logError('Oops! There was an error while requesting a new Session from AppGrid!', error);
       });
   };
-  const validateAppGridSession = () => {
-    logExampleHeader(`Validating an AppGrid Session for the following SessionId: \n\t\t  ${chalk.blue(appGridOptions.sessionId)}`);
-    return AppGrid.session.validateSession(appGridOptions)
-      .then((isValid) => {
-        console.log(`\t\t Is this AppGrid Session valid? ${chalk.blue(isValid)}`);
-      })
-      .catch((error) => {
-        logError('Oops! There was an error while attempting to validate the AppGrid Session!', error);
-      });
-  };
-  const updateAppGridSessionUuid = () => {
-    const newUuid = AppGrid.session.generateUuid();
-    logExampleHeader(`Updating the UUID associated with an AppGrid Session\n\t\t For the following SessionId: ${chalk.blue(appGridOptions.sessionId)} \n\t\t With the following UUID: ${chalk.blue(newUuid)}`);
-    appGridOptions.uuid = newUuid;
-    return AppGrid.session.updateSessionUuid(appGridOptions)
-      .then((response) => {
-        console.log('\t\t Successfully updated the UUID associated with this AppGrid Session', response);
-      })
-      .catch((error) => {
-        logError('Oops! There was an error while attempting to update the UUID associated with this AppGrid Session!', error);
-      });
-  };
 
   return getAppGridSession()
-    .then(validateAppGridSession)
-    .then(updateAppGridSessionUuid)
     .then(() => {
       logExampleCategoryHeader('End AppGrid Session Examples');
     });
@@ -378,7 +331,7 @@ const exampleAppGridApplication = () => {
   logExampleCategoryHeader('AppGrid Application Examples:');
   const getAppGridStatus = () => {
     logExampleHeader('Requesting the AppGrid Application Status');
-    return AppGrid.application.getStatus(appGridOptions)
+    return client.getApplicationStatus()
       .then((response) => {
         console.log('\t\t Successfully requested the status from AppGrid', response);
       })
@@ -409,7 +362,7 @@ const exampleAppGridUserData = () => {
 
   const setApplicationScopeUserData = () => {
     logExampleHeader('Setting Application-Scope User Data on AppGrid');
-    return AppGrid.userData.setApplicationScopeUserData(appGridOptions, userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
+    return client.setApplicationScopeUserData(userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
       .then(() => {
         console.log(`\t\t Successfully set Application-Scope User Data on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t User data sent: `, userProfileData);
       })
@@ -420,7 +373,7 @@ const exampleAppGridUserData = () => {
 
   const setApplicationGroupScopeUserData = () => {
     logExampleHeader('Setting ApplicationGroup-Scope User Data on AppGrid');
-    return AppGrid.userData.setApplicationGroupScopeUserData(appGridOptions, userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
+    return client.setApplicationGroupScopeUserData(userName, userProfileData) // WARNING: This will either create (if not already existing) or *overwrite* any existing data!
       .then(() => {
         console.log(`\t\t Successfully set ApplicationGroup-Scope User Data on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t User data sent: `, userProfileData);
       })
@@ -431,7 +384,7 @@ const exampleAppGridUserData = () => {
 
   const setApplicationScopeUserDataByKey = () => {
     logExampleHeader('Setting Application-Scope User Data by key on AppGrid');
-    return AppGrid.userData.setApplicationScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
+    return client.setApplicationScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
       .then(() => {
         console.log(`\t\t Successfully set Application-Scope User Data by key on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Key used: ${chalk.blue(dataKeyToSet)} \n\t\t Value sent: ${chalk.blue(dataValueToSet)}`);
       })
@@ -442,7 +395,7 @@ const exampleAppGridUserData = () => {
 
   const setApplicationGroupScopeUserDataByKey = () => {
     logExampleHeader('Setting ApplicationGroup-Scope User Data by key on AppGrid');
-    return AppGrid.userData.setApplicationGroupScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
+    return client.setApplicationGroupScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
       .then(() => {
         console.log(`\t\t Successfully set ApplicationGroup-Scope User Data by key on AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Key used: ${chalk.blue(dataKeyToSet)} \n\t\t Value sent: ${chalk.blue(dataValueToSet)}`);
       })
@@ -453,7 +406,7 @@ const exampleAppGridUserData = () => {
 
   const getAllApplicationScopeDataByUser = () => {
     logExampleHeader('Requesting All Application-Scope Data by user from AppGrid');
-    return AppGrid.userData.getAllApplicationScopeDataByUser(appGridOptions, userName)
+    return client.getAllApplicationScopeDataByUser(userName)
       .then((data) => {
         console.log(`\t\t Successfully requested all Application-Scope Data by user from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t Data: `, data);
       })
@@ -464,7 +417,7 @@ const exampleAppGridUserData = () => {
 
   const getAllApplicationGroupScopeDataByUser = () => {
     logExampleHeader('Requesting All ApplicationGroup-Scope Data by user from AppGrid');
-    return AppGrid.userData.getAllApplicationGroupScopeDataByUser(appGridOptions, userName)
+    return client.getAllApplicationGroupScopeDataByUser(userName)
       .then((data) => {
         console.log(`\t\t Successfully requested all ApplicationGroup-Scope Data by user from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}. \n\t\t Data: `, data);
       })
@@ -475,7 +428,7 @@ const exampleAppGridUserData = () => {
 
   const getApplicationScopeDataByUserAndKey = () => {
     logExampleHeader('Requesting Application-Scope Data by user and key from AppGrid');
-    return AppGrid.userData.getApplicationScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
+    return client.getApplicationScopeDataByUserAndKey(userName, dataKeyToRequest)
       .then((data) => {
         console.log(`\t\t Successfully requested Application-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
       })
@@ -486,7 +439,7 @@ const exampleAppGridUserData = () => {
 
   const getApplicationGroupScopeDataByUserAndKey = () => {
     logExampleHeader('Requesting ApplicationGroup-Scope Data by user and key from AppGrid');
-    return AppGrid.userData.getApplicationGroupScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
+    return client.getApplicationGroupScopeDataByUserAndKey(userName, dataKeyToRequest)
       .then((data) => {
         console.log(`\t\t Successfully requested ApplicationGroup-Scope Data by user and key from AppGrid.\n\t\t Username used: ${chalk.blue(userName)}.\n\t\t Data key used: ${chalk.blue(dataKeyToRequest)}. \n\t\t Data: `, data);
       })

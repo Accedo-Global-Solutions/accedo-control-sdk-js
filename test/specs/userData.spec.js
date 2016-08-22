@@ -1,7 +1,5 @@
 import chai from 'chai';
-import AppGrid from '../../src/index';
-
-import appGridOptions from '../appGridOptions';
+import factory from '../../src/index';
 
 chai.should();
 
@@ -21,87 +19,71 @@ const userProfileData = {
 };
 
 describe('UserData API Tests', () => {
-  it('The API should exist and contain the expected functions', () => {
-    AppGrid.userData.should.be.an('object');
-    AppGrid.userData.setApplicationScopeUserData.should.be.a('function');
-    AppGrid.userData.setApplicationGroupScopeUserData.should.be.a('function');
-    AppGrid.userData.setApplicationScopeUserDataByKey.should.be.a('function');
-    AppGrid.userData.setApplicationGroupScopeUserDataByKey.should.be.a('function');
-    AppGrid.userData.getAllApplicationScopeDataByUser.should.be.a('function');
-    AppGrid.userData.getAllApplicationGroupScopeDataByUser.should.be.a('function');
-    AppGrid.userData.getApplicationScopeDataByUserAndKey.should.be.a('function');
-    AppGrid.userData.getApplicationGroupScopeDataByUserAndKey.should.be.a('function');
+  const client = factory({
+    appKey: '56ea6a370db1bf032c9df5cb',
+    uuid: 'gregTestingSDK',
+    // log: (...args) => console.log(...args)
   });
 
-  it('"setApplicationScopeUserData" should return an OK status from AppGrid', (done) => {
-    AppGrid.userData.setApplicationScopeUserData(appGridOptions, userName, userProfileData)
+  it('setApplicationScopeUserData should return an OK status from AppGrid', () => {
+    return client.setApplicationScopeUserData(userName, userProfileData)
       .then(({ status }) => {
         status.should.equal(okStatus);
-        done();
       });
   });
 
-  it('"setApplicationGroupScopeUserData" should return an OK status from AppGrid', (done) => {
-    AppGrid.userData.setApplicationGroupScopeUserData(appGridOptions, userName, userProfileData)
+  it('setApplicationGroupScopeUserData should return an OK status from AppGrid', () => {
+    return client.setApplicationGroupScopeUserData(userName, userProfileData)
       .then(({ status }) => {
         status.should.equal(okStatus);
-        done();
       });
   });
 
-  it('"getAllApplicationScopeDataByUser" should return the expected UserData Profile from AppGrid', (done) => {
-    AppGrid.userData.getAllApplicationScopeDataByUser(appGridOptions, userName)
-      .then(({ json: userData }) => {
+  it('getAllApplicationScopeDataByUser should return the expected UserData Profile from AppGrid', () => {
+    return client.getAllApplicationScopeDataByUser(userName)
+      .then((userData) => {
         userData.should.be.ok;
-        // NOTE: For some reason, Chai's deep.equal assertion is not working here, so we have to manually compare fields
         userData.name.should.equal(userProfileData.name);
         userData.email.should.equal(userProfileData.email);
-        done();
       });
   });
 
-  it('"getAllApplicationGroupScopeDataByUser" should the expected UserData Profile from AppGrid', (done) => {
-    AppGrid.userData.getAllApplicationGroupScopeDataByUser(appGridOptions, userName)
-      .then(({ json: userData }) => {
+  it('getAllApplicationGroupScopeDataByUser should the expected UserData Profile from AppGrid', () => {
+    return client.getAllApplicationGroupScopeDataByUser(userName)
+      .then((userData) => {
         userData.should.be.ok;
-        // NOTE: For some reason, Chai's deep.equal assertion is not working here, so we have to manually compare fields
         userData.name.should.equal(userProfileData.name);
         userData.email.should.equal(userProfileData.email);
-        done();
       });
   });
 
-  it('"setApplicationScopeUserDataByKey" should return an OK status from AppGrid', (done) => {
-    AppGrid.userData.setApplicationScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
+  it('setApplicationScopeUserDataByKey should return an OK status from AppGrid', () => {
+    return client.setApplicationScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
       .then(({ status }) => {
         status.should.equal(okStatus);
-        done();
       });
   });
 
-  it('"setApplicationGroupScopeUserDataByKey" should return an OK status from AppGrid', (done) => {
-    AppGrid.userData.setApplicationGroupScopeUserDataByKey(appGridOptions, userName, dataKeyToSet, dataValueToSet)
+  it('setApplicationGroupScopeUserDataByKey should return an OK status from AppGrid', () => {
+    return client.setApplicationGroupScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
       .then(({ status }) => {
         status.should.equal(okStatus);
-        done();
       });
   });
 
-  it('"getApplicationScopeDataByUserAndKey" should return an OK status from AppGrid', (done) => {
-    AppGrid.userData.getApplicationScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
-      .then(({ json: userData }) => {
+  it('getApplicationScopeDataByUserAndKey should return an OK status from AppGrid', () => {
+    return client.getApplicationScopeDataByUserAndKey(userName, dataKeyToRequest)
+      .then((userData) => {
         userData.should.be.ok;
         userData[dataKeyToRequest].should.equal(userProfileData[dataKeyToRequest]);
-        done();
       });
   });
 
-  it('"getApplicationGroupScopeDataByUserAndKey" should return an OK status from AppGrid', (done) => {
-    AppGrid.userData.getApplicationGroupScopeDataByUserAndKey(appGridOptions, userName, dataKeyToRequest)
-      .then(({ json: userData }) => {
+  it('getApplicationGroupScopeDataByUserAndKey should return an OK status from AppGrid', () => {
+    return client.getApplicationGroupScopeDataByUserAndKey(userName, dataKeyToRequest)
+      .then((userData) => {
         userData.should.be.ok;
         userData[dataKeyToRequest].should.equal(userProfileData[dataKeyToRequest]);
-        done();
       });
   });
 });

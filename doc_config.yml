@@ -1,0 +1,21 @@
+# this is used by the auto-generated documentation tool
+toc:
+  - name: Default export
+    description: |
+      This is the default export for this library
+
+  - factory
+
+  - name: Named exports
+    description: |
+      Those methods are named exports, require/import them, then use them directly
+
+  - generateUuid
+  - getCurrentTimeOfDayDimValue
+
+  - name: Instance methods
+    description: |
+      To use those methods, call them on an instance of a client.
+      All API calls will make use of the existing parameters on the instance (uuid, etc)
+
+  # NOTE - All other JSDoc methods will go here
