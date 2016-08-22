@@ -1,10 +1,10 @@
 import chai from 'chai';
-import clientStamp from '../../src/client';
+import factory from '../../src';
 
 chai.should();
 
 describe('Metadata API Tests', () => {
-  const client = clientStamp({
+  const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
     uuid: 'gregTestingSDK'
   });

@@ -1,12 +1,12 @@
 import chai from 'chai';
-import clientStamp from '../../src/client';
+import factory from '../../src';
 
 chai.should();
 
 const okStatus = 200;
 
 describe('Events API Tests', () => {
-  const client = clientStamp({
+  const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
     uuid: 'gregTestingSDK',
   });
