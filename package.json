@@ -19,7 +19,8 @@
     "lintTest": "eslint ./test --no-ignore",
     "prepublish": "npm run compile",
     "pretest": "npm run lintTest && rollup -c rollup.config.test.js",
-    "test": "mocha --opts ./test/mocha.opts build/test-bundle.js"
+    "test": "mocha --opts ./test/mocha.opts build/test-bundle.js",
+    "doc": "documentation build src/index.js --format md > API.md"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
     "babel-preset-stage-2": "^6.11.0",
     "chai": "^3.5.0",
     "chalk": "^1.1.3",
+    "documentation": "^4.0.0-beta9",
     "eslint": "^3.3.1",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-import-resolver-node": "^0.2.2",

@@ -32,6 +32,8 @@ Check the CHANGELOG.md file to find out what changed between versions.
 ## How to use / examples
 Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
 
+Also, check the  **[API docs](./API.md)**
+
 #### Creating an AppGrid client instance
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 

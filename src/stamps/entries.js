@@ -28,20 +28,42 @@ function request(path, params) {
   return this.withSessionHandling(() => grab(pathWithQs, this.props.config));
 }
 
+/** @function client */
 const stamp = stampit()
 .methods({
-  // params should contain any/several of { id, alias, preview, at, typeId, offset, size }
-  // do not use id, alias or typeId at the same time - behaviour would be ungaranteed
+  /**
+   * Get all the content entries, based on the given parameters.
+   * params should contain any/several of { id, alias, preview, at, typeId, offset, size }
+   * do not use id, alias or typeId at the same time - behaviour would be ungaranteed
+   * @param {object} [params] a parameters object
+   * @return {promise}  a promise of an array of entries (objects)
+   * @memberof client
+   */
   getEntries(params) {
     return request.call(this, '/content/entries', params);
   },
 
-  // params should contain any/several of { preview, at }
+  /**
+   * Get one content entry by id, based on the given parameters.
+   * params should contain any/several of { preview, at }
+   * @param {string} id the entry id
+   * @param {object} [params] a parameters object
+   * @return {promise}  a promise of an entry (object)
+   * @memberof client
+   */
   getEntryById(id, params) {
     return request.call(this, `/content/entry/${id}`, params);
   },
 
-  // params should contain any/several of { preview, at }
+  /**
+   * Get one content entry, based on the given parameters.
+   * params should contain any/several of { preview, at }
+   * do not use id, alias or typeId at the same time - behaviour would be ungaranteed
+   * @param {object} alias the entry alias
+   * @param {object} [params] a parameters object
+   * @return {promise}  a promise of an entry (object)
+   * @memberof client
+   */
   getEntryByAlias(alias, params) {
     return request.call(this, `/content/entry/alias/${alias}`, params);
   }

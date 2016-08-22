@@ -10,6 +10,7 @@ import profileStamp from './profile';
 import metadataStamp from './metadata';
 import userDataStamp from './userData';
 
+// Simply compose all the stamps in one single stamp to give access to all methods
 const stamp = stampit().compose(
   sessionStamp,
   entriesStamp,

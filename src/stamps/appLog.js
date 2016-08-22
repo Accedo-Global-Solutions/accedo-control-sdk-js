@@ -15,14 +15,14 @@ const getConcatenatedCode = (facilityCode = 0, errorCode = 0) =>
 const getLogMessage = (message, metadata) =>
   message + (!metadata ? '' : ` | Metadata: ${JSON.stringify(metadata)}`);
 
-const getLogEvent = (options = {}, metadata) => {
-  const message = getLogMessage(options.message, metadata);
-  const code = getConcatenatedCode(options.facilityCode, options.errorCode);
+const getLogEvent = (details = {}, metadata) => {
+  const message = getLogMessage(details.message, metadata);
+  const code = getConcatenatedCode(details.facilityCode, details.errorCode);
   const dimensions = {
-    dim1: options.dim1,
-    dim2: options.dim2,
-    dim3: options.dim3,
-    dim4: options.dim4
+    dim1: details.dim1,
+    dim2: details.dim2,
+    dim3: details.dim3,
+    dim4: details.dim4
   };
   return {
     code,
@@ -58,14 +58,29 @@ function postLog(level, log) {
   return this.withSessionHandling(() => post(`/application/log/${level}`, this.props.config, log));
 }
 
+/** @function client */
 const stamp = stampit()
 .methods({
+  /**
+   * Get the current log level
+   * @return {promise}  a promise of the log level (string)
+   * @memberof client
+   */
   getLogLevel() {
     return request.call(this, '/application/log/level').then(json => json.logLevel);
   },
-  sendLog(level, options, ...metadata) {
+  /**
+   * Send a log with the given level, details and extra metadata
+   * details should include { message, facilityCode, errorCode, dim1, dim2, dim3, dim4 }
+   * @param {string} level the log level
+   * @param {object} details the information about the log
+   * @param {array} [metadata] an array of extra metadata (will go through JSON.stringify)
+   * @return {promise}  a promise of the success of the operation
+   * @memberof client
+   */
+  sendLog(level, details, ...metadata) {
     if (!LOG_LEVELS.includes(level)) { return Promise.reject('Unsupported log level'); }
-    const log = getLogEvent(options, metadata);
+    const log = getLogEvent(details, metadata);
     return postLog.call(this, level, log);
   }
 })

@@ -6,7 +6,8 @@ chai.should();
 describe('Assets API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    uuid: 'gregTestingSDK'
+    uuid: 'gregTestingSDK',
+    // log(...args) { console.log(...args); }
   });
 
   it('getAllAssets should should return at least one asset', () => {
