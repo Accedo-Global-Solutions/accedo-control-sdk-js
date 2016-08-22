@@ -36,9 +36,10 @@ Refer to the `examples-es6.js` file for comprehensive examples that cover all of
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
 ```javascript
-import appgridClientFactory from 'appgrid';
+// this is an AppGrid client factory - name it "factory" or anything else
+import factory from 'appgrid';
 
-const client = agClientFactory({
+const client = factory({
   appKey: 'YOUR_APPGRID_APPLICATION_KEY',
   uuid: 'A_DEVICE_UUID',
   // if there is already a session for this appKey/uuid tuple, provide it
