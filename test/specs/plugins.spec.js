@@ -1,22 +1,18 @@
 import chai from 'chai';
-import AppGrid from '../../src/index';
-
-import appGridOptions from '../appGridOptions';
+import clientStamp from '../../src/client';
 
 chai.should();
 
 describe('Plugins API Tests', () => {
-  it('The API should exist and contain the expected functions', () => {
-    AppGrid.plugins.should.be.an('object');
-    AppGrid.plugins.getAllEnabledPlugins.should.be.a('function');
+  const client = clientStamp({
+    appKey: '56ea6a370db1bf032c9df5cb',
+    uuid: 'gregTestingSDK'
   });
 
-  it('"getAllEnabledPlugins" should return an array from AppGrid', (done) => {
-    AppGrid.plugins.getAllEnabledPlugins(appGridOptions)
-      .then(({ json: plugins }) => {
-        plugins.should.be.ok;
+  it('getAllEnabledPlugins should return an array from AppGrid', () => {
+    return client.getAllEnabledPlugins()
+      .then((plugins) => {
         plugins.should.be.an('array');
-        done();
       });
   });
 });

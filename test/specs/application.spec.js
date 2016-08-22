@@ -1,20 +1,18 @@
 import chai from 'chai';
-import AppGrid from '../../src/index';
-
-import appGridOptions from '../appGridOptions';
+import clientStamp from '../../src/client';
 
 chai.should();
 
 describe('Application API Tests', () => {
-  it('The API should exist and contain the expected functions', () => {
-    AppGrid.application.getStatus.should.be.a('function');
+  const client = clientStamp({
+    appKey: '56ea6a370db1bf032c9df5cb',
+    uuid: 'gregTestingSDK'
   });
 
-  it('"getStatus" should return the status AppGrid', (done) => {
-    AppGrid.application.getStatus(appGridOptions)
-      .then(({ json: { status } }) => {
+  it('getStatus should return the status of AppGrid', () => {
+    return client.getApplicationStatus()
+      .then(({ status }) => {
         status.should.be.ok;
-        done();
       });
   });
 });

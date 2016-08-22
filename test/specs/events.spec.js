@@ -1,35 +1,34 @@
 import chai from 'chai';
-import AppGrid from '../../src/index';
-
-import appGridOptions from '../appGridOptions';
+import clientStamp from '../../src/client';
 
 chai.should();
 
 const okStatus = 200;
 
 describe('Events API Tests', () => {
-  it('The API should exist and contain the expected functions', () => {
-    AppGrid.events.should.be.an('object');
-    AppGrid.events.sendUsageStartEvent.should.be.a('function');
-    AppGrid.events.sendUsageStopEvent.should.be.a('function');
+  const client = clientStamp({
+    appKey: '56ea6a370db1bf032c9df5cb',
+    uuid: 'gregTestingSDK',
   });
 
-  it('"sendUsageStartEvent" should successfully send a usage start event to AppGrid', (done) => {
-    AppGrid.events.sendUsageStartEvent(appGridOptions)
+  it('sendUsageStartEvent should successfully send a usage start event to AppGrid', () => {
+    return client.sendUsageStartEvent()
       .then(({ status }) => {
         status.should.equal(okStatus);
-        done();
       });
   });
 
-  it('"sendUsageStopEvent" should successfully send a usage stop event to AppGrid after 3 seconds', (done) => {
+  it('sendUsageStopEvent should successfully send a usage stop event to AppGrid after 3 seconds', () => {
     const rententionTimeInSeconds = 3;
-    setTimeout(() => {
-      AppGrid.events.sendUsageStopEvent(appGridOptions, rententionTimeInSeconds)
-        .then(({ status }) => {
-          status.should.equal(okStatus);
-          done();
-        });
-    }, rententionTimeInSeconds * 1000);
+
+    return new Promise(resolve => {
+      setTimeout(() => resolve(), rententionTimeInSeconds * 1000);
+    })
+    .then(() => {
+      return client.sendUsageStopEvent(rententionTimeInSeconds)
+      .then(({ status }) => {
+        status.should.equal(okStatus);
+      });
+    });
   });
 });

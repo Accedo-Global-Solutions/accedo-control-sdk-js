@@ -1,5 +1,4 @@
 --timeout 20000
 --recursive
 --colors
---reporter nyan
 --full-trace
