@@ -1,15 +1,9 @@
 import chai from 'chai';
 import factory from '../../src/index';
 
-chai.should();
+const should = chai.should();
 
-describe('Appgrid Client creation', () => {
-  it('should throw when no param is passed', () => {
-    const makeClient = () => factory();
-
-    makeClient.should.throw(Error);
-  });
-
+describe.only('Appgrid Client creation', () => {
   it('should throw when no param is passed', () => {
     const makeClient = () => factory();
 
@@ -25,12 +19,12 @@ describe('Appgrid Client creation', () => {
     makeClient.should.not.throw(Error);
   });
 
-  it('should not throw when sessionKey is passed', () => {
+  it('should throw when sessionKey is passed alone', () => {
     const makeClient = () => factory({
       sessionKey: 'whatever'
     });
 
-    makeClient.should.not.throw(Error);
+    makeClient.should.throw(Error);
   });
 
   it('should not throw when sessionKey, appKey and uuid are all passed', () => {
@@ -43,19 +37,23 @@ describe('Appgrid Client creation', () => {
     makeClient.should.not.throw(Error);
   });
 
-  it('should throw when appKey is passed without uuid and sessionKey', () => {
-    const makeClient = () => factory({
-      appKey: '56ea6a370db1bf032c9df5cb',
-    });
-
-    makeClient.should.throw(Error);
-  });
-
   it('should throw when uuid is passed without appKey and sessionKey', () => {
     const makeClient = () => factory({
       uuid: 'stuff_here',
     });
 
     makeClient.should.throw(Error);
+  });
+
+  it('should not throw but generate a uuid when appKey is passed without uuid', () => {
+    let client;
+    const makeClient = () => {
+      client = factory({
+        appKey: '56ea6a370db1bf032c9df5cb',
+      });
+    };
+
+    makeClient.should.not.throw(Error);
+    should.equal(true, client.props.config.uuid && typeof client.props.config.uuid === 'string');
   });
 });

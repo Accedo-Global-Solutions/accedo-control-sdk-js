@@ -5,14 +5,24 @@ export { getCurrentTimeOfDayDimValue } from './stamps/appLog';
 
 const noop = () => {};
 
-// an AppGrid Client is usable if there is a known sessionKey or both an uuid and an appKey
-const checkUsability = (config = {}) =>
-  !!config.sessionKey || (config.uuid && config.appKey);
+export const generateUuid = () => uuidLib.v4();
+
+// an AppGrid Client is usable if there is an appKey, an appKey and a uuid, or an appKey, a uuid and a sessionKey
+const checkUsability = ({ appKey, uuid, sessionKey } = {}) =>
+  (appKey && !uuid && !sessionKey) ||
+  (appKey && uuid && !sessionKey) ||
+  (appKey && uuid && sessionKey);
 
 const factory = (config) => {
-  const { uuid, gid, appKey, sessionKey, log = noop } = config;
+  const { gid, appKey, sessionKey, log = noop } = config;
+  let { uuid } = config;
+  // First, check the params are OK
   if (!checkUsability(config)) {
-    throw new Error('You must provide at least a sessionKey, or both a uuid and an appKey');
+    throw new Error('You must provide an appKey | an appKey and a uuid | an appKey, a uuid and a sessionKey');
+  }
+  // Generate a uuid if none was given
+  if (!uuid) {
+    uuid = generateUuid();
   }
 
   return stamp({
@@ -21,5 +31,3 @@ const factory = (config) => {
 };
 
 export default factory;
-
-export const generateUuid = () => uuidLib.v4();

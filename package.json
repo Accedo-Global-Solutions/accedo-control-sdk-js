@@ -27,12 +27,13 @@
   },
   "keywords": [
     "appgrid",
-    "accedo"
+    "accedo",
+    "sdk",
+    "node"
   ],
   "author": "Accedo, AB",
   "license": "Apache-2.0",
   "homepage": "http://appgrid.accedo.tv/",
-  "private": true,
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-eslint": "^6.1.2",
