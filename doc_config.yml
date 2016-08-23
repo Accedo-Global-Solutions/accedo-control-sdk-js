@@ -16,6 +16,6 @@ toc:
   - name: Instance methods
     description: |
       To use those methods, call them on an instance of a client.
-      All API calls will make use of the existing parameters on the instance (uuid, etc)
+      All API calls will make use of the existing parameters on the instance (appKey, etc)
 
   # NOTE - All other JSDoc methods will go here

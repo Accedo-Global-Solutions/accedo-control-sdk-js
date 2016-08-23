@@ -6,7 +6,7 @@ chai.should();
 describe('Profile API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    uuid: 'gregTestingSDK'
+    deviceId: 'gregTestingSDK'
   });
 
   it('getProfileInfo should at least return a profile id and a profile name', () => {

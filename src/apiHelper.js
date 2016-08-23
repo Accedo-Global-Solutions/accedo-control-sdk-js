@@ -21,7 +21,7 @@ const getContentTypeHeader = () => ({ 'Content-Type': MIME_TYPE_JSON });
 const getQueryString = (config, existingQs = {}) => {
   const defaultQs = {
     appKey: config.appKey,
-    uuid: config.uuid
+    uuid: config.deviceId
   };
   if (config.gid) { defaultQs.gid = config.gid; }
   const qsObject = { ...existingQs, ...defaultQs };

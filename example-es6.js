@@ -8,12 +8,12 @@ const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
 };
 
-const exampleUuid = generateUuid();
+const deviceId = generateUuid();
 const downloadsDirectoryName = 'downloads';
 
 const client = agClientFactory({
   appKey: '56ea6a370db1bf032c9df5cb',
-  uuid: exampleUuid,
+  deviceId,
   // log(...args) { console.log(...args); },
 });
 

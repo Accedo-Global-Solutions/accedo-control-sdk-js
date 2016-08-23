@@ -11,6 +11,7 @@
 - MAJOR: getEntries replaces getAllEntries, getEntriesByTypeId and getEntriesByIds
 - MAJOR: validateSession was removed (incorrectly fell back to getApplicationStatus).
 - MAJOR: removed the method to update the uuid of an existing session
+- MAJOR: renamed the uuid optional parameter (when creating a client) to deviceId
 - MINOR: getEntries can take an alias parameter (an array of aliases)
 - MINOR: Added getEntryByAlias
 - PATCH: Added automatically generated docs

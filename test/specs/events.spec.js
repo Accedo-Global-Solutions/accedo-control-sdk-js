@@ -8,7 +8,7 @@ const okStatus = 200;
 describe('Events API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    uuid: 'gregTestingSDK',
+    deviceId: 'gregTestingSDK',
   });
 
   it('sendUsageStartEvent should successfully send a usage start event to AppGrid', () => {

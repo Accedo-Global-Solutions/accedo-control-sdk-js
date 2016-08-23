@@ -6,7 +6,7 @@ chai.should();
 describe('Plugins API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    uuid: 'gregTestingSDK'
+    deviceId: 'gregTestingSDK'
   });
 
   it('getAllEnabledPlugins should return an array from AppGrid', () => {

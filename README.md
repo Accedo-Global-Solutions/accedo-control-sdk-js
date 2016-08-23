@@ -43,8 +43,8 @@ import factory from 'appgrid';
 
 const client = factory({
   appKey: 'YOUR_APPGRID_APPLICATION_KEY',
-  uuid: 'A_DEVICE_UUID',
-  // if there is already a session for this appKey/uuid tuple, provide it
+  deviceId: 'A_DEVICE_ID',
+  // if there is already a session for this appKey/deviceId tuple, provide it
   sessionKey: 'AN_EXISTING_SESSION_KEY',
   // gid can be passed as well, it will be used for all API calls
   gid: 'SOME_GROUP_ID',
@@ -57,7 +57,7 @@ You should create a new client for every device that needs to access the AppGrid
 
 **DO NOT** reuse a single client, in your Node server, to relay requests from various consumers.
 
-If you are triggering some AppGrid API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's uuid (typically you would persist a consumer uuid via the cookies, or as a request parameter in your server APIs).
+If you are triggering some AppGrid API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's deviceId (typically you would persist a consumer deviceId via the cookies, or as a request parameter in your server APIs - unless the device lets you use some unique ID like a MAC address).
 
 #### Get a new AppGrid SessionId
 

@@ -27,7 +27,7 @@ const getLogEventOptions = (message, facilityCode) => {
 describe('Logging API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    uuid: 'gregTestingSDK',
+    deviceId: 'gregTestingSDK',
   });
 
   it('getLogLevel should yield a string', () => {

@@ -6,7 +6,7 @@ chai.should();
 describe('Application API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    uuid: 'gregTestingSDK'
+    deviceId: 'gregTestingSDK'
   });
 
   it('getStatus should return the status of AppGrid', () => {
