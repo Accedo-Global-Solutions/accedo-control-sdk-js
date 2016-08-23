@@ -130,8 +130,8 @@ client.getAssetById(idToDownload)
   * Develop !
   * Before pushing, remember to:
     - generate updated UMD and ES6 bundles (`npm run build`)
-    - add tests and check they all pass (`npm t`)
-    - add examples and check they all work (`npm run runExample`)
+    - add tests and check they all pass (`npm test`)
+    - add examples and check they all work (`npm run example`)
     - document any public API with JSDoc comments and generate the new doc (`npm run doc`)
 
 ## More information & Links

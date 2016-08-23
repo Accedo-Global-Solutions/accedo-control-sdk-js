@@ -17,6 +17,7 @@
 - MINOR: Added getEntryByAlias
 - PATCH: Added automatically generated docs
 - PATCH: Renamed this library and repo name, this is the SDK for Node.js, not for "the web".
+- PATCH: Renamed npm scripts (build rather than compile, new doc scripts, etc)
 
 # 1.1.1
 
