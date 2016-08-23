@@ -1,26 +1,33 @@
 {
   "name": "appgrid",
   "version": "2.0.0",
-  "description": "The Official AppGrid SDK for NodeJS",
+  "description": "The Official AppGrid SDK for Node.js",
   "main": "dist/bundle.umd.js",
   "jsnext:main": "dist/bundle.es6.js",
   "scripts": {
     "clean": "rimraf dist/*",
     "precompile": "npm run clean",
     "compile": "npm run compileModule && npm run compileExample",
+
     "precompileModule": "npm run lint",
     "compileModule": "rollup -c rollup.config.umd.js && rollup -c rollup.config.es6.js",
+
     "precompileExample": "npm run lintExample",
     "compileExample": "rollup -c rollup.config.example.js",
+
     "prerunExample": "npm run compile && npm run test",
     "runExample": "node build/example",
+
     "lint": "eslint . --ext .js",
     "lintExample": "eslint ./example-es6.js --no-ignore",
     "lintTest": "eslint ./test --no-ignore",
+
     "prepublish": "npm run compile",
+
     "pretest": "npm run lintTest && rollup -c rollup.config.test.js",
     "test": "mocha --opts ./test/mocha.opts build/test-bundle.js",
-    "docmd": "documentation build src/index.js -c doc_config.yml --format html -o htmldoc",
+
+    "dochtml": "documentation build src/index.js -c doc_config.yml --format html -o htmldoc",
     "doc": "documentation build src/index.js -c doc_config.yml --format md > API.md"
   },
   "repository": {
