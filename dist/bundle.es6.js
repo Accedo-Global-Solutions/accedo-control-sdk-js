@@ -307,7 +307,7 @@ var stamp$4 = stampit().methods({
    * @param {string} id the asset id
    * @return {promise}  a promise of a node stream
    */
-  getAssetStreamById: function getAssetStreamById(id) {
+  getAssetById: function getAssetById(id) {
     // note this method does not need a session
     return grabRaw('/asset/' + id, this.props.config);
   }
