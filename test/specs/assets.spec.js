@@ -17,9 +17,9 @@ describe('Assets API Tests', () => {
       });
   });
 
-  it('getAssetStreamById should return a valid stream for a valid assetId', () => {
+  it('getAssetById should return a valid stream for a valid assetId', () => {
     const idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b';
-    return client.getAssetStreamById(idToDownload)
+    return client.getAssetById(idToDownload)
       .then((assetStream) => {
         assetStream.should.be.ok;
         assetStream.pipe.should.be.a('function');

@@ -55,7 +55,7 @@
 
     var defaultQs = {
       appKey: config.appKey,
-      uuid: config.uuid
+      uuid: config.deviceId
     };
     if (config.gid) {
       defaultQs.gid = config.gid;
@@ -126,9 +126,20 @@
   };
 
   var stamp$2 = stampit().methods({
+    /**
+     * Returns the currently stored sessionKey for this client instance
+     * @return {string}  the sessionKey, if any
+     */
+
     getSessionKey: function getSessionKey() {
       return this.props.config.sessionKey;
     },
+
+
+    /**
+     * Create a session and store it for reuse in this client instance
+     * @return {promise}  a promise of a string, the sessionKey
+     */
     createSession: function createSession() {
       var _this = this;
 
@@ -142,6 +153,17 @@
         return sessionKey;
       });
     },
+
+
+    /**
+     * If a sessionKey exists, calls the next function, then:
+     * - If this failed with a 401 (unauthorized), create a session then retry
+     * - Otherwise returns a promise of that function's results
+     * If there was no sessionKey, create one before attempting the next function.
+     * @private
+     * @param {function} next a function that returns a promise
+     * @return {promise}  a promise of the result of the next function
+     */
     withSessionHandling: function withSessionHandling(next) {
       var _this2 = this;
 
@@ -207,21 +229,46 @@
   }
 
   var stamp$1 = stampit().methods({
-    // params should contain any/several of { id, alias, preview, at, typeId, offset, size }
-    // do not use id, alias or typeId at the same time - behaviour would be ungaranteed
+    /**
+     * Get all the content entries, based on the given parameters.
+     * **DO NOT** use several of id, alias and typeId at the same time - behaviour would be ungaranteed.
+     * @param {object} [params] a parameters object
+     * @param {boolean} [params.preview] when true, get the preview version
+     * @param {string|date} [params.at] when given, get the version at the given time
+     * @param {array} [params.id] an array of entry ids (strings)
+     * @param {array} [params.alias] an array of entry aliases (strings)
+     * @param {string} [params.typeId] only return entries matching this type id
+     * @param {number|string} [params.size] limit to that many results per page (limits as per AppGrid API, currently 1 to 50, default 20)
+     * @param {number|string} [params.offset] offset the result by that many pages
+     * @return {promise}  a promise of an array of entries (objects)
+     */
 
     getEntries: function getEntries(params) {
       return request.call(this, '/content/entries', params);
     },
 
 
-    // params should contain any/several of { preview, at }
+    /**
+     * Get one content entry by id, based on the given parameters.
+     * @param {string} id the entry id
+     * @param {object} [params] a parameters object
+     * @param {boolean} [params.preview] when true, get the preview version
+     * @param {string|date} [params.at] when given, get the version at the given time
+     * @return {promise}  a promise of an entry (object)
+     */
     getEntryById: function getEntryById(id, params) {
       return request.call(this, '/content/entry/' + id, params);
     },
 
 
-    // params should contain any/several of { preview, at }
+    /**
+     * Get one content entry, based on the given parameters.
+     * @param {object} alias the entry alias
+     * @param {object} [params] a parameters object
+     * @param {boolean} [params.preview] when true, get the preview version
+     * @param {string|date} [params.at] when given, get the version at the given time
+     * @return {promise}  a promise of an entry (object)
+     */
     getEntryByAlias: function getEntryByAlias(alias, params) {
       return request.call(this, '/content/entry/alias/' + alias, params);
     }
@@ -230,6 +277,11 @@
   .compose(stamp$2);
 
   var stamp$3 = stampit().methods({
+    /**
+     * Get the current application status
+     * @return {promise}  a promise of the application status (string)
+     */
+
     getApplicationStatus: function getApplicationStatus() {
       var _this = this;
 
@@ -242,6 +294,11 @@
   .compose(stamp$2);
 
   var stamp$4 = stampit().methods({
+    /**
+     * Lists all the assets.
+     * @return {promise}  a promise of a hash of assets (key: asset name, value: asset URL)
+     */
+
     getAllAssets: function getAllAssets() {
       var _this = this;
 
@@ -249,6 +306,13 @@
         return grab('/asset', _this.props.config);
       });
     },
+
+
+    /**
+     * Get a stream for one asset by id
+     * @param {string} id the asset id
+     * @return {promise}  a promise of a node stream
+     */
     getAssetStreamById: function getAssetStreamById(id) {
       // note this method does not need a session
       return grabRaw('/asset/' + id, this.props.config);
@@ -270,9 +334,21 @@
   }
 
   var stamp$5 = stampit().methods({
+    /**
+     * Send a usage START event
+     * @return {promise}  a promise denoting the success of the operation
+     */
+
     sendUsageStartEvent: function sendUsageStartEvent() {
       return sendUsageEvent.call(this, 'START');
     },
+
+
+    /**
+     * Send a usage QUIT event
+     * @param {number|string} [retentionTimeInSeconds] the retention time, in seconds
+     * @return {promise}  a promise denoting the success of the operation
+     */
     sendUsageStopEvent: function sendUsageStopEvent(retentionTimeInSeconds) {
       return sendUsageEvent.call(this, 'QUIT', retentionTimeInSeconds);
     }
@@ -298,16 +374,16 @@
   };
 
   var getLogEvent = function getLogEvent() {
-    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var details = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     var metadata = arguments[1];
 
-    var message = getLogMessage(options.message, metadata);
-    var code = getConcatenatedCode(options.facilityCode, options.errorCode);
+    var message = getLogMessage(details.message, metadata);
+    var code = getConcatenatedCode(details.facilityCode, details.errorCode);
     var dimensions = {
-      dim1: options.dim1,
-      dim2: options.dim2,
-      dim3: options.dim3,
-      dim4: options.dim4
+      dim1: details.dim1,
+      dim2: details.dim2,
+      dim3: details.dim3,
+      dim4: details.dim4
     };
     return {
       code: code,
@@ -352,12 +428,32 @@
   }
 
   var stamp$6 = stampit().methods({
+    /**
+     * Get the current log level
+     * @return {promise}  a promise of the log level (string)
+     */
+
     getLogLevel: function getLogLevel() {
       return request$1.call(this, '/application/log/level').then(function (json) {
         return json.logLevel;
       });
     },
-    sendLog: function sendLog(level, options) {
+
+    /**
+     * Send a log with the given level, details and extra metadata.
+     * @param {string} level the log level
+     * @param {object} details the log information
+     * @param {string} details.message the log message
+     * @param {string} details.facilityCode the facility code
+     * @param {errorCode} details.errorCode the error code
+     * @param {string} details.dim1 the dimension 1 information
+     * @param {string} details.dim2 the dimension 2 information
+     * @param {string} details.dim3 the dimension 3 information
+     * @param {string} details.dim4 the dimension 4 information
+     * @param {array} [metadata] an array of extra metadata (will go through JSON.stringify)
+     * @return {promise}  a promise of the success of the operation
+     */
+    sendLog: function sendLog(level, details) {
       if (!LOG_LEVELS.includes(level)) {
         return Promise.reject('Unsupported log level');
       }
@@ -366,7 +462,7 @@
         metadata[_key - 2] = arguments[_key];
       }
 
-      var log = getLogEvent(options, metadata);
+      var log = getLogEvent(details, metadata);
       return postLog.call(this, level, log);
     }
   })
@@ -374,6 +470,11 @@
   .compose(stamp$2);
 
   var stamp$7 = stampit().methods({
+    /**
+     * Get all the enabled plugins
+     * @return {promise}  a promise of the requested data
+     */
+
     getAllEnabledPlugins: function getAllEnabledPlugins() {
       var _this = this;
 
@@ -386,6 +487,11 @@
   .compose(stamp$2);
 
   var stamp$8 = stampit().methods({
+    /**
+     * Get the profile information
+     * @return {promise}  a promise of the requested data
+     */
+
     getProfileInfo: function getProfileInfo() {
       var _this = this;
 
@@ -406,12 +512,31 @@
   }
 
   var stamp$9 = stampit().methods({
+    /**
+     * Get all the metadata
+     * @return {promise}  a promise of the requested data
+     */
+
     getAllMetadata: function getAllMetadata() {
       return request$2.call(this, '/metadata');
     },
+
+
+    /**
+     * Get the metadata by a specific key
+     * @param {string} key a key to get specific metadata
+     * @return {promise}  a promise of the requested data
+     */
     getMetadataByKey: function getMetadataByKey(key) {
       return request$2.call(this, '/metadata/' + key);
     },
+
+
+    /**
+     * Get the metadata by specific keys
+     * @param {array} keys an array of keys (strings)
+     * @return {promise}  a promise of the requested data
+     */
     getMetadataByKeys: function getMetadataByKeys(keys) {
       return request$2.call(this, '/metadata/' + keys.join(','));
     }
@@ -455,67 +580,177 @@
   }
 
   var stamp$10 = stampit().methods({
+    /**
+     * Get all the application-scope data for a given user
+     * @param {string} userName an appgrid user
+     * @return {promise}  a promise of the requested data
+     */
+
     getAllApplicationScopeDataByUser: function getAllApplicationScopeDataByUser(userName) {
       return getAllDataByUser.call(this, APPLICATION_SCOPE, userName);
     },
+
+
+    /**
+     * Get all the application-group-scope data for a given user
+     * @param {string} userName an appgrid user
+     * @return {promise}  a promise of the requested data
+     */
     getAllApplicationGroupScopeDataByUser: function getAllApplicationGroupScopeDataByUser(userName) {
       return getAllDataByUser.call(this, APPLICATION_GROUP_SCOPE, userName);
     },
+
+
+    /**
+     * Get all the application-scope data for a given user and data key
+     * @param {string} userName an appgrid user
+     * @param {string} key a key to specify what data to obtain
+     * @return {promise}  a promise of the requested data
+     */
     getApplicationScopeDataByUserAndKey: function getApplicationScopeDataByUserAndKey(userName, key) {
       return getDataByUserAndKey.call(this, APPLICATION_SCOPE, userName, key);
     },
+
+
+    /**
+     * Get all the application-group-scope data for a given user
+     * @param {string} userName an appgrid user
+     * @param {string} key a key to specify what data to obtain
+     * @return {promise}  a promise of the requested data
+     */
     getApplicationGroupScopeDataByUserAndKey: function getApplicationGroupScopeDataByUserAndKey(userName, key) {
       return getDataByUserAndKey.call(this, APPLICATION_GROUP_SCOPE, userName, key);
     },
+
+
+    /**
+     * Set the application-scope data for a given user
+     * @param {string} userName an appgrid user
+     * @param {object} data the data to store
+     * @return {promise}  a promise of the requested data
+     */
     setApplicationScopeUserData: function setApplicationScopeUserData(userName, data) {
       return setUserData.call(this, APPLICATION_SCOPE, userName, data);
     },
+
+
+    /**
+     * Set the application-group-scope data for a given user
+     * @param {string} userName an appgrid user
+     * @param {object} data the data to store
+     * @return {promise}  a promise of the requested data
+     */
     setApplicationGroupScopeUserData: function setApplicationGroupScopeUserData(userName, data) {
       return setUserData.call(this, APPLICATION_GROUP_SCOPE, userName, data);
     },
-    setApplicationScopeUserDataByKey: function setApplicationScopeUserDataByKey(userName, key, value) {
-      return setUserDataByKey.call(this, APPLICATION_SCOPE, userName, key, value);
+
+
+    /**
+     * Set the application-scope data for a given user
+     * @param {string} userName an appgrid user
+     * @param {string} key a key to specify what data to obtain
+     * @param {object} data the data to store
+     * @return {promise}  a promise of the requested data
+     */
+    setApplicationScopeUserDataByKey: function setApplicationScopeUserDataByKey(userName, key, data) {
+      return setUserDataByKey.call(this, APPLICATION_SCOPE, userName, key, data);
     },
-    setApplicationGroupScopeUserDataByKey: function setApplicationGroupScopeUserDataByKey(userName, key, value) {
-      return setUserDataByKey.call(this, APPLICATION_GROUP_SCOPE, userName, key, value);
+
+
+    /**
+     * Set the application-group-scope data for a given user
+     * @param {string} userName an appgrid user
+     * @param {string} key a key to specify what data to obtain
+     * @param {object} data the data to store
+     * @return {promise}  a promise of the requested data
+     */
+    setApplicationGroupScopeUserDataByKey: function setApplicationGroupScopeUserDataByKey(userName, key, data) {
+      return setUserDataByKey.call(this, APPLICATION_GROUP_SCOPE, userName, key, data);
     }
   })
   // Make sure we have the sessionStamp withSessionHandling method
   .compose(stamp$2);
 
+  // Simply compose all the stamps in one single stamp to give access to all methods
   var stamp = stampit().compose(stamp$2, stamp$1, stamp$3, stamp$4, stamp$5, stamp$6, stamp$7, stamp$8, stamp$9, stamp$10);
 
   var noop = function noop() {};
 
-  // an AppGrid Client is usable if there is a known sessionKey or both an uuid and an appKey
-  var checkUsability = function checkUsability() {
-    var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-    return !!config.sessionKey || config.uuid && config.appKey;
+  /**
+   * Globally available (use `import { generateUuid } from 'appgrid'`)
+   * Generate a UUID.
+   * Use this for a device/appKey tuple when you do not have a sessionKey already.
+   * @function
+   * @return {string} a new UUID
+   */
+  var generateUuid = function generateUuid() {
+    return uuidLib.v4();
   };
 
+  /**
+   * Check the parameters given are good enough to make api calls
+   * @function
+   * @param  {string} $0.appKey        the application key
+   * @param  {string} [$0.deviceId]        a deviceId identifying the client we will make requests for
+   * @param  {string} [$0.sessionKey]  a session key corresponding to this deviceId/appKey tuple
+   * @return {boolean}                 true when all is well
+   * @private
+   */
+  var checkUsability = function checkUsability() {
+    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    var appKey = _ref.appKey;
+    var deviceId = _ref.deviceId;
+    var sessionKey = _ref.sessionKey;
+    return appKey && !deviceId && !sessionKey || appKey && deviceId && !sessionKey || appKey && deviceId && sessionKey;
+  };
+
+  /**
+   * Factory function to create an instance of an AppGrid client.
+   * You must get an instance before accessing any of the exposed client APIs.
+   * @function
+   * @param  {object} config the configuration for the new instance
+   * @param  {string} config.appKey the application Key
+   * @param  {string} [config.deviceId] the device identifier (if not provided, a uuid will be generated instead)
+   * @param  {string} [config.sessionKey] the sessionKey (note a new one may be created when not given or expired)
+   * @param  {string} [config.log] a function to use to see this SDK's logs
+   * @return {client}        an AppGrid client tied to the given params
+   * @example
+   * import factory from 'appgrid';
+   *
+   * // when all info is available - use all of it !
+   * const client = factory({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });
+   *
+   * // when there is no known sessionKey yet
+   * const client2 = factory({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID' });
+   *
+   * // when there is no known sessionKey or deviceId yet
+   * const client3 = factory({ appKey: 'MY_APP_KEY' });
+   */
   var factory = function factory(config) {
-    var uuid = config.uuid;
     var gid = config.gid;
     var appKey = config.appKey;
     var sessionKey = config.sessionKey;
     var _config$log = config.log;
     var log = _config$log === undefined ? noop : _config$log;
+    var deviceId = config.deviceId;
+    // First, check the params are OK
 
     if (!checkUsability(config)) {
-      throw new Error('You must provide at least a sessionKey, or both a uuid and an appKey');
+      throw new Error('You must provide an appKey | an appKey and a deviceId | an appKey, a deviceId and a sessionKey');
+    }
+    // Generate a uuid if no deviceId was given
+    if (!deviceId) {
+      deviceId = generateUuid();
     }
 
     return stamp({
-      props: { config: { uuid: uuid, gid: gid, appKey: appKey, sessionKey: sessionKey, log: log } }
+      props: { config: { deviceId: deviceId, gid: gid, appKey: appKey, sessionKey: sessionKey, log: log } }
     });
   };
 
-  var generateUuid = function generateUuid() {
-    return uuidLib.v4();
-  };
-
-  exports['default'] = factory;
   exports.generateUuid = generateUuid;
+  exports['default'] = factory;
   exports.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
 
   Object.defineProperty(exports, '__esModule', { value: true });

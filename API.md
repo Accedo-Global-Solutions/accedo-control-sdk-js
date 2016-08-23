@@ -11,8 +11,8 @@ You must get an instance before accessing any of the exposed client APIs.
 
 -   `config` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the configuration for the new instance
     -   `config.appKey` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the application Key
-    -   `config.uuid` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** a unique identifier (one will be generated if not provided)
-    -   `config.sessionKey` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the sessionKey (note a new one may be created when needed)
+    -   `config.deviceId` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the device identifier (if not provided, a uuid will be generated instead)
+    -   `config.sessionKey` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the sessionKey (note a new one may be created when not given or expired)
     -   `config.log` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** a function to use to see this SDK's logs
 
 **Examples**
@@ -21,12 +21,12 @@ You must get an instance before accessing any of the exposed client APIs.
 import factory from 'appgrid';
 
 // when all info is available - use all of it !
-const client = factory({ appKey: 'MY_APP_KEY', uuid: 'USERS_UUID', sessionKey: 'SOME_SESSION_KEY' });
+const client = factory({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });
 
 // when there is no known sessionKey yet
-const client2 = factory({ appKey: 'MY_APP_KEY', uuid: 'USERS_UUID' });
+const client2 = factory({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID' });
 
-// when there is no known sessionKey or uuid yet
+// when there is no known sessionKey or deviceId yet
 const client3 = factory({ appKey: 'MY_APP_KEY' });
 ```
 
@@ -55,7 +55,7 @@ Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 # Instance methods
 
 To use those methods, call them on an instance of a client.
-All API calls will make use of the existing parameters on the instance (uuid, etc)
+All API calls will make use of the existing parameters on the instance (appKey, etc)
 
 # getLogLevel
 
@@ -81,18 +81,6 @@ Send a log with the given level, details and extra metadata.
 -   `metadata` **\[[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)]** an array of extra metadata (will go through JSON.stringify)
 
 Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of the success of the operation
-
-# getSessionKey
-
-Returns the currently stored sessionKey for this client instance
-
-Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the sessionKey, if any
-
-# createSession
-
-Create a session and store it for reuse in this client instance
-
-Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of a string, the sessionKey
 
 # getEntries
 
@@ -138,6 +126,18 @@ Get one content entry, based on the given parameters.
 
 Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of an entry (object)
 
+# getSessionKey
+
+Returns the currently stored sessionKey for this client instance
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the sessionKey, if any
+
+# createSession
+
+Create a session and store it for reuse in this client instance
+
+Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of a string, the sessionKey
+
 # getApplicationStatus
 
 Get the current application status
@@ -150,7 +150,7 @@ Lists all the assets.
 
 Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of a hash of assets (key: asset name, value: asset URL)
 
-# getAssetStreamById
+# getAssetById
 
 Get a stream for one asset by id
 

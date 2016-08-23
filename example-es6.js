@@ -189,11 +189,11 @@ const exampleAppGridAssets = () => {
       });
   };
 
-  const getAssetStreamById = () => {
+  const getAssetById = () => {
     logExampleHeader('Downloading asset by id from AppGrid');
     const idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
     const fileName = `${downloadsDirectoryName}/appLogoLarge.png`;
-    return client.getAssetStreamById(idToDownload)
+    return client.getAssetById(idToDownload)
       .then((assetStream) => {
         return new Promise((resolve, reject) => {
           if (!existsSync(downloadsDirectoryName)) { mkdirSync(downloadsDirectoryName); }
@@ -211,7 +211,7 @@ const exampleAppGridAssets = () => {
   };
 
   return getAllAssets()
-    .then(getAssetStreamById)
+    .then(getAssetById)
     .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
 };
 

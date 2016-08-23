@@ -23,20 +23,31 @@ This is the official Accedo AppGrid SDK for Node.js.
 While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with Node.js.
 It also encourages the use of best practices (for example: reusing the same sessionId for a client, but different clients for different devices).
 
-Check the [CHANGELOG](./CHANGELOG.md) to find out what changed between versions.
+Check the [change log](./CHANGELOG.md) to find out what changed between versions.
 
-## Getting started
-
-  * Clone this repo locally
-  * Run `npm install`
-  * To run the examples, execute the following command: `npm run runExample`. **NOTE**: This will clean and rebuild the dist folder
-
-## How to use / examples
+## Examples
 Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
 
-Also, check the [API docs](./API.md)
+You can run the examples based on the current bundles: `npm run example`.
 
-#### Creating an AppGrid client instance
+## Documentation
+
+Refer to the [API docs](./API.md)
+
+## Installation
+
+`npm install --save-dev appgrid` (pending publication on NPM !)
+
+Then you can use the default export to get a factory:
+```js
+const factory = require('appgrid')
+```
+Or, using the ES6 module syntax:
+```js
+import factory from 'appgrid'
+```
+
+#### Create an AppGrid client instance
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
 ```javascript
@@ -96,7 +107,7 @@ import { createWriteStream } from 'fs';
 const idToDownload = 'someValidAssetId';
 const fileName = `downloads/someFilename.png`;
 
-client.getAssetStreamById(idToDownload)
+client.getAssetById(idToDownload)
   .then((assetStream) => {
     return new Promise((resolve, reject) => {
       assetStream.pipe(createWriteStream(fileName))
@@ -111,6 +122,17 @@ client.getAssetStreamById(idToDownload)
     // TODO handle error
   });
 ```
+
+## SDK development
+
+  * Clone/fork this repo
+  * Run `npm install`
+  * Develop !
+  * Before pushing, remember to:
+    - generate updated UMD and ES6 bundles (`npm run build`)
+    - add tests and check they all pass (`npm t`)
+    - add examples and check they all work (`npm run runExample`)
+    - document any public API with JSDoc comments and generate the new doc (`npm run doc`)
 
 ## More information & Links
 

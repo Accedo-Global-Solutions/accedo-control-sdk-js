@@ -17,7 +17,7 @@ const stamp = stampit()
    * @param {string} id the asset id
    * @return {promise}  a promise of a node stream
    */
-  getAssetStreamById(id) {
+  getAssetById(id) {
     // note this method does not need a session
     return grabRaw(`/asset/${id}`, this.props.config);
   }
