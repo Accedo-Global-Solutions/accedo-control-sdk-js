@@ -124,7 +124,6 @@ var stamp$2 = stampit().methods({
    * Returns the currently stored sessionKey for this client instance
    * @return {string}  the sessionKey, if any
    */
-
   getSessionKey: function getSessionKey() {
     return this.props.config.sessionKey;
   },
@@ -236,7 +235,6 @@ var stamp$1 = stampit().methods({
    * @param {number|string} [params.offset] offset the result by that many pages
    * @return {promise}  a promise of an array of entries (objects)
    */
-
   getEntries: function getEntries(params) {
     return request.call(this, '/content/entries', params);
   },
@@ -275,7 +273,6 @@ var stamp$3 = stampit().methods({
    * Get the current application status
    * @return {promise}  a promise of the application status (string)
    */
-
   getApplicationStatus: function getApplicationStatus() {
     var _this = this;
 
@@ -292,7 +289,6 @@ var stamp$4 = stampit().methods({
    * Lists all the assets.
    * @return {promise}  a promise of a hash of assets (key: asset name, value: asset URL)
    */
-
   getAllAssets: function getAllAssets() {
     var _this = this;
 
@@ -332,7 +328,6 @@ var stamp$5 = stampit().methods({
    * Send a usage START event
    * @return {promise}  a promise denoting the success of the operation
    */
-
   sendUsageStartEvent: function sendUsageStartEvent() {
     return sendUsageEvent.call(this, 'START');
   },
@@ -426,7 +421,6 @@ var stamp$6 = stampit().methods({
    * Get the current log level
    * @return {promise}  a promise of the log level (string)
    */
-
   getLogLevel: function getLogLevel() {
     return request$1.call(this, '/application/log/level').then(function (json) {
       return json.logLevel;
@@ -468,7 +462,6 @@ var stamp$7 = stampit().methods({
    * Get all the enabled plugins
    * @return {promise}  a promise of the requested data
    */
-
   getAllEnabledPlugins: function getAllEnabledPlugins() {
     var _this = this;
 
@@ -510,7 +503,6 @@ var stamp$9 = stampit().methods({
    * Get all the metadata
    * @return {promise}  a promise of the requested data
    */
-
   getAllMetadata: function getAllMetadata() {
     return request$2.call(this, '/metadata');
   },
@@ -579,7 +571,6 @@ var stamp$10 = stampit().methods({
    * @param {string} userName an appgrid user
    * @return {promise}  a promise of the requested data
    */
-
   getAllApplicationScopeDataByUser: function getAllApplicationScopeDataByUser(userName) {
     return getAllDataByUser.call(this, APPLICATION_SCOPE, userName);
   },

@@ -6,7 +6,7 @@
     "node": true
   },
   "plugins": [ "import" ],
-  "extends": "airbnb",
+  "extends": "airbnb-base",
   "rules": {
     "arrow-body-style": 0,
     "arrow-spacing": 1,

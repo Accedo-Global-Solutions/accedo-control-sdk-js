@@ -82,6 +82,18 @@ Send a log with the given level, details and extra metadata.
 
 Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of the success of the operation
 
+# getSessionKey
+
+Returns the currently stored sessionKey for this client instance
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the sessionKey, if any
+
+# createSession
+
+Create a session and store it for reuse in this client instance
+
+Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of a string, the sessionKey
+
 # getEntries
 
 Get all the content entries, based on the given parameters.
@@ -125,18 +137,6 @@ Get one content entry, based on the given parameters.
     -   `params.at` **\[([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date))]** when given, get the version at the given time
 
 Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of an entry (object)
-
-# getSessionKey
-
-Returns the currently stored sessionKey for this client instance
-
-Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the sessionKey, if any
-
-# createSession
-
-Create a session and store it for reuse in this client instance
-
-Returns **[promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise of a string, the sessionKey
 
 # getApplicationStatus
 
