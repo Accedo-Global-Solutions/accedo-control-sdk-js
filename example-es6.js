@@ -2,7 +2,8 @@
 
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
-import agClientFactory, { generateUuid, getCurrentTimeOfDayDimValue } from './dist/bundle.es6'; // NOTE: this would normally be: import AppGrid from 'appgrid';
+// NOTE: this would normally be: import appgrid from 'appgrid-sdk-node';
+import appgrid, { generateUuid, getCurrentTimeOfDayDimValue } from './dist/bundle.es6';
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
@@ -11,7 +12,7 @@ const logError = (message, ...metadata) => {
 const deviceId = generateUuid();
 const downloadsDirectoryName = 'downloads';
 
-const client = agClientFactory({
+const client = appgrid({
   appKey: '56ea6a370db1bf032c9df5cb',
   deviceId,
   // log(...args) { console.log(...args); },
