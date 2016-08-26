@@ -16,8 +16,8 @@
     "lint": "eslint . --ext .js",
     "pretest": "rollup -c rollup.config.test.js",
     "test": "mocha --opts ./test/mocha.opts build/test-bundle.js",
-    "dochtml": "documentation build src/index.js -c doc_config.yml --format html -o htmldoc",
-    "doc": "documentation build src/index.js -c doc_config.yml --format md > API.md",
+    "doc": "documentation build src/index.js -c doc_config.yml --format html -o docs",
+    "docmd": "documentation build src/index.js -c doc_config.yml --format md > API.md",
     "prepublish": "npm test && npm run doc && npm run build"
   },
   "repository": {
