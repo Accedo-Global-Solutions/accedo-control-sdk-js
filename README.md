@@ -32,7 +32,7 @@ You can run the examples based on the current bundles: `npm run example`.
 
 ## Documentation
 
-Refer to the [API docs](./API.md)
+Refer to the [API docs](https://accedo-products.github.io/appgrid-sdk-node/)
 
 ## Installation
 
