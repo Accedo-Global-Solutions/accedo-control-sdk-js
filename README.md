@@ -144,7 +144,12 @@ client.getAssetById(idToDownload)
 * [AppGrid User Guide and API Documentation](https://appgrid.cloud.accedo.tv/help)
 
 ## Unit Tests
-  Mocha (with Chai) unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
+
+Mocha (with Chai) unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
 
   * Follow the **Getting Started** steps above.
   * Run `npm test`
+
+## License
+
+See the [LICENSE file](./LICENSE.md) for license rights and limitations (Apache 2.0)
