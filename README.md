@@ -23,7 +23,7 @@ This is the official [Accedo AppGrid](https://www.accedo.tv/appgrid/) SDK for No
 While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with Node.js.
 It also encourages the use of best practices (for example: reusing the same sessionId for a client, but different clients for different devices).
 
-We follow semantic versioning, read about semver here](http://semver.org/).
+We follow [semantic versioning](http://semver.org/).
 Check the [change log](./CHANGELOG.md) to find out what changed between versions.
 
 ## Examples
@@ -39,7 +39,7 @@ You may also want to refer to the [AppGrid Rest API documentation](https://s3-us
 
 ## Installation
 
-`npm install --save-dev appgrid` (pending publication on NPM !)
+`npm install --save-dev appgrid`
 
 Then you can use the default export to get a factory:
 ```js
