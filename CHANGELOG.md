@@ -18,6 +18,7 @@
 - PATCH: Added automatically generated docs
 - PATCH: Renamed this library and repo name, this is the SDK for Node.js, not for "the web".
 - PATCH: Renamed npm scripts (build rather than compile, new doc scripts, etc)
+- PATCH: Now with an Apache-2.0 license, and published on npm !
 
 # 1.1.1
 
