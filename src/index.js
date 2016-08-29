@@ -2,7 +2,7 @@ import uuidLib from 'uuid';
 import stamp from './stamps/appgridClient';
 
 /**
- * Globally available (use `import { getCurrentTimeOfDayDimValue } from 'appgrid-sdk-node'`)
+ * Globally available (use `import { getCurrentTimeOfDayDimValue } from 'appgrid'`)
  * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
  * Useful for AppGrid log events.
  * @function
@@ -13,7 +13,7 @@ export { getCurrentTimeOfDayDimValue } from './stamps/appLog';
 const noop = () => {};
 
 /**
- * Globally available (use `import { generateUuid } from 'appgrid-sdk-node'`)
+ * Globally available (use `import { generateUuid } from 'appgrid'`)
  * Generate a UUID.
  * Use this for a device/appKey tuple when you do not have a sessionKey already.
  * @function
@@ -46,7 +46,7 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * @param  {string} [config.log] a function to use to see this SDK's logs
  * @return {client}        an AppGrid client tied to the given params
  * @example
- * import appgrid from 'appgrid-sdk-node';
+ * import appgrid from 'appgrid';
  *
  * // when all info is available - use all of it !
  * const client = appgrid({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });

@@ -36,15 +36,15 @@ Refer to the [API docs](https://accedo-products.github.io/appgrid-sdk-node/)
 
 ## Installation
 
-`npm install --save-dev appgrid-sdk-node` (pending publication on NPM !)
+`npm install --save-dev appgrid` (pending publication on NPM !)
 
 Then you can use the default export to get a factory:
 ```js
-const factory = require('appgrid-sdk-node').default
+const factory = require('appgrid').default
 ```
 Or, using the ES6 module syntax:
 ```js
-import factory from 'appgrid-sdk-node'
+import factory from 'appgrid'
 ```
 
 #### Create an AppGrid client instance
@@ -52,7 +52,7 @@ An instance of an AppGrid client must be obtained. It's created with the factory
 
 ```javascript
 // this is an AppGrid client factory - name it "factory" or anything else
-import factory from 'appgrid-sdk-node';
+import factory from 'appgrid';
 
 const client = factory({
   appKey: 'YOUR_APPGRID_APPLICATION_KEY',

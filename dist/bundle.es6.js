@@ -701,16 +701,16 @@ var checkUsability = function checkUsability() {
  * @param  {string} [config.log] a function to use to see this SDK's logs
  * @return {client}        an AppGrid client tied to the given params
  * @example
- * import factory from 'appgrid';
+ * import appgrid from 'appgrid';
  *
  * // when all info is available - use all of it !
- * const client = factory({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });
+ * const client = appgrid({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });
  *
  * // when there is no known sessionKey yet
- * const client2 = factory({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID' });
+ * const client2 = appgrid({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID' });
  *
  * // when there is no known sessionKey or deviceId yet
- * const client3 = factory({ appKey: 'MY_APP_KEY' });
+ * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
 var factory = function factory(config) {
   var gid = config.gid;

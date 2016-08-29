@@ -2,7 +2,7 @@
 
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
-// NOTE: this would normally be: import appgrid from 'appgrid-sdk-node';
+// NOTE: this would normally be: import appgrid from 'appgrid';
 import appgrid, { generateUuid, getCurrentTimeOfDayDimValue } from './dist/bundle.es6';
 
 const logError = (message, ...metadata) => {
