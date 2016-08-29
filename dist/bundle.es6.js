@@ -662,17 +662,6 @@ var stamp = stampit().compose(stamp$2, stamp$1, stamp$3, stamp$4, stamp$5, stamp
 var noop = function noop() {};
 
 /**
- * Globally available (use `import { generateUuid } from 'appgrid'`)
- * Generate a UUID.
- * Use this for a device/appKey tuple when you do not have a sessionKey already.
- * @function
- * @return {string} a new UUID
- */
-var generateUuid = function generateUuid() {
-  return uuidLib.v4();
-};
-
-/**
  * Check the parameters given are good enough to make api calls
  * @function
  * @param  {string} $0.appKey        the application key
@@ -712,7 +701,7 @@ var checkUsability = function checkUsability() {
  * // when there is no known sessionKey or deviceId yet
  * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
-var factory = function factory(config) {
+var appgrid = function appgrid(config) {
   var gid = config.gid;
   var appKey = config.appKey;
   var sessionKey = config.sessionKey;
@@ -726,7 +715,7 @@ var factory = function factory(config) {
   }
   // Generate a uuid if no deviceId was given
   if (!deviceId) {
-    deviceId = generateUuid();
+    deviceId = appgrid.generateUuid();
   }
 
   return stamp({
@@ -734,4 +723,26 @@ var factory = function factory(config) {
   });
 };
 
-export { generateUuid, getCurrentTimeOfDayDimValue };export default factory;
+/**
+ * Generate a UUID.
+ * Use this for a device/appKey tuple when you do not have a sessionKey already.
+ * This utility method is not used through an appgrid client instance, but globally available
+ * @function
+ * @alias appgrid.generateUuid
+ * @return {string} a new UUID
+ */
+appgrid.generateUuid = function () {
+  return uuidLib.v4();
+};
+
+/**
+ * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
+ * Useful for AppGrid log events.
+ * This utility method is not used through an appgrid client instance, but globally available
+ * @function
+ * @alias appgrid.getCurrentTimeOfDayDimValue
+ * @return {string} a range of hours
+ */
+appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
+
+export default appgrid;

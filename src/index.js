@@ -1,25 +1,8 @@
 import uuidLib from 'uuid';
 import stamp from './stamps/appgridClient';
-
-/**
- * Globally available (use `import { getCurrentTimeOfDayDimValue } from 'appgrid'`)
- * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
- * Useful for AppGrid log events.
- * @function
- * @return {string} a range of hours
- */
-export { getCurrentTimeOfDayDimValue } from './stamps/appLog';
+import { getCurrentTimeOfDayDimValue } from './stamps/appLog';
 
 const noop = () => {};
-
-/**
- * Globally available (use `import { generateUuid } from 'appgrid'`)
- * Generate a UUID.
- * Use this for a device/appKey tuple when you do not have a sessionKey already.
- * @function
- * @return {string} a new UUID
- */
-export const generateUuid = () => uuidLib.v4();
 
 /**
  * Check the parameters given are good enough to make api calls
@@ -57,7 +40,7 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * // when there is no known sessionKey or deviceId yet
  * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
-const factory = (config) => {
+const appgrid = (config) => {
   const { gid, appKey, sessionKey, log = noop } = config;
   let { deviceId } = config;
   // First, check the params are OK
@@ -66,7 +49,7 @@ const factory = (config) => {
   }
   // Generate a uuid if no deviceId was given
   if (!deviceId) {
-    deviceId = generateUuid();
+    deviceId = appgrid.generateUuid();
   }
 
   return stamp({
@@ -74,4 +57,25 @@ const factory = (config) => {
   });
 };
 
-export default factory;
+/**
+ * Generate a UUID.
+ * Use this for a device/appKey tuple when you do not have a sessionKey already.
+ * This utility method is not used through an appgrid client instance, but globally available
+ * @function
+ * @alias appgrid.generateUuid
+ * @return {string} a new UUID
+ */
+appgrid.generateUuid = () => uuidLib.v4();
+
+/**
+ * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
+ * Useful for AppGrid log events.
+ * This utility method is not used through an appgrid client instance, but globally available
+ * @function
+ * @alias appgrid.getCurrentTimeOfDayDimValue
+ * @return {string} a range of hours
+ */
+appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
+
+
+export default appgrid;

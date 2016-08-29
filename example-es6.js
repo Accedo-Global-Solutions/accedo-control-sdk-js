@@ -3,13 +3,13 @@
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 // NOTE: this would normally be: import appgrid from 'appgrid';
-import appgrid, { generateUuid, getCurrentTimeOfDayDimValue } from './dist/bundle.es6';
+import appgrid from './dist/bundle.es6';
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
 };
 
-const deviceId = generateUuid();
+const deviceId = appgrid.generateUuid();
 const downloadsDirectoryName = 'downloads';
 
 const client = appgrid({
@@ -43,7 +43,7 @@ const exampleAppGridLogging = () => {
       dim1: middlewareSourceCode,
       dim2: noneViewName,
       dim3: deviceType,
-      dim4: getCurrentTimeOfDayDimValue()
+      dim4: appgrid.getCurrentTimeOfDayDimValue()
     };
   };
   const logFacilityCode = 13;

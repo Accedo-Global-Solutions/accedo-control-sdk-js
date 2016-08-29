@@ -19,10 +19,11 @@
 ```
 
 ## Summary
-This is the official Accedo AppGrid SDK for Node.js.
+This is the official [Accedo AppGrid](https://www.accedo.tv/appgrid/) SDK for Node.js.
 While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with Node.js.
 It also encourages the use of best practices (for example: reusing the same sessionId for a client, but different clients for different devices).
 
+We follow semantic versioning, read about semver here](http://semver.org/).
 Check the [change log](./CHANGELOG.md) to find out what changed between versions.
 
 ## Examples
@@ -32,7 +33,9 @@ You can run the examples based on the current bundles: `npm run example`.
 
 ## Documentation
 
-Refer to the [API docs](https://accedo-products.github.io/appgrid-sdk-node/)
+Refer to the [API docs for this SDK](https://accedo-products.github.io/appgrid-sdk-node/).
+
+You may also want to refer to the [AppGrid Rest API documentation](https://s3-us-west-1.amazonaws.com/appgrid.cloud.accedo.tv/docs/appgrid-api.pdf) that this SDK uses behind the scenes. AppGrid-specific terminology is defined there.
 
 ## Installation
 
@@ -40,18 +43,19 @@ Refer to the [API docs](https://accedo-products.github.io/appgrid-sdk-node/)
 
 Then you can use the default export to get a factory:
 ```js
-const factory = require('appgrid').default
+const appgrid = require('appgrid')
 ```
 Or, using the ES6 module syntax:
 ```js
-import factory from 'appgrid'
+import appgrid from 'appgrid'
 ```
 
 #### Create an AppGrid client instance
+
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
 ```javascript
-// this is an AppGrid client factory - name it "factory" or anything else
+// this is an AppGrid client factory - name it "factory", "appgrid" (as above), or anything else
 import factory from 'appgrid';
 
 const client = factory({

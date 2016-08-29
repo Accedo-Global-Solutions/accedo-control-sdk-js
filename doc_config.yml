@@ -1,21 +1,15 @@
 # this is used by the auto-generated documentation tool
 toc:
-  - name: Default export
+  - name: AppGrid client factory
     description: |
-      This is the default export for this library
+      This is the default export for this library.
 
-  - factory
-
-  - name: Named exports
-    description: |
-      Those methods are named exports, require/import them, then use them directly
-
-  - generateUuid
-  - getCurrentTimeOfDayDimValue
+  - appgrid
 
   - name: Instance methods
     description: |
       To use those methods, call them on an instance of a client.
-      All API calls will make use of the existing parameters on the instance (appKey, etc)
+      All API calls will make use of the existing parameters on the instance (appKey, etc).
+      Code examples can be found in the github repository.
 
   # NOTE - All other JSDoc methods will go here

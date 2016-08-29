@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('uuid'), require('stampit'), require('qs'), require('isomorphic-fetch')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'uuid', 'stampit', 'qs', 'isomorphic-fetch'], factory) :
-  (factory((global.appgrid = global.appgrid || {}),global.uuidLib,global.stampit,global.qs,global.fetch));
-}(this, (function (exports,uuidLib,stampit,qs,fetch) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('uuid'), require('stampit'), require('qs'), require('isomorphic-fetch')) :
+  typeof define === 'function' && define.amd ? define(['uuid', 'stampit', 'qs', 'isomorphic-fetch'], factory) :
+  (global.appgrid = factory(global.uuidLib,global.stampit,global.qs,global.fetch));
+}(this, (function (uuidLib,stampit,qs,fetch) { 'use strict';
 
 uuidLib = 'default' in uuidLib ? uuidLib['default'] : uuidLib;
 stampit = 'default' in stampit ? stampit['default'] : stampit;
@@ -668,17 +668,6 @@ var stamp = stampit().compose(stamp$2, stamp$1, stamp$3, stamp$4, stamp$5, stamp
 var noop = function noop() {};
 
 /**
- * Globally available (use `import { generateUuid } from 'appgrid'`)
- * Generate a UUID.
- * Use this for a device/appKey tuple when you do not have a sessionKey already.
- * @function
- * @return {string} a new UUID
- */
-var generateUuid = function generateUuid() {
-  return uuidLib.v4();
-};
-
-/**
  * Check the parameters given are good enough to make api calls
  * @function
  * @param  {string} $0.appKey        the application key
@@ -718,7 +707,7 @@ var checkUsability = function checkUsability() {
  * // when there is no known sessionKey or deviceId yet
  * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
-var factory = function factory(config) {
+var appgrid = function appgrid(config) {
   var gid = config.gid;
   var appKey = config.appKey;
   var sessionKey = config.sessionKey;
@@ -732,7 +721,7 @@ var factory = function factory(config) {
   }
   // Generate a uuid if no deviceId was given
   if (!deviceId) {
-    deviceId = generateUuid();
+    deviceId = appgrid.generateUuid();
   }
 
   return stamp({
@@ -740,10 +729,28 @@ var factory = function factory(config) {
   });
 };
 
-exports.generateUuid = generateUuid;
-exports['default'] = factory;
-exports.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
+/**
+ * Generate a UUID.
+ * Use this for a device/appKey tuple when you do not have a sessionKey already.
+ * This utility method is not used through an appgrid client instance, but globally available
+ * @function
+ * @alias appgrid.generateUuid
+ * @return {string} a new UUID
+ */
+appgrid.generateUuid = function () {
+  return uuidLib.v4();
+};
 
-Object.defineProperty(exports, '__esModule', { value: true });
+/**
+ * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
+ * Useful for AppGrid log events.
+ * This utility method is not used through an appgrid client instance, but globally available
+ * @function
+ * @alias appgrid.getCurrentTimeOfDayDimValue
+ * @return {string} a range of hours
+ */
+appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
+
+return appgrid;
 
 })));
