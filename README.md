@@ -1,4 +1,4 @@
-# AppGrid SDK for Node.js
+# AppGrid SDK for Node.js [![npm](https://img.shields.io/npm/v/appgrid.svg?maxAge=2592000)](https://www.npmjs.com/package/appgrid)
 
 ```
 *******************************************************************************
