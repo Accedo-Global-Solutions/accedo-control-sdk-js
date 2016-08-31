@@ -15,8 +15,10 @@ const stamp = stampit().methods({
    * @return {promise}  a promise of a string, the sessionKey
    */
   createSession() {
-    // ignore the potential existing session
-    this.props.config.sessionKey = null;
+    // ignore any existing session
+    if (this.props.config.sessionKey) {
+      this.props.config.sessionKey = null;
+    }
     return grab('/session', this.props.config).then((json) => {
       const { sessionKey } = json;
       // update the context of this client, adding the session key
@@ -37,14 +39,13 @@ const stamp = stampit().methods({
   withSessionHandling(next) {
     // existing session
     if (this.getSessionKey()) {
-      return next().then(json => {
-        const { error } = json;
-        if (error && error.status === '401') {
-          // expired - recreate one
+      return next().catch(res => {
+        if (res && res.status === 401) {
+          // session expired - recreate one then retry
           return this.createSession().then(next);
         }
-        // otherwise keep going
-        return json;
+        // otherwise propagate the failure
+        throw res;
       });
     }
     // no session - create it first, then launch the next action

@@ -75,7 +75,13 @@ var getFetch = function getFetch(path, config) {
   var headers = _extends({}, defaultHeaders, getExtraHeaders(config));
   var requestUrl = getRequestUrlWithQueryString(path, config);
   config.log('Sending a GET request to: ' + requestUrl + ' with the following headers', headers);
-  return fetch(requestUrl, { credentials: credentials, headers: headers });
+  return fetch(requestUrl, { credentials: credentials, headers: headers }).then(function (res) {
+    if (res.status >= 400) {
+      config.log('GET failed with status', res.status);
+      throw res;
+    }
+    return res;
+  });
 };
 
 var grab = function grab(path, config) {
@@ -136,8 +142,10 @@ var stamp$2 = stampit().methods({
   createSession: function createSession() {
     var _this = this;
 
-    // ignore the potential existing session
-    this.props.config.sessionKey = null;
+    // ignore any existing session
+    if (this.props.config.sessionKey) {
+      this.props.config.sessionKey = null;
+    }
     return grab('/session', this.props.config).then(function (json) {
       var sessionKey = json.sessionKey;
       // update the context of this client, adding the session key
@@ -162,15 +170,13 @@ var stamp$2 = stampit().methods({
 
     // existing session
     if (this.getSessionKey()) {
-      return next().then(function (json) {
-        var error = json.error;
-
-        if (error && error.status === '401') {
-          // expired - recreate one
+      return next().catch(function (res) {
+        if (res && res.status === 401) {
+          // session expired - recreate one then retry
           return _this2.createSession().then(next);
         }
-        // otherwise keep going
-        return json;
+        // otherwise propagate the failure
+        throw res;
       });
     }
     // no session - create it first, then launch the next action
@@ -659,6 +665,64 @@ var stamp$10 = stampit().methods({
 // Simply compose all the stamps in one single stamp to give access to all methods
 var stamp = stampit().compose(stamp$2, stamp$1, stamp$3, stamp$4, stamp$5, stamp$6, stamp$7, stamp$8, stamp$9, stamp$10);
 
+var cookieParser = require('cookie-parser')();
+
+var SIXTY_YEARS_IN_MS = 2147483647000;
+var COOKIE_DEVICE_ID = 'ag_d';
+var COOKIE_SESSION_KEY = 'ag_s';
+
+var defaultGetRequestInfo = function defaultGetRequestInfo(req) {
+  return { deviceId: req.cookies[COOKIE_DEVICE_ID], sessionKey: req.cookies[COOKIE_SESSION_KEY] };
+};
+var defaultOnDeviceIdGenerated = function defaultOnDeviceIdGenerated(id, res) {
+  return res.cookie(COOKIE_DEVICE_ID, id, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true });
+};
+var defaultOnSessionKeyChanged = function defaultOnSessionKeyChanged(key, res) {
+  return res.cookie(COOKIE_SESSION_KEY, key, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true });
+};
+
+// See doc in index.js where this is used
+var factory = function factory(appgrid) {
+  return function (config) {
+    var appKey = config.appKey;
+    var _config$getRequestInf = config.getRequestInfo;
+    var getRequestInfo = _config$getRequestInf === undefined ? defaultGetRequestInfo : _config$getRequestInf;
+    var _config$onDeviceIdGen = config.onDeviceIdGenerated;
+
+    var _onDeviceIdGenerated = _config$onDeviceIdGen === undefined ? defaultOnDeviceIdGenerated : _config$onDeviceIdGen;
+
+    var _config$onSessionKeyC = config.onSessionKeyChanged;
+
+    var _onSessionKeyChanged = _config$onSessionKeyC === undefined ? defaultOnSessionKeyChanged : _config$onSessionKeyC;
+
+    var log = config.log;
+
+    return function (req, res, next) {
+      return cookieParser(req, res, function () {
+        var _getRequestInfo = getRequestInfo(req);
+
+        var deviceId = _getRequestInfo.deviceId;
+        var sessionKey = _getRequestInfo.sessionKey;
+        // res.locals is a good place to store response-scoped data
+
+        res.locals.appgridClient = appgrid({
+          appKey: appKey,
+          deviceId: deviceId,
+          sessionKey: sessionKey,
+          log: log,
+          onDeviceIdGenerated: function onDeviceIdGenerated(id) {
+            return _onDeviceIdGenerated(id, res);
+          },
+          onSessionKeyChanged: function onSessionKeyChanged(key) {
+            return _onSessionKeyChanged(key, res);
+          }
+        });
+        next();
+      });
+    };
+  };
+};
+
 var noop = function noop() {};
 
 /**
@@ -681,13 +745,16 @@ var checkUsability = function checkUsability() {
 
 /**
  * Factory function to create an instance of an AppGrid client.
+ *
  * You must get an instance before accessing any of the exposed client APIs.
  * @function
  * @param  {object} config the configuration for the new instance
  * @param  {string} config.appKey the application Key
  * @param  {string} [config.deviceId] the device identifier (if not provided, a uuid will be generated instead)
  * @param  {string} [config.sessionKey] the sessionKey (note a new one may be created when not given or expired)
- * @param  {string} [config.log] a function to use to see this SDK's logs
+ * @param  {function} [config.log] a function to use to see this SDK's logs
+ * @param  {function} [config.onDeviceIdGenerated] callback to obtain the new deviceId, if one gets generated
+ * @param  {function} [config.onSessionKeyChanged] callback to obtain the sessionKey, anytime a new one gets generated
  * @return {client}        an AppGrid client tied to the given params
  * @example
  * import appgrid from 'appgrid';
@@ -704,10 +771,14 @@ var checkUsability = function checkUsability() {
 var appgrid = function appgrid(config) {
   var gid = config.gid;
   var appKey = config.appKey;
-  var sessionKey = config.sessionKey;
   var _config$log = config.log;
   var log = _config$log === undefined ? noop : _config$log;
+  var _config$onDeviceIdGen = config.onDeviceIdGenerated;
+  var onDeviceIdGenerated = _config$onDeviceIdGen === undefined ? noop : _config$onDeviceIdGen;
+  var _config$onSessionKeyC = config.onSessionKeyChanged;
+  var onSessionKeyChanged = _config$onSessionKeyC === undefined ? noop : _config$onSessionKeyC;
   var deviceId = config.deviceId;
+  var sessionKey = config.sessionKey;
   // First, check the params are OK
 
   if (!checkUsability(config)) {
@@ -716,19 +787,32 @@ var appgrid = function appgrid(config) {
   // Generate a uuid if no deviceId was given
   if (!deviceId) {
     deviceId = appgrid.generateUuid();
+    // trigger the callback
+    onDeviceIdGenerated(deviceId);
   }
 
+  var stampConfig = { deviceId: deviceId, gid: gid, appKey: appKey, log: log, onSessionKeyChanged: onSessionKeyChanged };
+  Object.defineProperty(stampConfig, 'sessionKey', {
+    set: function set(val) {
+      sessionKey = val;onSessionKeyChanged(val);
+    },
+    get: function get() {
+      return sessionKey;
+    }
+  });
+
   return stamp({
-    props: { config: { deviceId: deviceId, gid: gid, appKey: appKey, sessionKey: sessionKey, log: log } }
+    props: { config: stampConfig }
   });
 };
 
 /**
  * Generate a UUID.
+ *
  * Use this for a device/appKey tuple when you do not have a sessionKey already.
- * This utility method is not used through an appgrid client instance, but globally available
+ *
+ * This utility method is not used through an appgrid client instance, but available statically
  * @function
- * @alias appgrid.generateUuid
  * @return {string} a new UUID
  */
 appgrid.generateUuid = function () {
@@ -738,11 +822,80 @@ appgrid.generateUuid = function () {
 /**
  * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
  * Useful for AppGrid log events.
- * This utility method is not used through an appgrid client instance, but globally available
+ *
+ * This utility method is not used through an appgrid client instance, but available statically
  * @function
- * @alias appgrid.getCurrentTimeOfDayDimValue
  * @return {string} a range of hours
  */
 appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
+
+/**
+ * An express-compatible middleware.
+ *
+ * This uses the cookie-parser middleware, so you can also take advantage of the `req.cookies` array.
+ *
+ * This middleware takes care of creating an AppGrid client instance for each request automatically.
+ * By default, it will also reuse and persist the deviceId and sessionKey using the request and response cookies.
+ * That strategy can be changed by passing the optional callbacks,
+ * so you could make use of headers or request parameters for instance.
+ *
+ * Each instance is attached to the response object and available to the next express handlers as `res.locals.appgridClient`.
+ *
+ * This utility method is not used through an appgrid client instance, but available statically
+ * @function
+ * @param  {object} config the configuration
+ * @param  {string} config.appKey the application Key that will be used for all appgrid clients
+ * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId and sessionKey properties.
+ * @param  {function} [config.onDeviceIdGenerated] callback that receives the new deviceId (if one was not returned by getRequestInfo) and the response
+ * @param  {function} [config.onSessionKeyChanged] callback that receives the new sessionKey (anytime a new one gets generated) and the response
+ * @param  {function} [config.log] Logging function that will be passed onto the client instance
+ * @alias middleware.express
+ * @return {function} a middleware function compatible with express
+ * @example <caption>Using the default cookie strategy</caption>
+ * const appgrid = require('appgrid');
+ * const express = require('express');
+ *
+ * const PORT = 3000;
+ *
+ * express()
+ * // place the appgrid middleware before your request handlers
+ * .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
+ * .get('/test', (req, res) => {
+ *    // access your client instance, it's already linked to the deviceId and sessionKey via cookies
+ *    res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
+ *    .then(entry => res.send(entry))
+ *    .catch(err => res.status(500).send('Failed to get the result'));
+ * })
+ * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
+ *
+ * @example <caption>Using custom headers to extract deviceId and sessionKey and to pass down any change</caption>
+ * const appgrid = require('appgrid_next');
+ * const express = require('express');
+ *
+ * const PORT = 3000;
+ * const HEADER_DEVICE_ID = 'X-AG-DEVICE-ID';
+ * const HEADER_SESSION_KEY = 'X-AG-SESSION-KEY';
+ *
+ * express()
+ * .use(appgrid.middleware.express({
+ *   appKey: '56ea6a370db1bf032c9df5cb',
+ *   // extract deviceId and sessionKey from custom headers
+ *   getRequestInfo: req => ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY)}),
+ *   // pass down any change on the deviceId (the header won't be set if unchanged compared to the value in getRequestInfo)
+ *   onDeviceIdGenerated: (id, res) => res.set(HEADER_DEVICE_ID, id),
+ *   // pass down any change on the sessionKey (the header won't be set if unchanged compared to the value in getRequestInfo)
+ *   onSessionKeyChanged: (key, res) => res.set(HEADER_SESSION_KEY, key),
+ *   log(...args) { console.log(...args) }
+ * }))
+ * .get('/test', (req, res) => {
+ *   res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
+ *   .then(entry => res.send(entry))
+ *   .catch(err => res.status(500).send('Failed to get the result'));
+ * })
+ * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
+ */
+appgrid.middleware = {
+  express: factory(appgrid)
+};
 
 export default appgrid;

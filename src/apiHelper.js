@@ -45,7 +45,14 @@ const getFetch = (path, config) => {
   const headers = { ...defaultHeaders, ...getExtraHeaders(config) };
   const requestUrl = getRequestUrlWithQueryString(path, config);
   config.log(`Sending a GET request to: ${requestUrl} with the following headers`, headers);
-  return fetch(requestUrl, { credentials, headers });
+  return fetch(requestUrl, { credentials, headers })
+    .then(res => {
+      if (res.status >= 400) {
+        config.log('GET failed with status', res.status);
+        throw res;
+      }
+      return res;
+    });
 };
 
 export const grab = (path, config) => {
