@@ -113,6 +113,8 @@ You should create a new client for every device that needs to access the AppGrid
 
 If you are triggering some AppGrid API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's deviceId (typically you would persist a consumer deviceId via the cookies, or as a request parameter in your server APIs - unless the device lets you use some unique ID like a MAC address).
 
+Note the middleware (described above) does that work for you, so it's best to use it whenever possible.
+
 #### Get a new AppGrid SessionId
 
 This lets you manually create a new session, that will be stored for reuse onto this client instance.
