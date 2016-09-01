@@ -6,9 +6,9 @@ const HOST = 'https://appgrid-api.cloud.accedo.tv';
 const credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 const defaultHeaders = { accept: MIME_TYPE_JSON };
 
-const getForwardedForHeader = ({ clientIp }) => {
-  if (!clientIp) { return {}; }
-  return { 'X-FORWARDED-FOR': clientIp };
+const getForwardedForHeader = ({ ip }) => {
+  if (!ip) { return {}; }
+  return { 'X-FORWARDED-FOR': ip };
 };
 
 const getSessionHeader = ({ sessionKey }) => {
@@ -37,8 +37,8 @@ const getRequestUrlWithQueryString = (path, config) => {
   return `${HOST}${pathWithoutQs}?${queryString}`;
 };
 
-const getExtraHeaders = (options) => {
-  return Object.assign({}, getForwardedForHeader(options), getSessionHeader(options));
+const getExtraHeaders = (config) => {
+  return Object.assign({}, getForwardedForHeader(config), getSessionHeader(config));
 };
 
 const getFetch = (path, config) => {

@@ -28,6 +28,7 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * @param  {string} config.appKey the application Key
  * @param  {string} [config.deviceId] the device identifier (if not provided, a uuid will be generated instead)
  * @param  {string} [config.sessionKey] the sessionKey (note a new one may be created when not given or expired)
+ * @param  {string} [config.ip] the user's IP, given to AppGrid for every request this client will trigger (for geolocation).
  * @param  {function} [config.log] a function to use to see this SDK's logs
  * @param  {function} [config.onDeviceIdGenerated] callback to obtain the new deviceId, if one gets generated
  * @param  {function} [config.onSessionKeyChanged] callback to obtain the sessionKey, anytime a new one gets generated
@@ -45,7 +46,7 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
 const appgrid = (config) => {
-  const { gid, appKey, log = noop, onDeviceIdGenerated = noop, onSessionKeyChanged = noop } = config;
+  const { gid, appKey, ip, log = noop, onDeviceIdGenerated = noop, onSessionKeyChanged = noop } = config;
   let { deviceId, sessionKey } = config;
   // First, check the params are OK
   if (!checkUsability(config)) {
@@ -58,7 +59,7 @@ const appgrid = (config) => {
     onDeviceIdGenerated(deviceId);
   }
 
-  const stampConfig = { deviceId, gid, appKey, log, onSessionKeyChanged };
+  const stampConfig = { deviceId, gid, ip, appKey, log, onSessionKeyChanged };
   Object.defineProperty(stampConfig, 'sessionKey', {
     set(val) { sessionKey = val; onSessionKeyChanged(val); },
     get() { return sessionKey; }

@@ -114,26 +114,6 @@
               
                 
                 <li><a
-                  href='#getsessionkey'
-                  class="">
-                  getSessionKey
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#createsession'
-                  class="">
-                  createSession
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#getapplicationstatus'
                   class="">
                   getApplicationStatus
@@ -332,6 +312,26 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#getsessionkey'
+                  class="">
+                  getSessionKey
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createsession'
+                  class="">
+                  createSession
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -423,6 +423,13 @@
                   <td class='break-word'><span class='code bold'>config.sessionKey</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>]</code>
                   </td>
                   <td class='break-word'><span>the sessionKey (note a new one may be created when not given or expired)
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.ip</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>]</code>
+                  </td>
+                  <td class='break-word'><span>the user&#x27;s IP, given to AppGrid for every request this client will trigger (for geolocation).
 </span></td>
                 </tr>
               
@@ -1119,110 +1126,6 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of an entry (object)
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='getsessionkey'>
-      getSessionKey
-    </h3>
-    
-  </div>
-  
-
-  <p>Returns the currently stored sessionKey for this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        the sessionKey, if any
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='createsession'>
-      createSession
-    </h3>
-    
-  </div>
-  
-
-  <p>Create a session and store it for reuse in this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of a string, the sessionKey
 
       
     
@@ -2577,6 +2480,110 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the success of the operation
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='getsessionkey'>
+      getSessionKey
+    </h3>
+    
+  </div>
+  
+
+  <p>Returns the currently stored sessionKey for this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        the sessionKey, if any
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='createsession'>
+      createSession
+    </h3>
+    
+  </div>
+  
+
+  <p>Create a session and store it for reuse in this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of a string, the sessionKey
 
       
     

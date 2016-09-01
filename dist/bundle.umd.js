@@ -15,10 +15,10 @@ var credentials = 'same-origin'; // NOTE: This option is required in order for F
 var defaultHeaders = { accept: MIME_TYPE_JSON };
 
 var getForwardedForHeader = function (ref) {
-  var clientIp = ref.clientIp;
+  var ip = ref.ip;
 
-  if (!clientIp) { return {}; }
-  return { 'X-FORWARDED-FOR': clientIp };
+  if (!ip) { return {}; }
+  return { 'X-FORWARDED-FOR': ip };
 };
 
 var getSessionHeader = function (ref) {
@@ -51,8 +51,8 @@ var getRequestUrlWithQueryString = function (path, config) {
   return ("" + HOST + pathWithoutQs + "?" + queryString);
 };
 
-var getExtraHeaders = function (options) {
-  return Object.assign({}, getForwardedForHeader(options), getSessionHeader(options));
+var getExtraHeaders = function (config) {
+  return Object.assign({}, getForwardedForHeader(config), getSessionHeader(config));
 };
 
 var getFetch = function (path, config) {
@@ -626,6 +626,7 @@ var SIXTY_YEARS_IN_MS = 2147483647000;
 var COOKIE_DEVICE_ID = 'ag_d';
 var COOKIE_SESSION_KEY = 'ag_s';
 
+// default functions for the cookie peristency strategy
 var defaultGetRequestInfo = function (req) { return ({ deviceId: req.cookies[COOKIE_DEVICE_ID], sessionKey: req.cookies[COOKIE_SESSION_KEY] }); };
 var defaultOnDeviceIdGenerated = function (id, res) { return res.cookie(COOKIE_DEVICE_ID, id, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true }); };
 var defaultOnSessionKeyChanged = function (key, res) { return res.cookie(COOKIE_SESSION_KEY, key, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true }); };
@@ -647,6 +648,7 @@ var factory = function (appgrid) { return function (config) {
       deviceId: deviceId,
       sessionKey: sessionKey,
       log: log,
+      ip: req.ip,
       onDeviceIdGenerated: function (id) { return onDeviceIdGenerated(id, res); },
       onSessionKeyChanged: function (key) { return onSessionKeyChanged(key, res); }
     });
@@ -685,6 +687,7 @@ var checkUsability = function (ref) {
  * @param  {string} config.appKey the application Key
  * @param  {string} [config.deviceId] the device identifier (if not provided, a uuid will be generated instead)
  * @param  {string} [config.sessionKey] the sessionKey (note a new one may be created when not given or expired)
+ * @param  {string} [config.ip] the user's IP, given to AppGrid for every request this client will trigger (for geolocation).
  * @param  {function} [config.log] a function to use to see this SDK's logs
  * @param  {function} [config.onDeviceIdGenerated] callback to obtain the new deviceId, if one gets generated
  * @param  {function} [config.onSessionKeyChanged] callback to obtain the sessionKey, anytime a new one gets generated
@@ -704,6 +707,7 @@ var checkUsability = function (ref) {
 var appgrid = function (config) {
   var gid = config.gid;
   var appKey = config.appKey;
+  var ip = config.ip;
   var log = config.log; if ( log === void 0 ) log = noop;
   var onDeviceIdGenerated = config.onDeviceIdGenerated; if ( onDeviceIdGenerated === void 0 ) onDeviceIdGenerated = noop;
   var onSessionKeyChanged = config.onSessionKeyChanged; if ( onSessionKeyChanged === void 0 ) onSessionKeyChanged = noop;
@@ -720,7 +724,7 @@ var appgrid = function (config) {
     onDeviceIdGenerated(deviceId);
   }
 
-  var stampConfig = { deviceId: deviceId, gid: gid, appKey: appKey, log: log, onSessionKeyChanged: onSessionKeyChanged };
+  var stampConfig = { deviceId: deviceId, gid: gid, ip: ip, appKey: appKey, log: log, onSessionKeyChanged: onSessionKeyChanged };
   Object.defineProperty(stampConfig, 'sessionKey', {
     set: function set(val) { sessionKey = val; onSessionKeyChanged(val); },
     get: function get() { return sessionKey; }
