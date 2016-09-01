@@ -1,10 +1,10 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-import babel from 'rollup-plugin-babel';
+import buble from 'rollup-plugin-buble';
 import multiEntry from 'rollup-plugin-multi-entry';
 
 export default {
   entry: 'test/**/*.js',
-  plugins: [babel(), multiEntry()],
+  plugins: [buble(), multiEntry()],
   format: 'cjs',
   intro: 'require("source-map-support").install();',
   dest: 'build/test-bundle.js',

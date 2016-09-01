@@ -1,5 +1,5 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-import babel from 'rollup-plugin-babel';
+import buble from 'rollup-plugin-buble';
 
 export default {
   entry: 'src/index.js',
@@ -7,5 +7,5 @@ export default {
   dest: 'dist/bundle.umd.js',
   moduleName: 'appgrid',
   sourceMap: false,
-  plugins: [babel()]
+  plugins: [buble()]
 };
