@@ -9,20 +9,6 @@ stampit = 'default' in stampit ? stampit['default'] : stampit;
 qs = 'default' in qs ? qs['default'] : qs;
 fetch = 'default' in fetch ? fetch['default'] : fetch;
 
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
 var MIME_TYPE_JSON = 'application/json';
 var HOST = 'https://appgrid-api.cloud.accedo.tv';
 var credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
@@ -60,7 +46,7 @@ var getQueryString = function getQueryString(config) {
   if (config.gid) {
     defaultQs.gid = config.gid;
   }
-  var qsObject = _extends({}, existingQs, defaultQs);
+  var qsObject = Object.assign({}, existingQs, defaultQs);
   var queryString = qs.stringify(qsObject);
   return queryString;
 };
@@ -74,11 +60,11 @@ var getRequestUrlWithQueryString = function getRequestUrlWithQueryString(path, c
 };
 
 var getExtraHeaders = function getExtraHeaders(options) {
-  return _extends({}, getForwardedForHeader(options), getSessionHeader(options));
+  return Object.assign({}, getForwardedForHeader(options), getSessionHeader(options));
 };
 
 var getFetch = function getFetch(path, config) {
-  var headers = _extends({}, defaultHeaders, getExtraHeaders(config));
+  var headers = Object.assign({}, defaultHeaders, getExtraHeaders(config));
   var requestUrl = getRequestUrlWithQueryString(path, config);
   config.log('Sending a GET request to: ' + requestUrl + ' with the following headers', headers);
   return fetch(requestUrl, { credentials: credentials, headers: headers }).then(function (res) {
@@ -109,7 +95,7 @@ var grabRaw = function grabRaw(path, config) {
 var post = function post(path, config) {
   var body = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-  var headers = _extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(config));
+  var headers = Object.assign({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(config));
   var requestUrl = getRequestUrlWithQueryString(path, config);
   config.log('Sending a POST request to: ' + requestUrl + '. With the following headers and body: ', headers, body);
   var options = {
@@ -220,7 +206,7 @@ function getPathWithQs(path) {
     qsParams.at = at.toISOString();
   }
   // Add curated and non-curated params
-  var queryString = qs.stringify(_extends({}, qsParams, { typeId: typeId, offset: offset, size: size }));
+  var queryString = qs.stringify(Object.assign({}, qsParams, { typeId: typeId, offset: offset, size: size }));
   return path + '?' + queryString;
 }
 

@@ -19,7 +19,7 @@ function getPathWithQs(path, params = {}) {
     qsParams.at = at.toISOString();
   }
   // Add curated and non-curated params
-  const queryString = qs.stringify({ ...qsParams, typeId, offset, size });
+  const queryString = qs.stringify(Object.assign({}, qsParams, { typeId, offset, size }));
   return `${path}?${queryString}`;
 }
 

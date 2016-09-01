@@ -1,10 +1,11 @@
-import baseConfig from './rollup.config';
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+import babel from 'rollup-plugin-babel';
 
-const additionalConfig = {
+export default {
+  entry: 'src/index.js',
   format: 'umd',
   dest: 'dist/bundle.umd.js',
-  moduleName: 'appgrid'
+  moduleName: 'appgrid',
+  sourceMap: false,
+  plugins: [babel()]
 };
-
-const config = Object.assign({}, baseConfig, additionalConfig);
-export default config;

@@ -5,6 +5,11 @@
 - MINOR: basic robot detection with a default deviceId for them all ?
 - MINOR: ensure only one new session may be created at a time, in case of many calls happening before the first finishes
 
+# 2.2.0
+
+- PATCH: Replaced object spread by Object.assign so that we do not need any transpilation for the ES6 bundle
+- PATCH: The ES6 bundle was transpiled to ES5 (except for import/export), not any more
+
 # 2.1.0
 
 - MINOR: Added a middleware for Express to handle the session and deviceId propagation on server requests/responses
