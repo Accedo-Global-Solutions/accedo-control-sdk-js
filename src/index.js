@@ -120,6 +120,8 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * const PORT = 3000;
  *
  * express()
+ * // handle proxy servers if needed, to pass the user's IP instead of the proxy's.
+ * .set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
  * // place the appgrid middleware before your request handlers
  * .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
  * .get('/test', (req, res) => {

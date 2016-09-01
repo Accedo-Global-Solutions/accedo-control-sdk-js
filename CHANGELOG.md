@@ -7,6 +7,8 @@
 
 # 2.2.0
 
+- MINOR: Added ip optional param on AppGrid client instantiation
+- MINOR: Express middleware: automatically pass on the IP for each client it creates
 - PATCH: Replaced object spread by Object.assign so that we do not need any transpilation for the ES6 bundle
 - PATCH: The ES6 bundle was transpiled to ES5 (except for import/export), not any more
 

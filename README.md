@@ -36,8 +36,13 @@ These features are provided by the manual creation of AppGrid client instances (
 
 An express-compatible middleware is included and adds those extras on top :
  - automatic creation of AppGrid client instances, attached to the responses for further use
+ - automatically passes the requester's IP onto AppGrid calls for analytics and geolocated services
  - automatic reuse of the deviceId through cookies (can be customized to use anything else based on requests)
  - automatic reuse of the sessionKey through cookies (can be customized to use anything else based on requests)
+
+Note when you use the middleware, you should also [configure Express to handle proxies correctly](http://expressjs.com/en/4x/api.html#trust.proxy.options.table) as we rely on the IP it gives us.
+
+For instance: `app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])`
 
 ## Examples
 Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
@@ -76,6 +81,8 @@ const express = require('express');
 const PORT = 3000;
 
 express()
+// handle proxy servers if needed, to pass the user's IP instead of the proxy's.
+.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
 // place the appgrid middleware before your request handlers
 .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
 .get('/test', (req, res) => {
