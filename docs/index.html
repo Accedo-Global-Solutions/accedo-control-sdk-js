@@ -47,15 +47,21 @@
                     <li class='h5'><span>Static members</span></li>
                     
                       <li><a
-                        href='#appgrid.appgrid.generateUuid'
+                        href='#appgrid.generateUuid'
                         class='regular pre-open'>
-                        .appgrid.generateUuid
+                        .generateUuid
                       </a></li>
                     
                       <li><a
-                        href='#appgrid.appgrid.getCurrentTimeOfDayDimValue'
+                        href='#appgrid.getCurrentTimeOfDayDimValue'
                         class='regular pre-open'>
-                        .appgrid.getCurrentTimeOfDayDimValue
+                        .getCurrentTimeOfDayDimValue
+                      </a></li>
+                    
+                      <li><a
+                        href='#appgrid.middleware.express'
+                        class='regular pre-open'>
+                        .middleware.express
                       </a></li>
                     
                     </ul>
@@ -362,8 +368,8 @@
   </div>
   
 
-  <p>Factory function to create an instance of an AppGrid client.
-You must get an instance before accessing any of the exposed client APIs.</p>
+  <p>Factory function to create an instance of an AppGrid client.</p>
+<p>You must get an instance before accessing any of the exposed client APIs.</p>
 
 
   <div class='pre p1 fill-light mt0'>appgrid(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
@@ -421,9 +427,23 @@ You must get an instance before accessing any of the exposed client APIs.</p>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.log</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>]</code>
+                  <td class='break-word'><span class='code bold'>config.log</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
                   </td>
                   <td class='break-word'><span>a function to use to see this SDK&#x27;s logs
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.onDeviceIdGenerated</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
+                  </td>
+                  <td class='break-word'><span>callback to obtain the new deviceId, if one gets generated
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.onSessionKeyChanged</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
+                  </td>
+                  <td class='break-word'><span>callback to obtain the sessionKey, anytime a new one gets generated
 </span></td>
                 </tr>
               
@@ -470,11 +490,11 @@ You must get an instance before accessing any of the exposed client APIs.</p>
     <div class='py1 quiet mt1 prose-big'>Static Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='appgrid.appgrid.generateUuid'>
+    <div class='border-bottom' id='appgrid.generateUuid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>appgrid.generateUuid()</span>
+            <span class='code strong strong truncate'>generateUuid()</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -482,12 +502,12 @@ You must get an instance before accessing any of the exposed client APIs.</p>
 
   
 
-  <p>Generate a UUID.
-Use this for a device/appKey tuple when you do not have a sessionKey already.
-This utility method is not used through an appgrid client instance, but globally available</p>
+  <p>Generate a UUID.</p>
+<p>Use this for a device/appKey tuple when you do not have a sessionKey already.</p>
+<p>This utility method is not used through an appgrid client instance, but available statically</p>
 
 
-  <div class='pre p1 fill-light mt0'>appgrid.generateUuid(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  <div class='pre p1 fill-light mt0'>generateUuid(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
 
   
 
@@ -525,11 +545,11 @@ This utility method is not used through an appgrid client instance, but globally
       </div>
     </div>
   
-    <div class='border-bottom' id='appgrid.appgrid.getCurrentTimeOfDayDimValue'>
+    <div class='border-bottom' id='appgrid.getCurrentTimeOfDayDimValue'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>appgrid.getCurrentTimeOfDayDimValue()</span>
+            <span class='code strong strong truncate'>getCurrentTimeOfDayDimValue()</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -538,11 +558,11 @@ This utility method is not used through an appgrid client instance, but globally
   
 
   <p>Returns the range of the current hour of the day, as a string such as &#x27;01-05&#x27; for 1am to 5 am.
-Useful for AppGrid log events.
-This utility method is not used through an appgrid client instance, but globally available</p>
+Useful for AppGrid log events.</p>
+<p>This utility method is not used through an appgrid client instance, but available statically</p>
 
 
-  <div class='pre p1 fill-light mt0'>appgrid.getCurrentTimeOfDayDimValue(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  <div class='pre p1 fill-light mt0'>getCurrentTimeOfDayDimValue(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
 
   
 
@@ -568,6 +588,178 @@ This utility method is not used through an appgrid client instance, but globally
 
   
 
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='appgrid.middleware.express'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>middleware.express(config)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>An express-compatible middleware.</p>
+<p>This uses the cookie-parser middleware, so you can also take advantage of the <code>req.cookies</code> array.</p>
+<p>This middleware takes care of creating an AppGrid client instance for each request automatically.
+By default, it will also reuse and persist the deviceId and sessionKey using the request and response cookies.
+That strategy can be changed by passing the optional callbacks,
+so you could make use of headers or request parameters for instance.</p>
+<p>Each instance is attached to the response object and available to the next express handlers as <code>res.locals.appgridClient</code>.</p>
+<p>This utility method is not used through an appgrid client instance, but available statically</p>
+
+
+  <div class='pre p1 fill-light mt0'>middleware.express(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> the configuration
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.appKey</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the application Key that will be used for all appgrid clients
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.getRequestInfo</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
+                  </td>
+                  <td class='break-word'><span>callback that receives the request and returns an object with deviceId and sessionKey properties.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.onDeviceIdGenerated</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
+                  </td>
+                  <td class='break-word'><span>callback that receives the new deviceId (if one was not returned by getRequestInfo) and the response
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.onSessionKeyChanged</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
+                  </td>
+                  <td class='break-word'><span>callback that receives the new sessionKey (anytime a new one gets generated) and the response
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.log</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
+                  </td>
+                  <td class='break-word'><span>Logging function that will be passed onto the client instance
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a></code>:
+        a middleware function compatible with express
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      <p><p>Using the default cookie strategy</p>
+</p>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> appgrid = <span class="hljs-built_in">require</span>(<span class="hljs-string">'appgrid'</span>);
+<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+
+<span class="hljs-keyword">const</span> PORT = <span class="hljs-number">3000</span>;
+
+express()
+<span class="hljs-comment">// place the appgrid middleware before your request handlers</span>
+.use(appgrid.middleware.express({ appKey: <span class="hljs-string">'56ea6a370db1bf032c9df5cb'</span> }))
+.get(<span class="hljs-string">'/test'</span>, (req, res) =&gt; {
+   <span class="hljs-comment">// access your client instance, it's already linked to the deviceId and sessionKey via cookies</span>
+   res.locals.appgridClient.getEntryById(<span class="hljs-string">'56ea7bd6935f75032a2fd431'</span>)
+   .then(entry =&gt; res.send(entry))
+   .catch(err =&gt; res.status(<span class="hljs-number">500</span>).send(<span class="hljs-string">'Failed to get the result'</span>));
+})
+.listen(PORT, () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Server is on ! Try http://localhost:<span class="hljs-subst">${PORT}</span>/test`</span>));</pre>
+    
+      <p><p>Using custom headers to extract deviceId and sessionKey and to pass down any change</p>
+</p>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> appgrid = <span class="hljs-built_in">require</span>(<span class="hljs-string">'appgrid_next'</span>);
+<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+
+<span class="hljs-keyword">const</span> PORT = <span class="hljs-number">3000</span>;
+<span class="hljs-keyword">const</span> HEADER_DEVICE_ID = <span class="hljs-string">'X-AG-DEVICE-ID'</span>;
+<span class="hljs-keyword">const</span> HEADER_SESSION_KEY = <span class="hljs-string">'X-AG-SESSION-KEY'</span>;
+
+express()
+.use(appgrid.middleware.express({
+  appKey: <span class="hljs-string">'56ea6a370db1bf032c9df5cb'</span>,
+  <span class="hljs-comment">// extract deviceId and sessionKey from custom headers</span>
+  getRequestInfo: req =&gt; ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY)}),
+  <span class="hljs-comment">// pass down any change on the deviceId (the header won't be set if unchanged compared to the value in getRequestInfo)</span>
+  onDeviceIdGenerated: (id, res) =&gt; res.set(HEADER_DEVICE_ID, id),
+  <span class="hljs-comment">// pass down any change on the sessionKey (the header won't be set if unchanged compared to the value in getRequestInfo)</span>
+  onSessionKeyChanged: (key, res) =&gt; res.set(HEADER_SESSION_KEY, key),
+  log(...args) { <span class="hljs-built_in">console</span>.log(...args) }
+}))
+.get(<span class="hljs-string">'/test'</span>, (req, res) =&gt; {
+  res.locals.appgridClient.getEntryById(<span class="hljs-string">'56ea7bd6935f75032a2fd431'</span>)
+  .then(entry =&gt; res.send(entry))
+  .catch(err =&gt; res.status(<span class="hljs-number">500</span>).send(<span class="hljs-string">'Failed to get the result'</span>));
+})
+.listen(PORT, () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Server is on ! Try http://localhost:<span class="hljs-subst">${PORT}</span>/test`</span>));</pre>
+    
   
 
   

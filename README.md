@@ -1,4 +1,4 @@
-# AppGrid SDK for Node.js
+# AppGrid SDK for Node.js [![npm](https://img.shields.io/npm/v/appgrid.svg?maxAge=2592000)](https://www.npmjs.com/package/appgrid)
 
 ```
 *******************************************************************************
@@ -23,8 +23,21 @@ This is the official [Accedo AppGrid](https://www.accedo.tv/appgrid/) SDK for No
 While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with Node.js.
 It also encourages the use of best practices (for example: reusing the same sessionId for a client, but different clients for different devices).
 
-We follow semantic versioning, read about semver here](http://semver.org/).
+We follow [semantic versioning](http://semver.org/).
 Check the [change log](./CHANGELOG.md) to find out what changed between versions.
+
+## Features
+
+These features are provided by the manual creation of AppGrid client instances (via the default exported factory) :
+ - easy access to AppGrid APIs
+ - automatic deviceId creation when none was provided
+ - automatic session creation when none was provided
+ - automatic session re-creation when the existing one has expired
+
+An express-compatible middleware is included and adds those extras on top :
+ - automatic creation of AppGrid client instances, attached to the responses for further use
+ - automatic reuse of the deviceId through cookies (can be customized to use anything else based on requests)
+ - automatic reuse of the sessionKey through cookies (can be customized to use anything else based on requests)
 
 ## Examples
 Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
@@ -39,7 +52,7 @@ You may also want to refer to the [AppGrid Rest API documentation](https://s3-us
 
 ## Installation
 
-`npm install --save-dev appgrid` (pending publication on NPM !)
+`npm install --save-dev appgrid`
 
 Then you can use the default export to get a factory:
 ```js
@@ -48,6 +61,30 @@ const appgrid = require('appgrid')
 Or, using the ES6 module syntax:
 ```js
 import appgrid from 'appgrid'
+```
+
+### Selected examples
+
+Find more details about usage in the documentation link above
+
+#### Use the middleware to persist deviceId and sessionKey via cookies
+
+```js
+const appgrid = require('appgrid');
+const express = require('express');
+
+const PORT = 3000;
+
+express()
+// place the appgrid middleware before your request handlers
+.use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
+.get('/test', (req, res) => {
+   // access your client instance, it's already linked to the deviceId and sessionKey via cookies
+   res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
+   .then(entry => res.send(entry))
+   .catch(err => res.status(500).send('Failed to get the result'));
+})
+.listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
 ```
 
 #### Create an AppGrid client instance
