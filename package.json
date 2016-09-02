@@ -31,8 +31,16 @@
     "node"
   ],
   "author": "Accedo, AB",
+  "contributors": [
+    "Jason Dujardin-Terry",
+    "Gregory Desfour",
+    "Nicolas Nannoni"
+  ],
   "license": "Apache-2.0",
   "homepage": "http://appgrid.accedo.tv/",
+  "files": [
+    "dist/"
+  ],
   "devDependencies": {
     "chai": "^3.5.0",
     "chalk": "^1.1.3",
