@@ -31,8 +31,9 @@ Check the [change log](./CHANGELOG.md) to find out what changed between versions
 These features are provided by the manual creation of AppGrid client instances (via the default exported factory) :
  - easy access to AppGrid APIs
  - automatic deviceId creation when none was provided
- - automatic session creation when none was provided
- - automatic session re-creation when the existing one has expired
+ - automatic session creation when none was provided (lazy - only when needed)
+ - automatic session re-creation when the existing one has expired (lazy)
+ - ensures only one session will be created at a time, even if a client triggers concurrent calls
 
 An express-compatible middleware is included and adds those extras on top :
  - automatic creation of AppGrid client instances, attached to the responses for further use
