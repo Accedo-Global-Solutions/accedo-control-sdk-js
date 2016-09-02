@@ -45,11 +45,6 @@ Note when you use the middleware, you should also [configure Express to handle p
 
 For instance: `app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])`
 
-## Examples
-Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
-
-You can run the examples based on the current bundles: `npm run example`.
-
 ## Documentation
 
 Refer to the [API docs for this SDK](https://accedo-products.github.io/appgrid-sdk-node/).
@@ -69,11 +64,10 @@ Or, using the ES6 module syntax:
 import appgrid from 'appgrid'
 ```
 
-### Selected examples
+## Examples
+Below are a few examples, refer to `examples-es6.js` for more of them that you can run yourself (clone this repo then execute `npm run example`).
 
-Find more details about usage in the documentation link above
-
-#### Use the middleware to persist deviceId and sessionKey via cookies
+### Use the middleware to persist deviceId and sessionKey via cookies
 
 ```js
 const appgrid = require('appgrid');
@@ -95,7 +89,7 @@ express()
 .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
 ```
 
-#### Create an AppGrid client instance
+### Create an AppGrid client instance
 
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
@@ -123,7 +117,7 @@ If you are triggering some AppGrid API calls in response to server requests, **y
 
 Note the middleware (described above) does that work for you, so it's best to use it whenever possible.
 
-#### Get a new AppGrid SessionId
+### Get a new AppGrid SessionId
 
 This lets you manually create a new session, that will be stored for reuse onto this client instance.
 Note that any API call that needs a session will trigger this method implicitly if no session is attached to the client yet.
@@ -139,7 +133,7 @@ client.createSession()
 
 ```
 
-#### Get all AppGrid Metadata associated with your AppId
+### Get all AppGrid Metadata associated with your AppId
 ```javascript
 client.getAllMetadata()
   .then((metadata) => {
@@ -150,7 +144,7 @@ client.getAllMetadata()
   });
 ```
 
-#### Download an asset from AppGrid
+### Download an asset from AppGrid
 ```javascript
 import { createWriteStream } from 'fs';
 

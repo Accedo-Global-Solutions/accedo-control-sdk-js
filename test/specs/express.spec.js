@@ -19,7 +19,7 @@ const buildResponse = () => ({
   cookie: sinon.spy()
 });
 
-describe.only('The Express middleware', () => {
+describe('The Express middleware', () => {
   const mw = appgrid.middleware.express({
     appKey: '56ea6a370db1bf032c9df5cb'
   });

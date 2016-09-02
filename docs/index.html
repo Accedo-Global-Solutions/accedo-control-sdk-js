@@ -114,6 +114,26 @@
               
                 
                 <li><a
+                  href='#createsession'
+                  class="">
+                  createSession
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getsessionkey'
+                  class="">
+                  getSessionKey
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#getapplicationstatus'
                   class="">
                   getApplicationStatus
@@ -307,26 +327,6 @@
                   href='#sendlog'
                   class="">
                   sendLog
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#getsessionkey'
-                  class="">
-                  getSessionKey
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#createsession'
-                  class="">
-                  createSession
                   
                 </a>
                 
@@ -730,6 +730,8 @@ so you could make use of headers or request parameters for instance.</p>
 <span class="hljs-keyword">const</span> PORT = <span class="hljs-number">3000</span>;
 
 express()
+<span class="hljs-comment">// handle proxy servers if needed, to pass the user's IP instead of the proxy's.</span>
+.set(<span class="hljs-string">'trust proxy'</span>, [<span class="hljs-string">'loopback'</span>, <span class="hljs-string">'linklocal'</span>, <span class="hljs-string">'uniquelocal'</span>])
 <span class="hljs-comment">// place the appgrid middleware before your request handlers</span>
 .use(appgrid.middleware.express({ appKey: <span class="hljs-string">'56ea6a370db1bf032c9df5cb'</span> }))
 .get(<span class="hljs-string">'/test'</span>, (req, res) =&gt; {
@@ -1126,6 +1128,110 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of an entry (object)
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='createsession'>
+      createSession
+    </h3>
+    
+  </div>
+  
+
+  <p>Create a session and store it for reuse in this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of a string, the sessionKey
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='getsessionkey'>
+      getSessionKey
+    </h3>
+    
+  </div>
+  
+
+  <p>Returns the currently stored sessionKey for this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        the sessionKey, if any
 
       
     
@@ -2480,110 +2586,6 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the success of the operation
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='getsessionkey'>
-      getSessionKey
-    </h3>
-    
-  </div>
-  
-
-  <p>Returns the currently stored sessionKey for this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        the sessionKey, if any
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='createsession'>
-      createSession
-    </h3>
-    
-  </div>
-  
-
-  <p>Create a session and store it for reuse in this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of a string, the sessionKey
 
       
     

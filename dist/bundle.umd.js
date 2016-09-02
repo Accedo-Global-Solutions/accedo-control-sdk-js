@@ -114,32 +114,53 @@ var post = function (path, config, body) {
     });
 };
 
-var stamp$2 = stampit().methods({
+var sessionStamp = stampit()
+.init(function (ref) {
+  var stamp = ref.stamp;
+
+  // the promise of a session being created
+  var creatingSessionPromise;
+  /**
+   * Create a session and store it for reuse in this client instance
+   * @return {promise}  a promise of a string, the sessionKey
+   */
+  stamp.fixed.methods.createSession = function createSession() {
+    var this$1 = this;
+
+    // if we have a promise of a session, return it
+    if (creatingSessionPromise) { return creatingSessionPromise; }
+
+    // ignore any existing session
+    if (this.props.config.sessionKey) {
+      this.props.config.sessionKey = null;
+    }
+
+    // launch a request, update the promise
+    creatingSessionPromise = grab('/session', this.props.config)
+    .then(function (json) {
+      var sessionKey = json.sessionKey;
+      // update the context of this client, adding the session key
+      this$1.props.config.sessionKey = sessionKey;
+      // we're no longer creating a session
+      creatingSessionPromise = null;
+      return sessionKey;
+    })
+    .catch(function (err) {
+      // we're no longer creating a session
+      creatingSessionPromise = null;
+      throw err;
+    });
+
+    return creatingSessionPromise;
+  };
+})
+.methods({
   /**
    * Returns the currently stored sessionKey for this client instance
    * @return {string}  the sessionKey, if any
    */
   getSessionKey: function getSessionKey() {
     return this.props.config.sessionKey;
-  },
-
-  /**
-   * Create a session and store it for reuse in this client instance
-   * @return {promise}  a promise of a string, the sessionKey
-   */
-  createSession: function createSession() {
-    var this$1 = this;
-
-    // ignore any existing session
-    if (this.props.config.sessionKey) {
-      this.props.config.sessionKey = null;
-    }
-    return grab('/session', this.props.config).then(function (json) {
-      var sessionKey = json.sessionKey;
-      // update the context of this client, adding the session key
-      this$1.props.config.sessionKey = sessionKey;
-      return sessionKey;
-    });
   },
 
   /**
@@ -249,9 +270,9 @@ var stamp$1 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$3 = stampit()
+var stamp$2 = stampit()
 .methods({
   /**
    * Get the current application status
@@ -264,9 +285,9 @@ var stamp$3 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$4 = stampit()
+var stamp$3 = stampit()
 .methods({
   /**
    * Lists all the assets.
@@ -289,7 +310,7 @@ var stamp$4 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 function sendUsageEvent(eventType, retentionTime) {
   var this$1 = this;
@@ -299,7 +320,7 @@ function sendUsageEvent(eventType, retentionTime) {
   return this.withSessionHandling(function () { return post('/event/log', this$1.props.config, payload); });
 }
 
-var stamp$5 = stampit()
+var stamp$4 = stampit()
 .methods({
   /**
    * Send a usage START event
@@ -319,7 +340,7 @@ var stamp$5 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 var DEBUG = 'debug';
 var INFO = 'info';
@@ -386,7 +407,7 @@ function postLog(level, log) {
   return this.withSessionHandling(function () { return post(("/application/log/" + level), this$1.props.config, log); });
 }
 
-var stamp$6 = stampit()
+var stamp$5 = stampit()
 .methods({
   /**
    * Get the current log level
@@ -419,9 +440,9 @@ var stamp$6 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$7 = stampit()
+var stamp$6 = stampit()
 .methods({
   /**
    * Get all the enabled plugins
@@ -435,9 +456,9 @@ var stamp$7 = stampit()
 
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$8 = stampit()
+var stamp$7 = stampit()
 .methods({
   /**
    * Get the profile information
@@ -451,7 +472,7 @@ var stamp$8 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 function request$2(path) {
   var this$1 = this;
@@ -459,7 +480,7 @@ function request$2(path) {
   return this.withSessionHandling(function () { return grab(path, this$1.props.config); });
 }
 
-var stamp$9 = stampit()
+var stamp$8 = stampit()
 .methods({
   /**
    * Get all the metadata
@@ -488,7 +509,7 @@ var stamp$9 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 var APPLICATION_SCOPE = 'user';
 var APPLICATION_GROUP_SCOPE = 'group';
@@ -521,7 +542,7 @@ function setUserDataByKey(scope, userName, key, data) {
   return requestPost.call(this, ("/" + scope + "/" + userName + "/" + key), data);
 }
 
-var stamp$10 = stampit()
+var stamp$9 = stampit()
 .methods({
   /**
    * Get all the application-scope data for a given user
@@ -604,20 +625,20 @@ var stamp$10 = stampit()
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 // Simply compose all the stamps in one single stamp to give access to all methods
 var stamp = stampit().compose(
-  stamp$2,
+  sessionStamp,
   stamp$1,
+  stamp$2,
   stamp$3,
   stamp$4,
   stamp$5,
   stamp$6,
   stamp$7,
   stamp$8,
-  stamp$9,
-  stamp$10
+  stamp$9
 );
 
 var cookieParser = require('cookie-parser')();
@@ -785,6 +806,8 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * const PORT = 3000;
  *
  * express()
+ * // handle proxy servers if needed, to pass the user's IP instead of the proxy's.
+ * .set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
  * // place the appgrid middleware before your request handlers
  * .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
  * .get('/test', (req, res) => {
