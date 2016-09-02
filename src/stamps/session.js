@@ -1,30 +1,49 @@
 import stampit from 'stampit';
 import { grab } from '../apiHelper';
 
-const stamp = stampit().methods({
+export default stampit()
+.init(({ stamp }) => {
+  // the promise of a session being created
+  let creatingSessionPromise;
+  /**
+   * Create a session and store it for reuse in this client instance
+   * @return {promise}  a promise of a string, the sessionKey
+   */
+  stamp.fixed.methods.createSession = function createSession() {
+    // if we have a promise of a session, return it
+    if (creatingSessionPromise) { return creatingSessionPromise; }
+
+    // ignore any existing session
+    if (this.props.config.sessionKey) {
+      this.props.config.sessionKey = null;
+    }
+
+    // launch a request, update the promise
+    creatingSessionPromise = grab('/session', this.props.config)
+    .then((json) => {
+      const { sessionKey } = json;
+      // update the context of this client, adding the session key
+      this.props.config.sessionKey = sessionKey;
+      // we're no longer creating a session
+      creatingSessionPromise = null;
+      return sessionKey;
+    })
+    .catch((err) => {
+      // we're no longer creating a session
+      creatingSessionPromise = null;
+      throw err;
+    });
+
+    return creatingSessionPromise;
+  };
+})
+.methods({
   /**
    * Returns the currently stored sessionKey for this client instance
    * @return {string}  the sessionKey, if any
    */
   getSessionKey() {
     return this.props.config.sessionKey;
-  },
-
-  /**
-   * Create a session and store it for reuse in this client instance
-   * @return {promise}  a promise of a string, the sessionKey
-   */
-  createSession() {
-    // ignore any existing session
-    if (this.props.config.sessionKey) {
-      this.props.config.sessionKey = null;
-    }
-    return grab('/session', this.props.config).then((json) => {
-      const { sessionKey } = json;
-      // update the context of this client, adding the session key
-      this.props.config.sessionKey = sessionKey;
-      return sessionKey;
-    });
   },
 
   /**
@@ -52,5 +71,3 @@ const stamp = stampit().methods({
     return this.createSession().then(next);
   }
 });
-
-export default stamp;

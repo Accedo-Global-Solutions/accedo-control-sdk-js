@@ -3,12 +3,13 @@
 - MINOR: add getEntryByTypeAlias when available in prod
 - MINOR: add the new bulk method to add applogs when available in prod
 - MINOR: basic robot detection with a default deviceId for them all ?
-- MINOR: ensure only one new session may be created at a time, in case of many calls happening before the first finishes
+
 
 # 2.2.0
 
 - MINOR: Added ip optional param on AppGrid client instantiation
 - MINOR: Express middleware: automatically pass on the IP for each client it creates
+- MINOR: ensure only one new session may be created at a time, in case of many calls happening before the first finishes
 - PATCH: Replaced object spread by Object.assign so that we do not need any transpilation for the ES6 bundle
 - PATCH: The ES6 bundle was transpiled to ES5 (except for import/export), not any more
 
