@@ -1,4 +1,4 @@
-# AppGrid SDK for Node.js [![npm](https://img.shields.io/npm/v/appgrid.svg?maxAge=2592000)](https://www.npmjs.com/package/appgrid)
+# AppGrid SDK for Node.js [![npm](https://img.shields.io/npm/v/appgrid.svg?maxAge=3600)](https://www.npmjs.com/package/appgrid)
 
 ```
 *******************************************************************************
@@ -31,18 +31,19 @@ Check the [change log](./CHANGELOG.md) to find out what changed between versions
 These features are provided by the manual creation of AppGrid client instances (via the default exported factory) :
  - easy access to AppGrid APIs
  - automatic deviceId creation when none was provided
- - automatic session creation when none was provided
- - automatic session re-creation when the existing one has expired
+ - automatic session creation when none was provided (lazy - only when needed)
+ - automatic session re-creation when the existing one has expired (lazy)
+ - ensures only one session will be created at a time, even if a client triggers concurrent calls
 
 An express-compatible middleware is included and adds those extras on top :
  - automatic creation of AppGrid client instances, attached to the responses for further use
+ - automatically passes the requester's IP onto AppGrid calls for analytics and geolocated services
  - automatic reuse of the deviceId through cookies (can be customized to use anything else based on requests)
  - automatic reuse of the sessionKey through cookies (can be customized to use anything else based on requests)
 
-## Examples
-Refer to the `examples-es6.js` file for comprehensive examples that cover all of the APIs exported by this module.
+Note when you use the middleware, you should also [configure Express to handle proxies correctly](http://expressjs.com/en/4x/api.html#trust.proxy.options.table) as we rely on the IP it gives us.
 
-You can run the examples based on the current bundles: `npm run example`.
+For instance: `app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])`
 
 ## Documentation
 
@@ -63,11 +64,10 @@ Or, using the ES6 module syntax:
 import appgrid from 'appgrid'
 ```
 
-### Selected examples
+## Examples
+Below are a few examples, refer to `examples-es6.js` for more of them that you can run yourself (clone this repo then execute `npm run example`).
 
-Find more details about usage in the documentation link above
-
-#### Use the middleware to persist deviceId and sessionKey via cookies
+### Use the middleware to persist deviceId and sessionKey via cookies
 
 ```js
 const appgrid = require('appgrid');
@@ -76,6 +76,8 @@ const express = require('express');
 const PORT = 3000;
 
 express()
+// handle proxy servers if needed, to pass the user's IP instead of the proxy's.
+.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
 // place the appgrid middleware before your request handlers
 .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
 .get('/test', (req, res) => {
@@ -87,7 +89,7 @@ express()
 .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
 ```
 
-#### Create an AppGrid client instance
+### Create an AppGrid client instance
 
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
@@ -113,7 +115,9 @@ You should create a new client for every device that needs to access the AppGrid
 
 If you are triggering some AppGrid API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's deviceId (typically you would persist a consumer deviceId via the cookies, or as a request parameter in your server APIs - unless the device lets you use some unique ID like a MAC address).
 
-#### Get a new AppGrid SessionId
+Note the middleware (described above) does that work for you, so it's best to use it whenever possible.
+
+### Get a new AppGrid SessionId
 
 This lets you manually create a new session, that will be stored for reuse onto this client instance.
 Note that any API call that needs a session will trigger this method implicitly if no session is attached to the client yet.
@@ -129,7 +133,7 @@ client.createSession()
 
 ```
 
-#### Get all AppGrid Metadata associated with your AppId
+### Get all AppGrid Metadata associated with your AppId
 ```javascript
 client.getAllMetadata()
   .then((metadata) => {
@@ -140,7 +144,7 @@ client.getAllMetadata()
   });
 ```
 
-#### Download an asset from AppGrid
+### Download an asset from AppGrid
 ```javascript
 import { createWriteStream } from 'fs';
 

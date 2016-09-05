@@ -6,9 +6,9 @@ const HOST = 'https://appgrid-api.cloud.accedo.tv';
 const credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 const defaultHeaders = { accept: MIME_TYPE_JSON };
 
-const getForwardedForHeader = ({ clientIp }) => {
-  if (!clientIp) { return {}; }
-  return { 'X-FORWARDED-FOR': clientIp };
+const getForwardedForHeader = ({ ip }) => {
+  if (!ip) { return {}; }
+  return { 'X-FORWARDED-FOR': ip };
 };
 
 const getSessionHeader = ({ sessionKey }) => {
@@ -24,7 +24,7 @@ const getQueryString = (config, existingQs = {}) => {
     uuid: config.deviceId
   };
   if (config.gid) { defaultQs.gid = config.gid; }
-  const qsObject = { ...existingQs, ...defaultQs };
+  const qsObject = Object.assign({}, existingQs, defaultQs);
   const queryString = qs.stringify(qsObject);
   return queryString;
 };
@@ -37,12 +37,12 @@ const getRequestUrlWithQueryString = (path, config) => {
   return `${HOST}${pathWithoutQs}?${queryString}`;
 };
 
-const getExtraHeaders = (options) => {
-  return { ...getForwardedForHeader(options), ...getSessionHeader(options) };
+const getExtraHeaders = (config) => {
+  return Object.assign({}, getForwardedForHeader(config), getSessionHeader(config));
 };
 
 const getFetch = (path, config) => {
-  const headers = { ...defaultHeaders, ...getExtraHeaders(config) };
+  const headers = Object.assign({}, defaultHeaders, getExtraHeaders(config));
   const requestUrl = getRequestUrlWithQueryString(path, config);
   config.log(`Sending a GET request to: ${requestUrl} with the following headers`, headers);
   return fetch(requestUrl, { credentials, headers })
@@ -73,11 +73,11 @@ export const grabRaw = (path, config) => {
 };
 
 export const post = (path, config, body = {}) => {
-  const headers = {
-    ...defaultHeaders,
-    ...getContentTypeHeader(),
-    ...getExtraHeaders(config)
-  };
+  const headers = Object.assign({},
+    defaultHeaders,
+    getContentTypeHeader(),
+    getExtraHeaders(config)
+  );
   const requestUrl = getRequestUrlWithQueryString(path, config);
   config.log(`Sending a POST request to: ${requestUrl}. With the following headers and body: `, headers, body);
   const options = {

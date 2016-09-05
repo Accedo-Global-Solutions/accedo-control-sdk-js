@@ -9,129 +9,152 @@ stampit = 'default' in stampit ? stampit['default'] : stampit;
 qs = 'default' in qs ? qs['default'] : qs;
 fetch = 'default' in fetch ? fetch['default'] : fetch;
 
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
 var MIME_TYPE_JSON = 'application/json';
 var HOST = 'https://appgrid-api.cloud.accedo.tv';
 var credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 var defaultHeaders = { accept: MIME_TYPE_JSON };
 
-var getForwardedForHeader = function getForwardedForHeader(_ref) {
-  var clientIp = _ref.clientIp;
+var getForwardedForHeader = function (ref) {
+  var ip = ref.ip;
 
-  if (!clientIp) {
-    return {};
-  }
-  return { 'X-FORWARDED-FOR': clientIp };
+  if (!ip) { return {}; }
+  return { 'X-FORWARDED-FOR': ip };
 };
 
-var getSessionHeader = function getSessionHeader(_ref2) {
-  var sessionKey = _ref2.sessionKey;
+var getSessionHeader = function (ref) {
+  var sessionKey = ref.sessionKey;
 
-  if (!sessionKey) {
-    return {};
-  }
+  if (!sessionKey) { return {}; }
   return { 'X-SESSION': sessionKey };
 };
 
-var getContentTypeHeader = function getContentTypeHeader() {
-  return { 'Content-Type': MIME_TYPE_JSON };
-};
+var getContentTypeHeader = function () { return ({ 'Content-Type': MIME_TYPE_JSON }); };
 
-var getQueryString = function getQueryString(config) {
-  var existingQs = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+var getQueryString = function (config, existingQs) {
+  if ( existingQs === void 0 ) existingQs = {};
 
   var defaultQs = {
     appKey: config.appKey,
     uuid: config.deviceId
   };
-  if (config.gid) {
-    defaultQs.gid = config.gid;
-  }
-  var qsObject = _extends({}, existingQs, defaultQs);
+  if (config.gid) { defaultQs.gid = config.gid; }
+  var qsObject = Object.assign({}, existingQs, defaultQs);
   var queryString = qs.stringify(qsObject);
   return queryString;
 };
 
-var getRequestUrlWithQueryString = function getRequestUrlWithQueryString(path, config) {
+var getRequestUrlWithQueryString = function (path, config) {
   var splitUrl = path.split('?');
   var pathWithoutQs = splitUrl[0];
   var existingQs = qs.parse(splitUrl[1]);
   var queryString = getQueryString(config, existingQs);
-  return '' + HOST + pathWithoutQs + '?' + queryString;
+  return ("" + HOST + pathWithoutQs + "?" + queryString);
 };
 
-var getExtraHeaders = function getExtraHeaders(options) {
-  return _extends({}, getForwardedForHeader(options), getSessionHeader(options));
+var getExtraHeaders = function (config) {
+  return Object.assign({}, getForwardedForHeader(config), getSessionHeader(config));
 };
 
-var getFetch = function getFetch(path, config) {
-  var headers = _extends({}, defaultHeaders, getExtraHeaders(config));
+var getFetch = function (path, config) {
+  var headers = Object.assign({}, defaultHeaders, getExtraHeaders(config));
   var requestUrl = getRequestUrlWithQueryString(path, config);
-  config.log('Sending a GET request to: ' + requestUrl + ' with the following headers', headers);
-  return fetch(requestUrl, { credentials: credentials, headers: headers }).then(function (res) {
-    if (res.status >= 400) {
-      config.log('GET failed with status', res.status);
-      throw res;
-    }
-    return res;
-  });
+  config.log(("Sending a GET request to: " + requestUrl + " with the following headers"), headers);
+  return fetch(requestUrl, { credentials: credentials, headers: headers })
+    .then(function (res) {
+      if (res.status >= 400) {
+        config.log('GET failed with status', res.status);
+        throw res;
+      }
+      return res;
+    });
 };
 
-var grab = function grab(path, config) {
+var grab = function (path, config) {
   config.log('Requesting', path);
-  return getFetch(path, config).then(function (res) {
-    return res.json();
-  }).then(function (response) {
-    config.log('GET response', response);
-    return response;
-  });
+  return getFetch(path, config)
+    .then(function (res) { return res.json(); })
+    .then(function (response) {
+      config.log('GET response', response);
+      return response;
+    });
 };
 
-var grabRaw = function grabRaw(path, config) {
-  return getFetch(path, config).then(function (response) {
-    return response.body;
-  });
+var grabRaw = function (path, config) {
+  return getFetch(path, config)
+    .then(function (response) {
+      return response.body;
+    });
 };
 
-var post = function post(path, config) {
-  var body = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+var post = function (path, config, body) {
+  if ( body === void 0 ) body = {};
 
-  var headers = _extends({}, defaultHeaders, getContentTypeHeader(), getExtraHeaders(config));
+  var headers = Object.assign({},
+    defaultHeaders,
+    getContentTypeHeader(),
+    getExtraHeaders(config)
+  );
   var requestUrl = getRequestUrlWithQueryString(path, config);
-  config.log('Sending a POST request to: ' + requestUrl + '. With the following headers and body: ', headers, body);
+  config.log(("Sending a POST request to: " + requestUrl + ". With the following headers and body: "), headers, body);
   var options = {
     headers: headers,
     credentials: credentials,
     method: 'post',
     body: JSON.stringify(body)
   };
-  return fetch(requestUrl, options).then(function (_ref3) {
-    var status = _ref3.status;
-    var statusText = _ref3.statusText;
+  return fetch(requestUrl, options)
+    .then(function (ref) {
+      var status = ref.status;
+      var statusText = ref.statusText;
 
-    if (status !== 200) {
-      throw new Error('AppGrid POST request returned a non-200 response. Status Code: ' + status + '. Status Text: ' + statusText);
-    }
-    var result = { status: status, statusText: statusText };
-    config.log('POST response: ', { status: status, statusText: statusText });
-    return result;
-  });
+      if (status !== 200) { throw new Error(("AppGrid POST request returned a non-200 response. Status Code: " + status + ". Status Text: " + statusText)); }
+      var result = { status: status, statusText: statusText };
+      config.log('POST response: ', { status: status, statusText: statusText });
+      return result;
+    });
 };
 
-var stamp$2 = stampit().methods({
+var sessionStamp = stampit()
+.init(function (ref) {
+  var stamp = ref.stamp;
+
+  // the promise of a session being created
+  var creatingSessionPromise;
+  /**
+   * Create a session and store it for reuse in this client instance
+   * @return {promise}  a promise of a string, the sessionKey
+   */
+  stamp.fixed.methods.createSession = function createSession() {
+    var this$1 = this;
+
+    // if we have a promise of a session, return it
+    if (creatingSessionPromise) { return creatingSessionPromise; }
+
+    // ignore any existing session
+    if (this.props.config.sessionKey) {
+      this.props.config.sessionKey = null;
+    }
+
+    // launch a request, update the promise
+    creatingSessionPromise = grab('/session', this.props.config)
+    .then(function (json) {
+      var sessionKey = json.sessionKey;
+      // update the context of this client, adding the session key
+      this$1.props.config.sessionKey = sessionKey;
+      // we're no longer creating a session
+      creatingSessionPromise = null;
+      return sessionKey;
+    })
+    .catch(function (err) {
+      // we're no longer creating a session
+      creatingSessionPromise = null;
+      throw err;
+    });
+
+    return creatingSessionPromise;
+  };
+})
+.methods({
   /**
    * Returns the currently stored sessionKey for this client instance
    * @return {string}  the sessionKey, if any
@@ -139,28 +162,6 @@ var stamp$2 = stampit().methods({
   getSessionKey: function getSessionKey() {
     return this.props.config.sessionKey;
   },
-
-
-  /**
-   * Create a session and store it for reuse in this client instance
-   * @return {promise}  a promise of a string, the sessionKey
-   */
-  createSession: function createSession() {
-    var _this = this;
-
-    // ignore any existing session
-    if (this.props.config.sessionKey) {
-      this.props.config.sessionKey = null;
-    }
-    return grab('/session', this.props.config).then(function (json) {
-      var sessionKey = json.sessionKey;
-      // update the context of this client, adding the session key
-
-      _this.props.config.sessionKey = sessionKey;
-      return sessionKey;
-    });
-  },
-
 
   /**
    * If a sessionKey exists, calls the next function, then:
@@ -172,14 +173,14 @@ var stamp$2 = stampit().methods({
    * @return {promise}  a promise of the result of the next function
    */
   withSessionHandling: function withSessionHandling(next) {
-    var _this2 = this;
+    var this$1 = this;
 
     // existing session
     if (this.getSessionKey()) {
       return next().catch(function (res) {
         if (res && res.status === 401) {
           // session expired - recreate one then retry
-          return _this2.createSession().then(next);
+          return this$1.createSession().then(next);
         }
         // otherwise propagate the failure
         throw res;
@@ -190,8 +191,9 @@ var stamp$2 = stampit().methods({
   }
 });
 
-function getPathWithQs(path) {
-  var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+function getPathWithQs(path, params) {
+  if ( params === void 0 ) params = {};
+
   var id = params.id;
   var typeId = params.typeId;
   var alias = params.alias;
@@ -199,20 +201,13 @@ function getPathWithQs(path) {
   var at = params.at;
   var offset = params.offset;
   var size = params.size;
-
   var qsParams = {};
   // The id array must be turned into CSV
-  if (id && id.length) {
-    qsParams.id = '' + id.join(',');
-  }
+  if (id && id.length) { qsParams.id = "" + (id.join(',')); }
   // The alias array must be turned into CSV
-  if (alias && alias.length) {
-    qsParams.alias = '' + alias.join(',');
-  }
+  if (alias && alias.length) { qsParams.alias = "" + (alias.join(',')); }
   // preview is only useful when true
-  if (preview) {
-    qsParams.preview = true;
-  }
+  if (preview) { qsParams.preview = true; }
   // at is either a string, or a method with toISOString (like a Date) that we use for formatting
   if (typeof at === 'string') {
     qsParams.at = at;
@@ -220,20 +215,19 @@ function getPathWithQs(path) {
     qsParams.at = at.toISOString();
   }
   // Add curated and non-curated params
-  var queryString = qs.stringify(_extends({}, qsParams, { typeId: typeId, offset: offset, size: size }));
-  return path + '?' + queryString;
+  var queryString = qs.stringify(Object.assign({}, qsParams, { typeId: typeId, offset: offset, size: size }));
+  return (path + "?" + queryString);
 }
 
 function request(path, params) {
-  var _this = this;
+  var this$1 = this;
 
   var pathWithQs = getPathWithQs(path, params);
-  return this.withSessionHandling(function () {
-    return grab(pathWithQs, _this.props.config);
-  });
+  return this.withSessionHandling(function () { return grab(pathWithQs, this$1.props.config); });
 }
 
-var stamp$1 = stampit().methods({
+var stamp$1 = stampit()
+.methods({
   /**
    * Get all the content entries, based on the given parameters.
    * **DO NOT** use several of id, alias and typeId at the same time - behaviour would be ungaranteed.
@@ -251,7 +245,6 @@ var stamp$1 = stampit().methods({
     return request.call(this, '/content/entries', params);
   },
 
-
   /**
    * Get one content entry by id, based on the given parameters.
    * @param {string} id the entry id
@@ -261,9 +254,8 @@ var stamp$1 = stampit().methods({
    * @return {promise}  a promise of an entry (object)
    */
   getEntryById: function getEntryById(id, params) {
-    return request.call(this, '/content/entry/' + id, params);
+    return request.call(this, ("/content/entry/" + id), params);
   },
-
 
   /**
    * Get one content entry, based on the given parameters.
@@ -274,41 +266,38 @@ var stamp$1 = stampit().methods({
    * @return {promise}  a promise of an entry (object)
    */
   getEntryByAlias: function getEntryByAlias(alias, params) {
-    return request.call(this, '/content/entry/alias/' + alias, params);
+    return request.call(this, ("/content/entry/alias/" + alias), params);
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$3 = stampit().methods({
+var stamp$2 = stampit()
+.methods({
   /**
    * Get the current application status
    * @return {promise}  a promise of the application status (string)
    */
   getApplicationStatus: function getApplicationStatus() {
-    var _this = this;
+    var this$1 = this;
 
-    return this.withSessionHandling(function () {
-      return grab('/status', _this.props.config);
-    });
+    return this.withSessionHandling(function () { return grab('/status', this$1.props.config); });
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$4 = stampit().methods({
+var stamp$3 = stampit()
+.methods({
   /**
    * Lists all the assets.
    * @return {promise}  a promise of a hash of assets (key: asset name, value: asset URL)
    */
   getAllAssets: function getAllAssets() {
-    var _this = this;
+    var this$1 = this;
 
-    return this.withSessionHandling(function () {
-      return grab('/asset', _this.props.config);
-    });
+    return this.withSessionHandling(function () { return grab('/asset', this$1.props.config); });
   },
-
 
   /**
    * Get a stream for one asset by id
@@ -317,25 +306,22 @@ var stamp$4 = stampit().methods({
    */
   getAssetById: function getAssetById(id) {
     // note this method does not need a session
-    return grabRaw('/asset/' + id, this.props.config);
+    return grabRaw(("/asset/" + id), this.props.config);
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 function sendUsageEvent(eventType, retentionTime) {
-  var _this = this;
+  var this$1 = this;
 
   var payload = { eventType: eventType };
-  if (retentionTime !== undefined) {
-    payload.retentionTime = retentionTime;
-  }
-  return this.withSessionHandling(function () {
-    return post('/event/log', _this.props.config, payload);
-  });
+  if (retentionTime !== undefined) { payload.retentionTime = retentionTime; }
+  return this.withSessionHandling(function () { return post('/event/log', this$1.props.config, payload); });
 }
 
-var stamp$5 = stampit().methods({
+var stamp$4 = stampit()
+.methods({
   /**
    * Send a usage START event
    * @return {promise}  a promise denoting the success of the operation
@@ -343,7 +329,6 @@ var stamp$5 = stampit().methods({
   sendUsageStartEvent: function sendUsageStartEvent() {
     return sendUsageEvent.call(this, 'START');
   },
-
 
   /**
    * Send a usage QUIT event
@@ -355,7 +340,7 @@ var stamp$5 = stampit().methods({
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 var DEBUG = 'debug';
 var INFO = 'info';
@@ -364,19 +349,17 @@ var ERROR = 'error';
 
 var LOG_LEVELS = [DEBUG, INFO, WARN, ERROR];
 
-var getConcatenatedCode = function getConcatenatedCode() {
-  var facilityCode = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-  var errorCode = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-  return parseInt('' + facilityCode + errorCode, 10);
+var getConcatenatedCode = function (facilityCode, errorCode) {
+    if ( facilityCode === void 0 ) facilityCode = 0;
+    if ( errorCode === void 0 ) errorCode = 0;
+
+    return parseInt(("" + facilityCode + errorCode), 10);
 };
 
-var getLogMessage = function getLogMessage(message, metadata) {
-  return message + (!metadata ? '' : ' | Metadata: ' + JSON.stringify(metadata));
-};
+var getLogMessage = function (message, metadata) { return message + (!metadata ? '' : (" | Metadata: " + (JSON.stringify(metadata)))); };
 
-var getLogEvent = function getLogEvent() {
-  var details = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-  var metadata = arguments[1];
+var getLogEvent = function (details, metadata) {
+  if ( details === void 0 ) details = {};
 
   var message = getLogMessage(details.message, metadata);
   var code = getConcatenatedCode(details.facilityCode, details.errorCode);
@@ -393,52 +376,46 @@ var getLogEvent = function getLogEvent() {
   };
 };
 
-var getCurrentTimeOfDayDimValue = function getCurrentTimeOfDayDimValue() {
+var getCurrentTimeOfDayDimValue = function () {
   var hour = new Date().getHours();
   // NOTE: These strings are expected by AppGrid
   switch (true) {
-    case hour >= 1 && hour < 5:
-      return '01-05';
-    case hour >= 5 && hour < 9:
-      return '05-09';
-    case hour >= 9 && hour < 13:
-      return '09-13';
-    case hour >= 13 && hour < 17:
-      return '13-17';
-    case hour >= 17 && hour < 21:
-      return '17-21';
-    default:
-      return '21-01';
+  case (hour >= 1 && hour < 5):
+    return '01-05';
+  case (hour >= 5 && hour < 9):
+    return '05-09';
+  case (hour >= 9 && hour < 13):
+    return '09-13';
+  case (hour >= 13 && hour < 17):
+    return '13-17';
+  case (hour >= 17 && hour < 21):
+    return '17-21';
+  default:
+    return '21-01';
   }
 };
 
 function request$1(path) {
-  var _this = this;
+  var this$1 = this;
 
-  return this.withSessionHandling(function () {
-    return grab(path, _this.props.config);
-  });
+  return this.withSessionHandling(function () { return grab(path, this$1.props.config); });
 }
 
 function postLog(level, log) {
-  var _this2 = this;
+  var this$1 = this;
 
-  return this.withSessionHandling(function () {
-    return post('/application/log/' + level, _this2.props.config, log);
-  });
+  return this.withSessionHandling(function () { return post(("/application/log/" + level), this$1.props.config, log); });
 }
 
-var stamp$6 = stampit().methods({
+var stamp$5 = stampit()
+.methods({
   /**
    * Get the current log level
    * @return {promise}  a promise of the log level (string)
    */
   getLogLevel: function getLogLevel() {
-    return request$1.call(this, '/application/log/level').then(function (json) {
-      return json.logLevel;
-    });
+    return request$1.call(this, '/application/log/level').then(function (json) { return json.logLevel; });
   },
-
   /**
    * Send a log with the given level, details and extra metadata.
    * @param {string} level the log level
@@ -454,63 +431,57 @@ var stamp$6 = stampit().methods({
    * @return {promise}  a promise of the success of the operation
    */
   sendLog: function sendLog(level, details) {
-    if (!LOG_LEVELS.includes(level)) {
-      return Promise.reject('Unsupported log level');
-    }
+    var metadata = [], len = arguments.length - 2;
+    while ( len-- > 0 ) metadata[ len ] = arguments[ len + 2 ];
 
-    for (var _len = arguments.length, metadata = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      metadata[_key - 2] = arguments[_key];
-    }
-
+    if (!LOG_LEVELS.includes(level)) { return Promise.reject('Unsupported log level'); }
     var log = getLogEvent(details, metadata);
     return postLog.call(this, level, log);
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$7 = stampit().methods({
+var stamp$6 = stampit()
+.methods({
   /**
    * Get all the enabled plugins
    * @return {promise}  a promise of the requested data
    */
   getAllEnabledPlugins: function getAllEnabledPlugins() {
-    var _this = this;
+    var this$1 = this;
 
-    return this.withSessionHandling(function () {
-      return grab('/plugins', _this.props.config);
-    });
+    return this.withSessionHandling(function () { return grab('/plugins', this$1.props.config); });
   }
+
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
-var stamp$8 = stampit().methods({
+var stamp$7 = stampit()
+.methods({
   /**
    * Get the profile information
    * @return {promise}  a promise of the requested data
    */
 
   getProfileInfo: function getProfileInfo() {
-    var _this = this;
+    var this$1 = this;
 
-    return this.withSessionHandling(function () {
-      return grab('/profile', _this.props.config);
-    });
+    return this.withSessionHandling(function () { return grab('/profile', this$1.props.config); });
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 function request$2(path) {
-  var _this = this;
+  var this$1 = this;
 
-  return this.withSessionHandling(function () {
-    return grab(path, _this.props.config);
-  });
+  return this.withSessionHandling(function () { return grab(path, this$1.props.config); });
 }
 
-var stamp$9 = stampit().methods({
+var stamp$8 = stampit()
+.methods({
   /**
    * Get all the metadata
    * @return {promise}  a promise of the requested data
@@ -519,16 +490,14 @@ var stamp$9 = stampit().methods({
     return request$2.call(this, '/metadata');
   },
 
-
   /**
    * Get the metadata by a specific key
    * @param {string} key a key to get specific metadata
    * @return {promise}  a promise of the requested data
    */
   getMetadataByKey: function getMetadataByKey(key) {
-    return request$2.call(this, '/metadata/' + key);
+    return request$2.call(this, ("/metadata/" + key));
   },
-
 
   /**
    * Get the metadata by specific keys
@@ -536,48 +505,45 @@ var stamp$9 = stampit().methods({
    * @return {promise}  a promise of the requested data
    */
   getMetadataByKeys: function getMetadataByKeys(keys) {
-    return request$2.call(this, '/metadata/' + keys.join(','));
+    return request$2.call(this, ("/metadata/" + (keys.join(','))));
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 var APPLICATION_SCOPE = 'user';
 var APPLICATION_GROUP_SCOPE = 'group';
 
 function requestGet(path) {
-  var _this = this;
+  var this$1 = this;
 
-  return this.withSessionHandling(function () {
-    return grab(path, _this.props.config);
-  });
+  return this.withSessionHandling(function () { return grab(path, this$1.props.config); });
 }
 
 function requestPost(path, data) {
-  var _this2 = this;
+  var this$1 = this;
 
-  return this.withSessionHandling(function () {
-    return post(path, _this2.props.config, data);
-  });
+  return this.withSessionHandling(function () { return post(path, this$1.props.config, data); });
 }
 
 function getAllDataByUser(scope, userName) {
-  return requestGet.call(this, '/' + scope + '/' + userName);
+  return requestGet.call(this, ("/" + scope + "/" + userName));
 }
 
 function getDataByUserAndKey(scope, userName, key) {
-  return requestGet.call(this, '/' + scope + '/' + userName + '/' + key + '?json=true');
+  return requestGet.call(this, ("/" + scope + "/" + userName + "/" + key + "?json=true"));
 }
 
 function setUserData(scope, userName, data) {
-  return requestPost.call(this, '/' + scope + '/' + userName, data);
+  return requestPost.call(this, ("/" + scope + "/" + userName), data);
 }
 
 function setUserDataByKey(scope, userName, key, data) {
-  return requestPost.call(this, '/' + scope + '/' + userName + '/' + key, data);
+  return requestPost.call(this, ("/" + scope + "/" + userName + "/" + key), data);
 }
 
-var stamp$10 = stampit().methods({
+var stamp$9 = stampit()
+.methods({
   /**
    * Get all the application-scope data for a given user
    * @param {string} userName an appgrid user
@@ -587,7 +553,6 @@ var stamp$10 = stampit().methods({
     return getAllDataByUser.call(this, APPLICATION_SCOPE, userName);
   },
 
-
   /**
    * Get all the application-group-scope data for a given user
    * @param {string} userName an appgrid user
@@ -596,7 +561,6 @@ var stamp$10 = stampit().methods({
   getAllApplicationGroupScopeDataByUser: function getAllApplicationGroupScopeDataByUser(userName) {
     return getAllDataByUser.call(this, APPLICATION_GROUP_SCOPE, userName);
   },
-
 
   /**
    * Get all the application-scope data for a given user and data key
@@ -608,7 +572,6 @@ var stamp$10 = stampit().methods({
     return getDataByUserAndKey.call(this, APPLICATION_SCOPE, userName, key);
   },
 
-
   /**
    * Get all the application-group-scope data for a given user
    * @param {string} userName an appgrid user
@@ -618,7 +581,6 @@ var stamp$10 = stampit().methods({
   getApplicationGroupScopeDataByUserAndKey: function getApplicationGroupScopeDataByUserAndKey(userName, key) {
     return getDataByUserAndKey.call(this, APPLICATION_GROUP_SCOPE, userName, key);
   },
-
 
   /**
    * Set the application-scope data for a given user
@@ -630,7 +592,6 @@ var stamp$10 = stampit().methods({
     return setUserData.call(this, APPLICATION_SCOPE, userName, data);
   },
 
-
   /**
    * Set the application-group-scope data for a given user
    * @param {string} userName an appgrid user
@@ -640,7 +601,6 @@ var stamp$10 = stampit().methods({
   setApplicationGroupScopeUserData: function setApplicationGroupScopeUserData(userName, data) {
     return setUserData.call(this, APPLICATION_GROUP_SCOPE, userName, data);
   },
-
 
   /**
    * Set the application-scope data for a given user
@@ -652,7 +612,6 @@ var stamp$10 = stampit().methods({
   setApplicationScopeUserDataByKey: function setApplicationScopeUserDataByKey(userName, key, data) {
     return setUserDataByKey.call(this, APPLICATION_SCOPE, userName, key, data);
   },
-
 
   /**
    * Set the application-group-scope data for a given user
@@ -666,10 +625,21 @@ var stamp$10 = stampit().methods({
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
-.compose(stamp$2);
+.compose(sessionStamp);
 
 // Simply compose all the stamps in one single stamp to give access to all methods
-var stamp = stampit().compose(stamp$2, stamp$1, stamp$3, stamp$4, stamp$5, stamp$6, stamp$7, stamp$8, stamp$9, stamp$10);
+var stamp = stampit().compose(
+  sessionStamp,
+  stamp$1,
+  stamp$2,
+  stamp$3,
+  stamp$4,
+  stamp$5,
+  stamp$6,
+  stamp$7,
+  stamp$8,
+  stamp$9
+);
 
 var cookieParser = require('cookie-parser')();
 
@@ -677,59 +647,37 @@ var SIXTY_YEARS_IN_MS = 2147483647000;
 var COOKIE_DEVICE_ID = 'ag_d';
 var COOKIE_SESSION_KEY = 'ag_s';
 
-var defaultGetRequestInfo = function defaultGetRequestInfo(req) {
-  return { deviceId: req.cookies[COOKIE_DEVICE_ID], sessionKey: req.cookies[COOKIE_SESSION_KEY] };
-};
-var defaultOnDeviceIdGenerated = function defaultOnDeviceIdGenerated(id, res) {
-  return res.cookie(COOKIE_DEVICE_ID, id, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true });
-};
-var defaultOnSessionKeyChanged = function defaultOnSessionKeyChanged(key, res) {
-  return res.cookie(COOKIE_SESSION_KEY, key, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true });
-};
+// default functions for the cookie peristency strategy
+var defaultGetRequestInfo = function (req) { return ({ deviceId: req.cookies[COOKIE_DEVICE_ID], sessionKey: req.cookies[COOKIE_SESSION_KEY] }); };
+var defaultOnDeviceIdGenerated = function (id, res) { return res.cookie(COOKIE_DEVICE_ID, id, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true }); };
+var defaultOnSessionKeyChanged = function (key, res) { return res.cookie(COOKIE_SESSION_KEY, key, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true }); };
 
 // See doc in index.js where this is used
-var factory = function factory(appgrid) {
-  return function (config) {
-    var appKey = config.appKey;
-    var _config$getRequestInf = config.getRequestInfo;
-    var getRequestInfo = _config$getRequestInf === undefined ? defaultGetRequestInfo : _config$getRequestInf;
-    var _config$onDeviceIdGen = config.onDeviceIdGenerated;
+var factory = function (appgrid) { return function (config) {
+  var appKey = config.appKey;
+  var getRequestInfo = config.getRequestInfo; if ( getRequestInfo === void 0 ) getRequestInfo = defaultGetRequestInfo;
+  var onDeviceIdGenerated = config.onDeviceIdGenerated; if ( onDeviceIdGenerated === void 0 ) onDeviceIdGenerated = defaultOnDeviceIdGenerated;
+  var onSessionKeyChanged = config.onSessionKeyChanged; if ( onSessionKeyChanged === void 0 ) onSessionKeyChanged = defaultOnSessionKeyChanged;
+  var log = config.log;
+  return function (req, res, next) { return cookieParser(req, res, function () {
+    var ref = getRequestInfo(req);
+    var deviceId = ref.deviceId;
+    var sessionKey = ref.sessionKey;
+    // res.locals is a good place to store response-scoped data
+    res.locals.appgridClient = appgrid({
+      appKey: appKey,
+      deviceId: deviceId,
+      sessionKey: sessionKey,
+      log: log,
+      ip: req.ip,
+      onDeviceIdGenerated: function (id) { return onDeviceIdGenerated(id, res); },
+      onSessionKeyChanged: function (key) { return onSessionKeyChanged(key, res); }
+    });
+    next();
+  }); };
+}; };
 
-    var _onDeviceIdGenerated = _config$onDeviceIdGen === undefined ? defaultOnDeviceIdGenerated : _config$onDeviceIdGen;
-
-    var _config$onSessionKeyC = config.onSessionKeyChanged;
-
-    var _onSessionKeyChanged = _config$onSessionKeyC === undefined ? defaultOnSessionKeyChanged : _config$onSessionKeyC;
-
-    var log = config.log;
-
-    return function (req, res, next) {
-      return cookieParser(req, res, function () {
-        var _getRequestInfo = getRequestInfo(req);
-
-        var deviceId = _getRequestInfo.deviceId;
-        var sessionKey = _getRequestInfo.sessionKey;
-        // res.locals is a good place to store response-scoped data
-
-        res.locals.appgridClient = appgrid({
-          appKey: appKey,
-          deviceId: deviceId,
-          sessionKey: sessionKey,
-          log: log,
-          onDeviceIdGenerated: function onDeviceIdGenerated(id) {
-            return _onDeviceIdGenerated(id, res);
-          },
-          onSessionKeyChanged: function onSessionKeyChanged(key) {
-            return _onSessionKeyChanged(key, res);
-          }
-        });
-        next();
-      });
-    };
-  };
-};
-
-var noop = function noop() {};
+var noop = function () {};
 
 /**
  * Check the parameters given are good enough to make api calls
@@ -740,13 +688,15 @@ var noop = function noop() {};
  * @return {boolean}                 true when all is well
  * @private
  */
-var checkUsability = function checkUsability() {
-  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+var checkUsability = function (ref) {
+    if ( ref === void 0 ) ref = {};
+    var appKey = ref.appKey;
+    var deviceId = ref.deviceId;
+    var sessionKey = ref.sessionKey;
 
-  var appKey = _ref.appKey;
-  var deviceId = _ref.deviceId;
-  var sessionKey = _ref.sessionKey;
-  return appKey && !deviceId && !sessionKey || appKey && deviceId && !sessionKey || appKey && deviceId && sessionKey;
+    return (appKey && !deviceId && !sessionKey) ||
+  (appKey && deviceId && !sessionKey) ||
+  (appKey && deviceId && sessionKey);
 };
 
 /**
@@ -758,6 +708,7 @@ var checkUsability = function checkUsability() {
  * @param  {string} config.appKey the application Key
  * @param  {string} [config.deviceId] the device identifier (if not provided, a uuid will be generated instead)
  * @param  {string} [config.sessionKey] the sessionKey (note a new one may be created when not given or expired)
+ * @param  {string} [config.ip] the user's IP, given to AppGrid for every request this client will trigger (for geolocation).
  * @param  {function} [config.log] a function to use to see this SDK's logs
  * @param  {function} [config.onDeviceIdGenerated] callback to obtain the new deviceId, if one gets generated
  * @param  {function} [config.onSessionKeyChanged] callback to obtain the sessionKey, anytime a new one gets generated
@@ -774,19 +725,16 @@ var checkUsability = function checkUsability() {
  * // when there is no known sessionKey or deviceId yet
  * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
-var appgrid = function appgrid(config) {
+var appgrid = function (config) {
   var gid = config.gid;
   var appKey = config.appKey;
-  var _config$log = config.log;
-  var log = _config$log === undefined ? noop : _config$log;
-  var _config$onDeviceIdGen = config.onDeviceIdGenerated;
-  var onDeviceIdGenerated = _config$onDeviceIdGen === undefined ? noop : _config$onDeviceIdGen;
-  var _config$onSessionKeyC = config.onSessionKeyChanged;
-  var onSessionKeyChanged = _config$onSessionKeyC === undefined ? noop : _config$onSessionKeyC;
+  var ip = config.ip;
+  var log = config.log; if ( log === void 0 ) log = noop;
+  var onDeviceIdGenerated = config.onDeviceIdGenerated; if ( onDeviceIdGenerated === void 0 ) onDeviceIdGenerated = noop;
+  var onSessionKeyChanged = config.onSessionKeyChanged; if ( onSessionKeyChanged === void 0 ) onSessionKeyChanged = noop;
   var deviceId = config.deviceId;
   var sessionKey = config.sessionKey;
   // First, check the params are OK
-
   if (!checkUsability(config)) {
     throw new Error('You must provide an appKey | an appKey and a deviceId | an appKey, a deviceId and a sessionKey');
   }
@@ -797,14 +745,10 @@ var appgrid = function appgrid(config) {
     onDeviceIdGenerated(deviceId);
   }
 
-  var stampConfig = { deviceId: deviceId, gid: gid, appKey: appKey, log: log, onSessionKeyChanged: onSessionKeyChanged };
+  var stampConfig = { deviceId: deviceId, gid: gid, ip: ip, appKey: appKey, log: log, onSessionKeyChanged: onSessionKeyChanged };
   Object.defineProperty(stampConfig, 'sessionKey', {
-    set: function set(val) {
-      sessionKey = val;onSessionKeyChanged(val);
-    },
-    get: function get() {
-      return sessionKey;
-    }
+    set: function set(val) { sessionKey = val; onSessionKeyChanged(val); },
+    get: function get() { return sessionKey; }
   });
 
   return stamp({
@@ -821,9 +765,7 @@ var appgrid = function appgrid(config) {
  * @function
  * @return {string} a new UUID
  */
-appgrid.generateUuid = function () {
-  return uuidLib.v4();
-};
+appgrid.generateUuid = function () { return uuidLib.v4(); };
 
 /**
  * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
@@ -864,6 +806,8 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * const PORT = 3000;
  *
  * express()
+ * // handle proxy servers if needed, to pass the user's IP instead of the proxy's.
+ * .set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
  * // place the appgrid middleware before your request handlers
  * .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
  * .get('/test', (req, res) => {

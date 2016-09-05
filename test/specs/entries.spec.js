@@ -49,12 +49,11 @@ describe('Entries API Tests', () => {
   });
 
   it('"getEntries" with the id param should return multiple entries', () => {
-    const params = {
-      ...paginationOptions,
+    const params = Object.assign({}, paginationOptions, {
       id: ['56ea7bd6935f75032a2fd431', '56ea7c55935f75032a2fd437'],
       preview: false,
       at: new Date()
-    };
+    });
     return client.getEntries(params)
       .then(({ entries }) => {
         entries.length.should.be.equal(params.id.length);
@@ -62,11 +61,10 @@ describe('Entries API Tests', () => {
   });
 
   it('"getEntries" with the typeId param should return multiple entries', () => {
-    const params = {
-      ...paginationOptions,
+    const params = Object.assign({}, paginationOptions, {
       typeId: '56ea7bca935f75032a2fd42c',
       at: new Date()
-    };
+    });
     return client.getEntries(params)
       .then(({ entries }) => {
         entries.length.should.be.greaterThan(0);
@@ -74,10 +72,9 @@ describe('Entries API Tests', () => {
   });
 
   it('"getEntries" with the alias param should return multiple entries', () => {
-    const params = {
-      ...paginationOptions,
+    const params = Object.assign({}, paginationOptions, {
       alias: ['greg', 'erik']
-    };
+    });
     return client.getEntries(params)
       .then(({ entries }) => {
         entries.length.should.be.greaterThan(0);

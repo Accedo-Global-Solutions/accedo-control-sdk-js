@@ -1,10 +1,11 @@
-import baseConfig from './rollup.config';
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+import buble from 'rollup-plugin-buble';
 
-const additionalConfig = {
+export default {
+  entry: 'src/index.js',
   format: 'umd',
   dest: 'dist/bundle.umd.js',
-  moduleName: 'appgrid'
+  moduleName: 'appgrid',
+  sourceMap: false,
+  plugins: [buble()]
 };
-
-const config = Object.assign({}, baseConfig, additionalConfig);
-export default config;
