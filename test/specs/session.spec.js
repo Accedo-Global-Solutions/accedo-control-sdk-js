@@ -42,11 +42,11 @@ describe('Session API Tests', () => {
     const clientB = factory({
       appKey: '56ea6a370db1bf032c9df5cb',
       deviceId: 'gregTestingSDK',
-      onSessionKeyChangedB
+      onSessionKeyChanged: onSessionKeyChangedB
     });
 
     it('should only create one session and propagate it to all clients', () => {
-      Promise.all([clientB.createSession(), clientB.createSession(), clientB.createSession()])
+      return Promise.all([clientB.createSession(), clientB.createSession(), clientB.createSession()])
       .then(([key1, key2, key3]) => {
         key1.should.equal(key2);
         key1.should.equal(key3);
