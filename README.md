@@ -33,10 +33,10 @@ These features are provided by the manual creation of AppGrid client instances (
  - automatic deviceId creation when none was provided
  - automatic session creation when none was provided (lazy - only when needed)
  - automatic session re-creation when the existing one has expired (lazy)
- - ensures only one session will be created at a time, even if a client triggers concurrent calls
+ - ensures only one session will be created at a time, even if a request triggers concurrent AppGrid calls
 
 An express-compatible middleware is included and adds those extras on top :
- - automatic creation of AppGrid client instances, attached to the responses for further use
+ - automatic creation of AppGrid client instances for each request, attached to the response object for further use
  - automatically passes the requester's IP onto AppGrid calls for analytics and geolocated services
  - automatic reuse of the deviceId through cookies (can be customized to use anything else based on requests)
  - automatic reuse of the sessionKey through cookies (can be customized to use anything else based on requests)
