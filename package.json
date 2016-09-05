@@ -1,6 +1,6 @@
 {
   "name": "appgrid",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "The Official AppGrid SDK for Node.js",
   "main": "dist/bundle.umd.js",
   "jsnext:main": "dist/bundle.es6.js",

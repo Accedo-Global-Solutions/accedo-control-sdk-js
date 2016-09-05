@@ -4,6 +4,9 @@
 - MINOR: add the new bulk method to add applogs when available in prod
 - MINOR: basic robot detection with a default deviceId for them all ?
 
+# 2.2.1
+
+- PATCH: Replaced the old link to AppGrid's help section with the new one for the knowledge base
 
 # 2.2.0
 

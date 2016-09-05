@@ -181,8 +181,8 @@ client.getAssetById(idToDownload)
 
 ## More information & Links
 
-* [AppGrid Homepage](http://appgrid.accedo.tv/)
-* [AppGrid User Guide and API Documentation](https://appgrid.cloud.accedo.tv/help)
+* [AppGrid homepage](http://appgrid.accedo.tv/)
+* [AppGrid knowledge base and API documentation](http://docs.appgrid.accedo.tv)
 
 ## Unit Tests
 
