@@ -5,7 +5,7 @@
 - MINOR: basic robot detection with a default deviceId for them all ?
 - MINOR: have extra configuration params given go through the middleware so they are used in the factory (that will allow setting the gid when using the middleware, for instance)
 
-# 2.2.2
+# Unreleased
 
 - PATCH: Changed the AppGrid REST API link to its new location
 - PATCH: doc: installing this SDK should usually be done with --save, not --save-dev

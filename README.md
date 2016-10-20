@@ -53,7 +53,7 @@ You may also want to refer to the [AppGrid Rest API documentation](http://docs.a
 
 ## Installation
 
-`npm install --save appgrid`
+`npm install --save appgrid` (or, for yarn users: `yarn add appgrid`)
 
 Then you can use the default export to get a factory:
 ```js
@@ -91,6 +91,8 @@ express()
 
 ### Create an AppGrid client instance
 
+_Note: this is not needed if you use the middleware. You can access a client instance at `res.locals.appgridClient`._
+
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
 ```javascript
@@ -115,7 +117,7 @@ You should create a new client for every device that needs to access the AppGrid
 
 If you are triggering some AppGrid API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's deviceId (typically you would persist a consumer deviceId via the cookies, or as a request parameter in your server APIs - unless the device lets you use some unique ID like a MAC address).
 
-Note the middleware (described above) does that work for you, so it's best to use it whenever possible.
+Note again, the middleware (described above) does that work for you, so it's best to use it whenever possible.
 
 ### Get a new AppGrid SessionId
 
