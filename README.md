@@ -49,11 +49,11 @@ For instance: `app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])`
 
 Refer to the [API docs for this SDK](https://accedo-products.github.io/appgrid-sdk-node/).
 
-You may also want to refer to the [AppGrid Rest API documentation](https://s3-us-west-1.amazonaws.com/appgrid.cloud.accedo.tv/docs/appgrid-api.pdf) that this SDK uses behind the scenes. AppGrid-specific terminology is defined there.
+You may also want to refer to the [AppGrid Rest API documentation](http://docs.appgrid.apiary.io/) that this SDK uses behind the scenes. AppGrid-specific terminology is defined there.
 
 ## Installation
 
-`npm install --save-dev appgrid`
+`npm install --save appgrid`
 
 Then you can use the default export to get a factory:
 ```js
