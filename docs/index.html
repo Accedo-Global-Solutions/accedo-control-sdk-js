@@ -114,26 +114,6 @@
               
                 
                 <li><a
-                  href='#createsession'
-                  class="">
-                  createSession
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#getsessionkey'
-                  class="">
-                  getSessionKey
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#getapplicationstatus'
                   class="">
                   getApplicationStatus
@@ -337,6 +317,26 @@
                   href='#sendlogs'
                   class="">
                   sendLogs
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createsession'
+                  class="">
+                  createSession
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getsessionkey'
+                  class="">
+                  getSessionKey
                   
                 </a>
                 
@@ -574,8 +574,8 @@
 
   
 
-  <p>DEPRECATED - will be removed in version 3.
-This is application-specific, each app should have its own logic for such use of dimensions.</p>
+  <p>DEPRECATED - will be removed in version 3.</p>
+<p>This is application-specific, each app should have its own logic for such use of dimensions.</p>
 <p>Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
 Useful for some specific AppGrid log events.</p>
 <p>This utility method is not used through an appgrid client instance, but available statically</p>
@@ -638,6 +638,7 @@ By default, it will also reuse and persist the deviceId and sessionKey using the
 That strategy can be changed by passing the optional callbacks,
 so you could make use of headers or request parameters for instance.</p>
 <p>Each instance is attached to the response object and available to the next express handlers as <code>res.locals.appgridClient</code>.</p>
+<p>Note any extra argument provided in the config object will be passed onto the appgrid client factory during instanciation.</p>
 <p>This utility method is not used through an appgrid client instance, but available statically</p>
 
 
@@ -703,9 +704,9 @@ so you could make use of headers or request parameters for instance.</p>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.log</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
+                  <td class='break-word'><span class='code bold'>config.___</span> <code class='quiet'>[any]</code>
                   </td>
-                  <td class='break-word'><span>Logging function that will be passed onto the client instance
+                  <td class='break-word'><span>You can also pass any extra option accepted by the appgrid factory function (log, gid, ...)
 </span></td>
                 </tr>
               
@@ -756,7 +757,7 @@ express()
     
       <p><p>Using custom headers to extract deviceId and sessionKey and to pass down any change</p>
 </p>
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> appgrid = <span class="hljs-built_in">require</span>(<span class="hljs-string">'appgrid_next'</span>);
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> appgrid = <span class="hljs-built_in">require</span>(<span class="hljs-string">'appgrid'</span>);
 <span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
 
 <span class="hljs-keyword">const</span> PORT = <span class="hljs-number">3000</span>;
@@ -1147,110 +1148,6 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of an entry (object)
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='createsession'>
-      createSession
-    </h3>
-    
-  </div>
-  
-
-  <p>Create a session and store it for reuse in this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of a string, the sessionKey
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='getsessionkey'>
-      getSessionKey
-    </h3>
-    
-  </div>
-  
-
-  <p>Returns the currently stored sessionKey for this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        the sessionKey, if any
 
       
     
@@ -2759,6 +2656,110 @@ or a POSIX millisecond number
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the success of the operation
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='createsession'>
+      createSession
+    </h3>
+    
+  </div>
+  
+
+  <p>Create a session and store it for reuse in this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of a string, the sessionKey
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='getsessionkey'>
+      getSessionKey
+    </h3>
+    
+  </div>
+  
+
+  <p>Returns the currently stored sessionKey for this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        the sessionKey, if any
 
       
     

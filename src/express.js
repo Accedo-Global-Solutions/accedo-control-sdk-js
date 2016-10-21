@@ -12,24 +12,23 @@ const defaultOnSessionKeyChanged = (key, res) => res.cookie(COOKIE_SESSION_KEY, 
 // See doc in index.js where this is used
 const factory = (appgrid) => (config) => {
   const {
-    appKey,
     getRequestInfo = defaultGetRequestInfo,
     onDeviceIdGenerated = defaultOnDeviceIdGenerated,
     onSessionKeyChanged = defaultOnSessionKeyChanged,
-    log
   } = config;
   return (req, res, next) => cookieParser(req, res, () => {
     const { deviceId, sessionKey } = getRequestInfo(req);
-    // res.locals is a good place to store response-scoped data
-    res.locals.appgridClient = appgrid({
-      appKey,
+    const clientOptions = {
       deviceId,
       sessionKey,
-      log,
       ip: req.ip,
       onDeviceIdGenerated: id => onDeviceIdGenerated(id, res),
       onSessionKeyChanged: key => onSessionKeyChanged(key, res)
-    });
+    };
+    // Let anything given in config pass through as a client option as well
+    const client = appgrid(Object.assign({}, config, clientOptions));
+    // res.locals is a good place to store response-scoped data
+    res.locals.appgridClient = client;
     next();
   });
 };

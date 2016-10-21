@@ -83,6 +83,7 @@ appgrid.generateUuid = () => uuidLib.v4();
 
 /**
  * DEPRECATED - will be removed in version 3.
+ *
  * This is application-specific, each app should have its own logic for such use of dimensions.
  *
  * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
@@ -106,6 +107,8 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  *
  * Each instance is attached to the response object and available to the next express handlers as `res.locals.appgridClient`.
  *
+ * Note any extra argument provided in the config object will be passed onto the appgrid client factory during instanciation.
+ *
  * This utility method is not used through an appgrid client instance, but available statically
  * @function
  * @param  {object} config the configuration
@@ -113,7 +116,7 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId and sessionKey properties.
  * @param  {function} [config.onDeviceIdGenerated] callback that receives the new deviceId (if one was not returned by getRequestInfo) and the response
  * @param  {function} [config.onSessionKeyChanged] callback that receives the new sessionKey (anytime a new one gets generated) and the response
- * @param  {function} [config.log] Logging function that will be passed onto the client instance
+ * @param  {any} [config.___] You can also pass any extra option accepted by the appgrid factory function (log, gid, ...)
  * @alias middleware.express
  * @return {function} a middleware function compatible with express
  * @example <caption>Using the default cookie strategy</caption>
@@ -136,7 +139,7 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
  *
  * @example <caption>Using custom headers to extract deviceId and sessionKey and to pass down any change</caption>
- * const appgrid = require('appgrid_next');
+ * const appgrid = require('appgrid');
  * const express = require('express');
  *
  * const PORT = 3000;

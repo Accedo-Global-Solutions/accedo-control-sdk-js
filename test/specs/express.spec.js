@@ -19,9 +19,10 @@ const buildResponse = () => ({
   cookie: sinon.spy()
 });
 
-describe('The Express middleware', () => {
+describe.only('The Express middleware', () => {
   const mw = appgrid.middleware.express({
-    appKey: '56ea6a370db1bf032c9df5cb'
+    appKey: '56ea6a370db1bf032c9df5cb',
+    gid: 'myGID',
   });
 
   it('exposes a function', () => {
@@ -44,6 +45,7 @@ describe('The Express middleware', () => {
     const { appgridClient } = response.locals;
     appgridClient.should.be.an('object');
     appgridClient.props.config.appKey.should.equal('56ea6a370db1bf032c9df5cb');
+    appgridClient.props.config.gid.should.equal('myGID');
     appgridClient.props.config.deviceId.should.equal(cookies[COOKIE_DEVICE_ID]);
     appgridClient.props.config.sessionKey.should.equal(cookies[COOKIE_SESSION_KEY]);
   });
