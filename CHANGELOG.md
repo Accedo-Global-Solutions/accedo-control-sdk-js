@@ -4,7 +4,7 @@
 - MAJOR: provide the ES6 package as the default, and the ES5 one as a legacy package at appgrid/legacy
 - MINOR: basic robot detection with a default deviceId for them all ?
 
-# Unreleased
+# 2.3.0
 
 - MINOR: getEntries can now take a typeAlias parameter
 - MINOR: Added the new method to add Application Logs in batch (sendLogs)
