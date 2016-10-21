@@ -71,7 +71,7 @@ const stamp = stampit()
   },
   /**
    * Send a log with the given level, details and extra metadata.
-   * @param {string} level the log level
+   * @param {'debug'|'info'|'warn'|'error'} level the log level
    * @param {object} details the log information
    * @param {string} details.message the log message
    * @param {string} details.facilityCode the facility code
@@ -92,20 +92,19 @@ const stamp = stampit()
 
   /**
    * Send batched logs, each with its own level, timestamp, details and extra metadata.
-   * @param {array} logs Log description objects
-   * @param {object} logs.log the information for one of the logs
-   * @param {'debug'|'info'|'warn'|'error'} logs.log.logType the log type
-   * @param {string|number} logs.log.timestamp the timestamp for the log,
+   * @param {object[]} logs Log description objects
+   * @param {'debug'|'info'|'warn'|'error'} logs[].logType the log type
+   * @param {string|number} logs[].timestamp the timestamp for the log,
    *                                           as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
    *                                           or a POSIX millisecond number
-   * @param {string} logs.log.message the log message
-   * @param {string} logs.log.facilityCode the facility code
-   * @param {string} logs.log.errorCode the error code
-   * @param {string} logs.log.dim1 the dimension 1 information
-   * @param {string} logs.log.dim2 the dimension 2 information
-   * @param {string} logs.log.dim3 the dimension 3 information
-   * @param {string} logs.log.dim4 the dimension 4 information
-   * @param {any} [logs.log.metadata] extra metadata (will go through JSON.stringify).
+   * @param {string} logs[].message the log message
+   * @param {string} logs[].facilityCode the facility code
+   * @param {string} logs[].errorCode the error code
+   * @param {string} logs[].dim1 the dimension 1 information
+   * @param {string} logs[].dim2 the dimension 2 information
+   * @param {string} logs[].dim3 the dimension 3 information
+   * @param {string} logs[].dim4 the dimension 4 information
+   * @param {any} [logs[].metadata] extra metadata (will go through JSON.stringify).
    * @return {promise}  a promise of the success of the operation
    */
   sendLogs(logs) {
