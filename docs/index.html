@@ -114,6 +114,26 @@
               
                 
                 <li><a
+                  href='#createsession'
+                  class="">
+                  createSession
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getsessionkey'
+                  class="">
+                  getSessionKey
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#getapplicationstatus'
                   class="">
                   getApplicationStatus
@@ -317,26 +337,6 @@
                   href='#sendlogs'
                   class="">
                   sendLogs
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#createsession'
-                  class="">
-                  createSession
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#getsessionkey'
-                  class="">
-                  getSessionKey
                   
                 </a>
                 
@@ -685,7 +685,7 @@ so you could make use of headers or request parameters for instance.</p>
                 <tr>
                   <td class='break-word'><span class='code bold'>config.getRequestInfo</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>]</code>
                   </td>
-                  <td class='break-word'><span>callback that receives the request and returns an object with deviceId and sessionKey properties.
+                  <td class='break-word'><span>callback that receives the request and returns an object with deviceId, sessionKey and gid properties.
 </span></td>
                 </tr>
               
@@ -763,12 +763,13 @@ express()
 <span class="hljs-keyword">const</span> PORT = <span class="hljs-number">3000</span>;
 <span class="hljs-keyword">const</span> HEADER_DEVICE_ID = <span class="hljs-string">'X-AG-DEVICE-ID'</span>;
 <span class="hljs-keyword">const</span> HEADER_SESSION_KEY = <span class="hljs-string">'X-AG-SESSION-KEY'</span>;
+<span class="hljs-keyword">const</span> HEADER_GID = <span class="hljs-string">'X-AG-GID'</span>;
 
 express()
 .use(appgrid.middleware.express({
   <span class="hljs-attr">appKey</span>: <span class="hljs-string">'56ea6a370db1bf032c9df5cb'</span>,
-  <span class="hljs-comment">// extract deviceId and sessionKey from custom headers</span>
-  getRequestInfo: <span class="hljs-function"><span class="hljs-params">req</span> =&gt;</span> ({ <span class="hljs-attr">deviceId</span>: req.get(HEADER_DEVICE_ID), <span class="hljs-attr">sessionKey</span>: req.get(HEADER_SESSION_KEY)}),
+  <span class="hljs-comment">// extract deviceId, sessionKey and gid from custom headers</span>
+  getRequestInfo: <span class="hljs-function"><span class="hljs-params">req</span> =&gt;</span> ({ <span class="hljs-attr">deviceId</span>: req.get(HEADER_DEVICE_ID), <span class="hljs-attr">sessionKey</span>: req.get(HEADER_SESSION_KEY), <span class="hljs-attr">gid</span>: req.get(HEADER_GID) }),
   <span class="hljs-comment">// pass down any change on the deviceId (the header won't be set if unchanged compared to the value in getRequestInfo)</span>
   onDeviceIdGenerated: <span class="hljs-function">(<span class="hljs-params">id, res</span>) =&gt;</span> res.set(HEADER_DEVICE_ID, id),
   <span class="hljs-comment">// pass down any change on the sessionKey (the header won't be set if unchanged compared to the value in getRequestInfo)</span>
@@ -1148,6 +1149,110 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of an entry (object)
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='createsession'>
+      createSession
+    </h3>
+    
+  </div>
+  
+
+  <p>Create a session and store it for reuse in this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of a string, the sessionKey
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    <h3 class='fl m0' id='getsessionkey'>
+      getSessionKey
+    </h3>
+    
+  </div>
+  
+
+  <p>Returns the currently stored sessionKey for this client instance</p>
+
+
+  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        the sessionKey, if any
 
       
     
@@ -2656,110 +2761,6 @@ or a POSIX millisecond number
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the success of the operation
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='createsession'>
-      createSession
-    </h3>
-    
-  </div>
-  
-
-  <p>Create a session and store it for reuse in this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of a string, the sessionKey
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='getsessionkey'>
-      getSessionKey
-    </h3>
-    
-  </div>
-  
-
-  <p>Returns the currently stored sessionKey for this client instance</p>
-
-
-  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        the sessionKey, if any
 
       
     

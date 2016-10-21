@@ -113,7 +113,7 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * @function
  * @param  {object} config the configuration
  * @param  {string} config.appKey the application Key that will be used for all appgrid clients
- * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId and sessionKey properties.
+ * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId, sessionKey and gid properties.
  * @param  {function} [config.onDeviceIdGenerated] callback that receives the new deviceId (if one was not returned by getRequestInfo) and the response
  * @param  {function} [config.onSessionKeyChanged] callback that receives the new sessionKey (anytime a new one gets generated) and the response
  * @param  {any} [config.___] You can also pass any extra option accepted by the appgrid factory function (log, gid, ...)
@@ -145,12 +145,13 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * const PORT = 3000;
  * const HEADER_DEVICE_ID = 'X-AG-DEVICE-ID';
  * const HEADER_SESSION_KEY = 'X-AG-SESSION-KEY';
+ * const HEADER_GID = 'X-AG-GID';
  *
  * express()
  * .use(appgrid.middleware.express({
  *   appKey: '56ea6a370db1bf032c9df5cb',
- *   // extract deviceId and sessionKey from custom headers
- *   getRequestInfo: req => ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY)}),
+ *   // extract deviceId, sessionKey and gid from custom headers
+ *   getRequestInfo: req => ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY), gid: req.get(HEADER_GID) }),
  *   // pass down any change on the deviceId (the header won't be set if unchanged compared to the value in getRequestInfo)
  *   onDeviceIdGenerated: (id, res) => res.set(HEADER_DEVICE_ID, id),
  *   // pass down any change on the sessionKey (the header won't be set if unchanged compared to the value in getRequestInfo)

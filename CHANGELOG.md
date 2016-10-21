@@ -9,6 +9,7 @@
 - MINOR: getEntries can now take a typeAlias parameter
 - MINOR: Added the new method to add Application Logs in batch (sendLogs)
 - MINOR: have extra configuration params given go through the middleware so they are used in the factory (log, gid, etc)
+- MINOR: by default, the middleware will now pass the gid from each request parameter (if found in the `gid` querystring) to the factory
 - PATCH: The sendLog method was not sending log dimensions properly.
 - PATCH: The sendLog method's metadata param can be anything (not only an array as documented).
 - PATCH: Changed the AppGrid REST API link to its new location
