@@ -1,14 +1,18 @@
 # TODO
 
-- MINOR: add the new bulk method to add applogs when available in prod
+- MAJOR: remove the deprecated static method getCurrentTimeOfDayDimValue
 - MINOR: basic robot detection with a default deviceId for them all ?
 - MINOR: have extra configuration params given go through the middleware so they are used in the factory (that will allow setting the gid when using the middleware, for instance)
 
 # Unreleased
 
 - MINOR: getEntries can now take a typeAlias parameter
+- MINOR: Added the new method to add Application Logs in batch (sendLogs)
+- PATCH: The sendLog method was not sending log dimensions properly.
+- PATCH: The sendLog method's metadata param can be anything (not only an array as documented).
 - PATCH: Changed the AppGrid REST API link to its new location
 - PATCH: doc: installing this SDK should usually be done with --save, not --save-dev
+- PATCH: the static method getCurrentTimeOfDayDimValue was deprecated, will be removed in version 3
 
 # 2.2.1
 

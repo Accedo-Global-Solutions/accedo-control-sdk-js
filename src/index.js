@@ -82,8 +82,11 @@ const appgrid = (config) => {
 appgrid.generateUuid = () => uuidLib.v4();
 
 /**
+ * DEPRECATED - will be removed in version 3.
+ * This is application-specific, each app should have its own logic for such use of dimensions.
+ *
  * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
- * Useful for AppGrid log events.
+ * Useful for some specific AppGrid log events.
  *
  * This utility method is not used through an appgrid client instance, but available statically
  * @function
