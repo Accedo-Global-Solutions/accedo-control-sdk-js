@@ -7,6 +7,7 @@
 # 2.3.0
 
 - MINOR: getEntries can now take a typeAlias parameter
+- MINOR: getEntries's typeId parameter can now be an array of strings (previously, only a string)
 - MINOR: Added the new method to add Application Logs in batch (sendLogs)
 - MINOR: have extra configuration params given go through the middleware so they are used in the factory (log, gid, etc)
 - MINOR: by default, the middleware will now pass the gid from each request parameter (if found in the `gid` querystring) to the factory

@@ -72,6 +72,19 @@ describe('Entries API Tests', () => {
       });
   });
 
+  it.only('"getEntries" with the typeId param for multiple typeIds should return the same entries when written as CSV or an array of strings', () => {
+    const paramsCSV = Object.assign({}, paginationOptions, {
+      typeId: '56ea7bca935f75032a2fd42c,56ea7bca935f75032a2fd42c',
+    });
+    const paramsArray = Object.assign({}, paginationOptions, {
+      typeId: ['56ea7bca935f75032a2fd42c', '56ea7bca935f75032a2fd42c'],
+    });
+    return Promise.all([client.getEntries(paramsCSV), client.getEntries(paramsArray)])
+      .then(([{ entries: entriesCSV }, { entries: entriesArray }]) => {
+        entriesCSV.length.should.equal(entriesArray.length);
+      });
+  });
+
   it('"getEntries" with the alias param should return multiple entries, all with the given alias', () => {
     const aliases = ['greg', 'erik'];
     const params = Object.assign({}, paginationOptions, {

@@ -172,9 +172,15 @@ function getPathWithQs(path, params = {}) {
   const { id, typeId, alias, typeAlias, preview, at, offset, size } = params;
   const qsParams = {};
   // The id array must be turned into CSV
-  if (id && id.length) { qsParams.id = `${id.join(',')}`; }
+  if (id && id.length) { qsParams.id = id.join(','); }
   // The alias array must be turned into CSV
-  if (alias && alias.length) { qsParams.alias = `${alias.join(',')}`; }
+  if (alias && alias.length) { qsParams.alias = alias.join(','); }
+  // typeId must be turned into CSV if it is an array, but it could be a string too
+  if (typeId && typeId.length) {
+    qsParams.typeId = (typeof typeId === 'string') ?
+      typeId :
+      typeId.join(',');
+  }
   // preview is only useful when true
   if (preview) { qsParams.preview = true; }
   // at is either a string, or a method with toISOString (like a Date) that we use for formatting
@@ -184,7 +190,7 @@ function getPathWithQs(path, params = {}) {
     qsParams.at = at.toISOString();
   }
   // Add curated and non-curated params
-  const queryString = qs.stringify(Object.assign({}, qsParams, { typeId, typeAlias, offset, size }));
+  const queryString = qs.stringify(Object.assign({}, qsParams, { typeAlias, offset, size }));
   return `${path}?${queryString}`;
 }
 
@@ -203,8 +209,10 @@ const stamp$2 = stampit()
    * @param {string|date} [params.at] when given, get the version at the given time
    * @param {array} [params.id] an array of entry ids (strings)
    * @param {array} [params.alias] an array of entry aliases (strings)
-   * @param {string} [params.typeId] only return entries matching this type id
-   * @param {string} [params.typeAlias] only return entries matching this typeAlias
+   * @param {string|array} [params.typeId] only return entries of the given type id(s).
+   *                                       It can be passed as a single-value string `'type1'`,
+   *                                       a CSV string `'type1,type2'` or an array of strings `['type1', 'type2']`
+   * @param {string} [params.typeAlias] only return entries whose entry type has this alias
    * @param {number|string} [params.size] limit to that many results per page (limits as per AppGrid API, currently 1 to 50, default 20)
    * @param {number|string} [params.offset] offset the result by that many pages
    * @return {promise}  a promise of an array of entries (objects)

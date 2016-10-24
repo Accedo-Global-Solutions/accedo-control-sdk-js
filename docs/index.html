@@ -901,16 +901,23 @@ Code examples can be found in the github repository.</p>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.typeId</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>]</code>
+                  <td class='break-word'><span class='code bold'>params.typeId</span> <code class='quiet'>[(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)]</code>
                   </td>
-                  <td class='break-word'><span>only return entries matching this type id
+                  <td class='break-word'><span>only return entries of the given type id(s).
+It can be passed as a single-value string 
+<code>'type1'</code>
+,
+a CSV string 
+<code>'type1,type2'</code>
+ or an array of strings 
+<code>['type1', 'type2']</code>
 </span></td>
                 </tr>
               
                 <tr>
                   <td class='break-word'><span class='code bold'>params.typeAlias</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>]</code>
                   </td>
-                  <td class='break-word'><span>only return entries matching this typeAlias
+                  <td class='break-word'><span>only return entries whose entry type has this alias
 </span></td>
                 </tr>
               
