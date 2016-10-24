@@ -169,12 +169,18 @@ var sessionStamp = stampit()
 });
 
 function getPathWithQs(path, params = {}) {
-  const { id, typeId, alias, preview, at, offset, size } = params;
+  const { id, typeId, alias, typeAlias, preview, at, offset, size } = params;
   const qsParams = {};
   // The id array must be turned into CSV
-  if (id && id.length) { qsParams.id = `${id.join(',')}`; }
+  if (id && id.length) { qsParams.id = id.join(','); }
   // The alias array must be turned into CSV
-  if (alias && alias.length) { qsParams.alias = `${alias.join(',')}`; }
+  if (alias && alias.length) { qsParams.alias = alias.join(','); }
+  // typeId must be turned into CSV if it is an array, but it could be a string too
+  if (typeId && typeId.length) {
+    qsParams.typeId = (typeof typeId === 'string') ?
+      typeId :
+      typeId.join(',');
+  }
   // preview is only useful when true
   if (preview) { qsParams.preview = true; }
   // at is either a string, or a method with toISOString (like a Date) that we use for formatting
@@ -184,7 +190,7 @@ function getPathWithQs(path, params = {}) {
     qsParams.at = at.toISOString();
   }
   // Add curated and non-curated params
-  const queryString = qs.stringify(Object.assign({}, qsParams, { typeId, offset, size }));
+  const queryString = qs.stringify(Object.assign({}, qsParams, { typeAlias, offset, size }));
   return `${path}?${queryString}`;
 }
 
@@ -193,17 +199,20 @@ function request(path, params) {
   return this.withSessionHandling(() => grab(pathWithQs, this.props.config));
 }
 
-const stamp$1 = stampit()
+const stamp$2 = stampit()
 .methods({
   /**
    * Get all the content entries, based on the given parameters.
-   * **DO NOT** use several of id, alias and typeId at the same time - behaviour would be ungaranteed.
+   * **DO NOT** use several of id, alias, typeId and typeAlias at the same time - behaviour would be ungaranteed.
    * @param {object} [params] a parameters object
    * @param {boolean} [params.preview] when true, get the preview version
    * @param {string|date} [params.at] when given, get the version at the given time
    * @param {array} [params.id] an array of entry ids (strings)
    * @param {array} [params.alias] an array of entry aliases (strings)
-   * @param {string} [params.typeId] only return entries matching this type id
+   * @param {string|array} [params.typeId] only return entries of the given type id(s).
+   *                                       It can be passed as a single-value string `'type1'`,
+   *                                       a CSV string `'type1,type2'` or an array of strings `['type1', 'type2']`
+   * @param {string} [params.typeAlias] only return entries whose entry type has this alias
    * @param {number|string} [params.size] limit to that many results per page (limits as per AppGrid API, currently 1 to 50, default 20)
    * @param {number|string} [params.offset] offset the result by that many pages
    * @return {promise}  a promise of an array of entries (objects)
@@ -239,7 +248,7 @@ const stamp$1 = stampit()
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-const stamp$2 = stampit()
+const stamp$3 = stampit()
 .methods({
   /**
    * Get the current application status
@@ -252,7 +261,7 @@ const stamp$2 = stampit()
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-const stamp$3 = stampit()
+const stamp$4 = stampit()
 .methods({
   /**
    * Lists all the assets.
@@ -281,7 +290,7 @@ function sendUsageEvent(eventType, retentionTime) {
   return this.withSessionHandling(() => post('/event/log', this.props.config, payload));
 }
 
-const stamp$4 = stampit()
+const stamp$5 = stampit()
 .methods({
   /**
    * Send a usage START event
@@ -310,7 +319,7 @@ const ERROR = 'error';
 
 const LOG_LEVELS = [DEBUG, INFO, WARN, ERROR];
 
-const getConcatenatedCode = (facilityCode = 0, errorCode = 0) =>
+const getConcatenatedCode = (facilityCode = '0', errorCode = '0') =>
   parseInt(`${facilityCode}${errorCode}`, 10);
 
 const getLogMessage = (message, metadata) =>
@@ -319,19 +328,17 @@ const getLogMessage = (message, metadata) =>
 const getLogEvent = (details = {}, metadata) => {
   const message = getLogMessage(details.message, metadata);
   const code = getConcatenatedCode(details.facilityCode, details.errorCode);
-  const dimensions = {
-    dim1: details.dim1,
-    dim2: details.dim2,
-    dim3: details.dim3,
-    dim4: details.dim4
-  };
   return {
     code,
     message,
-    dimensions
+    dim1: details.dim1,
+    dim2: details.dim2,
+    dim3: details.dim3,
+    dim4: details.dim4,
   };
 };
 
+// DEPRECATED, please do not rely on this. Will be removed in version 3
 const getCurrentTimeOfDayDimValue = () => {
   const hour = new Date().getHours();
   // NOTE: These strings are expected by AppGrid
@@ -359,7 +366,11 @@ function postLog(level, log) {
   return this.withSessionHandling(() => post(`/application/log/${level}`, this.props.config, log));
 }
 
-const stamp$5 = stampit()
+function postLogs(logs) {
+  return this.withSessionHandling(() => post('/application/logs', this.props.config, logs));
+}
+
+const stamp$6 = stampit()
 .methods({
   /**
    * Get the current log level
@@ -370,28 +381,54 @@ const stamp$5 = stampit()
   },
   /**
    * Send a log with the given level, details and extra metadata.
-   * @param {string} level the log level
+   * @param {'debug'|'info'|'warn'|'error'} level the log level
    * @param {object} details the log information
    * @param {string} details.message the log message
    * @param {string} details.facilityCode the facility code
-   * @param {errorCode} details.errorCode the error code
+   * @param {string} details.errorCode the error code
    * @param {string} details.dim1 the dimension 1 information
    * @param {string} details.dim2 the dimension 2 information
    * @param {string} details.dim3 the dimension 3 information
    * @param {string} details.dim4 the dimension 4 information
-   * @param {array} [metadata] an array of extra metadata (will go through JSON.stringify)
+   * @param {any} [metadata] extra metadata (will go through JSON.stringify).
+   *                         Can be passed as any number of trailing arguments.
    * @return {promise}  a promise of the success of the operation
    */
   sendLog(level, details, ...metadata) {
     if (!LOG_LEVELS.includes(level)) { return Promise.reject('Unsupported log level'); }
     const log = getLogEvent(details, metadata);
     return postLog.call(this, level, log);
+  },
+
+  /**
+   * Send batched logs, each with its own level, timestamp, details and extra metadata.
+   * @param {object[]} logs Log description objects
+   * @param {'debug'|'info'|'warn'|'error'} logs[].logType the log type
+   * @param {string|number} logs[].timestamp the timestamp for the log,
+   *                                           as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
+   *                                           or a POSIX millisecond number
+   * @param {string} logs[].message the log message
+   * @param {string} logs[].facilityCode the facility code
+   * @param {string} logs[].errorCode the error code
+   * @param {string} logs[].dim1 the dimension 1 information
+   * @param {string} logs[].dim2 the dimension 2 information
+   * @param {string} logs[].dim3 the dimension 3 information
+   * @param {string} logs[].dim4 the dimension 4 information
+   * @param {any} [logs[].metadata] extra metadata (will go through JSON.stringify).
+   * @return {promise}  a promise of the success of the operation
+   */
+  sendLogs(logs) {
+    const preparedLogs = logs.map(log => {
+      const { logType, timestamp } = log;
+      return Object.assign(getLogEvent(log, log.metadata), { logType, timestamp });
+    });
+    return postLogs.call(this, preparedLogs);
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-const stamp$6 = stampit()
+const stamp$7 = stampit()
 .methods({
   /**
    * Get all the enabled plugins
@@ -405,7 +442,7 @@ const stamp$6 = stampit()
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-const stamp$7 = stampit()
+const stamp$8 = stampit()
 .methods({
   /**
    * Get the profile information
@@ -423,7 +460,7 @@ function request$2(path) {
   return this.withSessionHandling(() => grab(path, this.props.config));
 }
 
-const stamp$8 = stampit()
+const stamp$9 = stampit()
 .methods({
   /**
    * Get all the metadata
@@ -481,7 +518,7 @@ function setUserDataByKey(scope, userName, key, data) {
   return requestPost.call(this, `/${scope}/${userName}/${key}`, data);
 }
 
-const stamp$9 = stampit()
+const stamp$10 = stampit()
 .methods({
   /**
    * Get all the application-scope data for a given user
@@ -569,7 +606,6 @@ const stamp$9 = stampit()
 // Simply compose all the stamps in one single stamp to give access to all methods
 const stamp = stampit().compose(
   sessionStamp,
-  stamp$1,
   stamp$2,
   stamp$3,
   stamp$4,
@@ -577,7 +613,8 @@ const stamp = stampit().compose(
   stamp$6,
   stamp$7,
   stamp$8,
-  stamp$9
+  stamp$9,
+  stamp$10
 );
 
 const cookieParser = require('cookie-parser')();
@@ -586,32 +623,39 @@ const SIXTY_YEARS_IN_MS = 2147483647000;
 const COOKIE_DEVICE_ID = 'ag_d';
 const COOKIE_SESSION_KEY = 'ag_s';
 
-// default functions for the cookie peristency strategy
-const defaultGetRequestInfo = (req) => ({ deviceId: req.cookies[COOKIE_DEVICE_ID], sessionKey: req.cookies[COOKIE_SESSION_KEY] });
+// default functions for the cookie persistency strategy (deviceId and sessionKey) and gid passed as a query param
+const defaultGetRequestInfo = (req) => ({
+  deviceId: req.cookies[COOKIE_DEVICE_ID],
+  sessionKey: req.cookies[COOKIE_SESSION_KEY],
+  gid: req.query.gid
+});
 const defaultOnDeviceIdGenerated = (id, res) => res.cookie(COOKIE_DEVICE_ID, id, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true });
 const defaultOnSessionKeyChanged = (key, res) => res.cookie(COOKIE_SESSION_KEY, key, { maxAge: SIXTY_YEARS_IN_MS, httpOnly: true });
 
 // See doc in index.js where this is used
-const factory = (appgrid) => (config) => {
+const factory$1 = (appgrid) => (config) => {
   const {
-    appKey,
     getRequestInfo = defaultGetRequestInfo,
     onDeviceIdGenerated = defaultOnDeviceIdGenerated,
     onSessionKeyChanged = defaultOnSessionKeyChanged,
-    log
   } = config;
   return (req, res, next) => cookieParser(req, res, () => {
-    const { deviceId, sessionKey } = getRequestInfo(req);
-    // res.locals is a good place to store response-scoped data
-    res.locals.appgridClient = appgrid({
-      appKey,
+    const { deviceId, sessionKey, gid } = getRequestInfo(req);
+    const clientOptions = {
       deviceId,
       sessionKey,
-      log,
       ip: req.ip,
       onDeviceIdGenerated: id => onDeviceIdGenerated(id, res),
       onSessionKeyChanged: key => onSessionKeyChanged(key, res)
-    });
+    };
+    // Add the gid if it was found by getRequestInfo, and not an empty string (otherwise, we will use the one passed in the config if any)
+    if (gid) {
+      clientOptions.gid = gid;
+    }
+    // Let anything given in config pass through as a client option as well
+    const client = appgrid(Object.assign({}, config, clientOptions));
+    // res.locals is a good place to store response-scoped data
+    res.locals.appgridClient = client;
     next();
   });
 };
@@ -695,8 +739,12 @@ const appgrid = (config) => {
 appgrid.generateUuid = () => uuidLib.v4();
 
 /**
+ * DEPRECATED - will be removed in version 3.
+ *
+ * This is application-specific, each app should have its own logic for such use of dimensions.
+ *
  * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
- * Useful for AppGrid log events.
+ * Useful for some specific AppGrid log events.
  *
  * This utility method is not used through an appgrid client instance, but available statically
  * @function
@@ -716,14 +764,16 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  *
  * Each instance is attached to the response object and available to the next express handlers as `res.locals.appgridClient`.
  *
+ * Note any extra argument provided in the config object will be passed onto the appgrid client factory during instanciation.
+ *
  * This utility method is not used through an appgrid client instance, but available statically
  * @function
  * @param  {object} config the configuration
  * @param  {string} config.appKey the application Key that will be used for all appgrid clients
- * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId and sessionKey properties.
+ * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId, sessionKey and gid properties.
  * @param  {function} [config.onDeviceIdGenerated] callback that receives the new deviceId (if one was not returned by getRequestInfo) and the response
  * @param  {function} [config.onSessionKeyChanged] callback that receives the new sessionKey (anytime a new one gets generated) and the response
- * @param  {function} [config.log] Logging function that will be passed onto the client instance
+ * @param  {any} [config.___] You can also pass any extra option accepted by the appgrid factory function (log, gid, ...)
  * @alias middleware.express
  * @return {function} a middleware function compatible with express
  * @example <caption>Using the default cookie strategy</caption>
@@ -746,18 +796,19 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
  *
  * @example <caption>Using custom headers to extract deviceId and sessionKey and to pass down any change</caption>
- * const appgrid = require('appgrid_next');
+ * const appgrid = require('appgrid');
  * const express = require('express');
  *
  * const PORT = 3000;
  * const HEADER_DEVICE_ID = 'X-AG-DEVICE-ID';
  * const HEADER_SESSION_KEY = 'X-AG-SESSION-KEY';
+ * const HEADER_GID = 'X-AG-GID';
  *
  * express()
  * .use(appgrid.middleware.express({
  *   appKey: '56ea6a370db1bf032c9df5cb',
- *   // extract deviceId and sessionKey from custom headers
- *   getRequestInfo: req => ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY)}),
+ *   // extract deviceId, sessionKey and gid from custom headers
+ *   getRequestInfo: req => ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY), gid: req.get(HEADER_GID) }),
  *   // pass down any change on the deviceId (the header won't be set if unchanged compared to the value in getRequestInfo)
  *   onDeviceIdGenerated: (id, res) => res.set(HEADER_DEVICE_ID, id),
  *   // pass down any change on the sessionKey (the header won't be set if unchanged compared to the value in getRequestInfo)
@@ -772,7 +823,7 @@ appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
  * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
  */
 appgrid.middleware = {
-  express: factory(appgrid)
+  express: factory$1(appgrid)
 };
 
 export default appgrid;

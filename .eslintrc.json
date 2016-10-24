@@ -31,6 +31,7 @@
     "indent": [1, 2],
     "radix": 0,
     "space-before-function-paren": 0,
+    "arrow-parens": 0,
     "import/no-unresolved": 2,
     "import/named": 2,
     "import/namespace": 2,

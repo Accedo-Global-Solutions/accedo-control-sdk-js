@@ -30,6 +30,18 @@ const logExampleHeader = (message) => {
   console.log(`\t\t ${chalk.yellow('Example:')} ${message}`);
 };
 
+// Function used for the 4th dimension of app logs that was preset for the application ID we use in this example
+const nightOrDay = () => {
+  const hour = new Date().getHours();
+  // NOTE: These strings are expected by AppGrid
+  switch (true) {
+  case (hour < 5 || hour > 17):
+    return 'night';
+  default:
+    return 'day';
+  }
+};
+
 const exampleAppGridLogging = () => {
   const getLogEventOptions = (message, facilityCode) => { // NOTE: This is simply a convenience/helper method for building a logEvent object.
     const networkErrorCode = '002'; // NOTE: The ErrorCode used must exist within your AppGrid Application's configuration.
@@ -43,10 +55,10 @@ const exampleAppGridLogging = () => {
       dim1: middlewareSourceCode,
       dim2: noneViewName,
       dim3: deviceType,
-      dim4: appgrid.getCurrentTimeOfDayDimValue()
+      dim4: nightOrDay()
     };
   };
-  const logFacilityCode = 13;
+  const logFacilityCode = '13';
   logExampleCategoryHeader('AppGrid Logging Examples');
 
   const getLogLevel = () => {
@@ -57,18 +69,6 @@ const exampleAppGridLogging = () => {
       })
       .catch((error) => {
         logError('Oops! There was an error while requesting the current LogLevel from AppGrid!', error);
-      });
-  };
-
-  const sendInfoLogMessage = () => {
-    logExampleHeader('Sending an info log message to AppGrid');
-    const exampleInfoEventOptions = getLogEventOptions('This is an info log entry!', logFacilityCode);
-    return client.sendLog('info', exampleInfoEventOptions)
-      .then(() => {
-        console.log('\t\t Successfully sent an info log to AppGrid');
-      })
-      .catch((error) => {
-        logError('Oops! There was an error while sending an info log to AppGrid!', error);
       });
   };
 
@@ -85,9 +85,24 @@ const exampleAppGridLogging = () => {
       });
   };
 
+  const sendBatchedLogMessages = () => {
+    logExampleHeader('Sending two batched info log messages to AppGrid');
+    const logs = [
+      Object.assign({ timestamp: Date.now() - 1000, logType: 'warn' }, getLogEventOptions('This is a warning, the first of two batched log entries!', logFacilityCode)),
+      Object.assign({ timestamp: Date.now(), logType: 'info' }, getLogEventOptions('This is an info, the second of two batched log entries!', logFacilityCode))
+    ];
+    return client.sendLogs(logs)
+      .then(() => {
+        console.log('\t\t Successfully sent batched logs to AppGrid');
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while sending batched logs to AppGrid!', error);
+      });
+  };
+
   return getLogLevel()
-    .then(sendInfoLogMessage)
     .then(sendInfoLogMessageWithMetadata)
+    .then(sendBatchedLogMessages)
     .then(() => logExampleCategoryHeader('End AppGrid Logging Examples'));
 };
 

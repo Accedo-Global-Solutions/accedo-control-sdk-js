@@ -11,7 +11,8 @@ const paginationOptions = {
 describe('Entries API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    deviceId: 'gregTestingSDK'
+    deviceId: 'gregTestingSDK',
+    // log(...args) { console.log(...args); },
   });
 
   it('The API should exist and contain the expected functions', () => {
@@ -71,13 +72,40 @@ describe('Entries API Tests', () => {
       });
   });
 
-  it('"getEntries" with the alias param should return multiple entries', () => {
+  it.only('"getEntries" with the typeId param for multiple typeIds should return the same entries when written as CSV or an array of strings', () => {
+    const paramsCSV = Object.assign({}, paginationOptions, {
+      typeId: '56ea7bca935f75032a2fd42c,56ea7bca935f75032a2fd42c',
+    });
+    const paramsArray = Object.assign({}, paginationOptions, {
+      typeId: ['56ea7bca935f75032a2fd42c', '56ea7bca935f75032a2fd42c'],
+    });
+    return Promise.all([client.getEntries(paramsCSV), client.getEntries(paramsArray)])
+      .then(([{ entries: entriesCSV }, { entries: entriesArray }]) => {
+        entriesCSV.length.should.equal(entriesArray.length);
+      });
+  });
+
+  it('"getEntries" with the alias param should return multiple entries, all with the given alias', () => {
+    const aliases = ['greg', 'erik'];
     const params = Object.assign({}, paginationOptions, {
-      alias: ['greg', 'erik']
+      alias: aliases
     });
     return client.getEntries(params)
       .then(({ entries }) => {
         entries.length.should.be.greaterThan(0);
+        entries.some(e => !aliases.includes(e._meta.entryAlias)).should.equal(false);
+      });
+  });
+
+  it('"getEntries" with the typeAlias param should return multiple entries, all with the given typeAlias', () => {
+    const typeAlias = 'exampleentrytype';
+    const params = Object.assign({}, paginationOptions, {
+      typeAlias,
+    });
+    return client.getEntries(params)
+      .then(({ entries }) => {
+        entries.length.should.be.greaterThan(0);
+        entries.some(e => typeAlias !== e._meta.typeAlias).should.equal(false);
       });
   });
 });

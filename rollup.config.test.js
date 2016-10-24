@@ -1,6 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 import buble from 'rollup-plugin-buble';
-import multiEntry from 'rollup-plugin-multi-entry';
+import multiEntry from 'rollup-plugin-multi-entry'; // eslint-disable-line import/extensions
 
 export default {
   entry: 'test/**/*.js',
