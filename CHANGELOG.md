@@ -5,6 +5,12 @@
 - MAJOR: streamline the API by accepting only an array for the typeId parameter in getEntry ?
 - MINOR: basic robot detection with a default deviceId for them all ?
 
+# Browser initial release, based on the Node SDK 2.3.0
+
+- Removed express-related code
+- Removed deprecated getCurrentTimeOfDayDimValue method
+- Using yarn lockfile rather than npm shrinkwrap
+
 # Unreleased
 
 - PATCH: only one unit test was run due to a mistake in 2.3.0

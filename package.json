@@ -1,7 +1,7 @@
 {
-  "name": "appgrid",
-  "version": "2.3.0",
-  "description": "The Official AppGrid SDK for Node.js",
+  "name": "appgrid-browser",
+  "version": "0.1.0",
+  "description": "The Official vanilla-JS AppGrid SDK for browsers",
   "main": "dist/bundle.umd.js",
   "jsnext:main": "dist/bundle.es6.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "appgrid",
     "accedo",
     "sdk",
-    "node"
+    "es6"
   ],
   "author": "Accedo, AB",
   "contributors": [
@@ -58,7 +58,6 @@
     "source-map-support": "~0.4.5"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.3",
     "isomorphic-fetch": "^2.2.1",
     "qs": "~6.3.0",
     "stampit": "^2.1.2",

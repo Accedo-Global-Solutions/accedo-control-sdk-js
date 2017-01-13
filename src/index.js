@@ -1,7 +1,5 @@
 import uuidLib from 'uuid';
 import stamp from './stamps/appgridClient';
-import { getCurrentTimeOfDayDimValue } from './stamps/appLog';
-import expressMwFactory from './express';
 
 const noop = () => {};
 
@@ -80,93 +78,5 @@ const appgrid = (config) => {
  * @return {string} a new UUID
  */
 appgrid.generateUuid = () => uuidLib.v4();
-
-/**
- * DEPRECATED - will be removed in version 3.
- *
- * This is application-specific, each app should have its own logic for such use of dimensions.
- *
- * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
- * Useful for some specific AppGrid log events.
- *
- * This utility method is not used through an appgrid client instance, but available statically
- * @function
- * @return {string} a range of hours
- */
-appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
-
-/**
- * An express-compatible middleware.
- *
- * This uses the cookie-parser middleware, so you can also take advantage of the `req.cookies` array.
- *
- * This middleware takes care of creating an AppGrid client instance for each request automatically.
- * By default, it will also reuse and persist the deviceId and sessionKey using the request and response cookies.
- * That strategy can be changed by passing the optional callbacks,
- * so you could make use of headers or request parameters for instance.
- *
- * Each instance is attached to the response object and available to the next express handlers as `res.locals.appgridClient`.
- *
- * Note any extra argument provided in the config object will be passed onto the appgrid client factory during instanciation.
- *
- * This utility method is not used through an appgrid client instance, but available statically
- * @function
- * @param  {object} config the configuration
- * @param  {string} config.appKey the application Key that will be used for all appgrid clients
- * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId, sessionKey and gid properties.
- * @param  {function} [config.onDeviceIdGenerated] callback that receives the new deviceId (if one was not returned by getRequestInfo) and the response
- * @param  {function} [config.onSessionKeyChanged] callback that receives the new sessionKey (anytime a new one gets generated) and the response
- * @param  {any} [config.___] You can also pass any extra option accepted by the appgrid factory function (log, gid, ...)
- * @alias middleware.express
- * @return {function} a middleware function compatible with express
- * @example <caption>Using the default cookie strategy</caption>
- * const appgrid = require('appgrid');
- * const express = require('express');
- *
- * const PORT = 3000;
- *
- * express()
- * // handle proxy servers if needed, to pass the user's IP instead of the proxy's.
- * .set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
- * // place the appgrid middleware before your request handlers
- * .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
- * .get('/test', (req, res) => {
- *    // access your client instance, it's already linked to the deviceId and sessionKey via cookies
- *    res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
- *    .then(entry => res.send(entry))
- *    .catch(err => res.status(500).send('Failed to get the result'));
- * })
- * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
- *
- * @example <caption>Using custom headers to extract deviceId and sessionKey and to pass down any change</caption>
- * const appgrid = require('appgrid');
- * const express = require('express');
- *
- * const PORT = 3000;
- * const HEADER_DEVICE_ID = 'X-AG-DEVICE-ID';
- * const HEADER_SESSION_KEY = 'X-AG-SESSION-KEY';
- * const HEADER_GID = 'X-AG-GID';
- *
- * express()
- * .use(appgrid.middleware.express({
- *   appKey: '56ea6a370db1bf032c9df5cb',
- *   // extract deviceId, sessionKey and gid from custom headers
- *   getRequestInfo: req => ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY), gid: req.get(HEADER_GID) }),
- *   // pass down any change on the deviceId (the header won't be set if unchanged compared to the value in getRequestInfo)
- *   onDeviceIdGenerated: (id, res) => res.set(HEADER_DEVICE_ID, id),
- *   // pass down any change on the sessionKey (the header won't be set if unchanged compared to the value in getRequestInfo)
- *   onSessionKeyChanged: (key, res) => res.set(HEADER_SESSION_KEY, key),
- *   log(...args) { console.log(...args) }
- * }))
- * .get('/test', (req, res) => {
- *   res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
- *   .then(entry => res.send(entry))
- *   .catch(err => res.status(500).send('Failed to get the result'));
- * })
- * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
- */
-appgrid.middleware = {
-  express: expressMwFactory(appgrid)
-};
 
 export default appgrid;
