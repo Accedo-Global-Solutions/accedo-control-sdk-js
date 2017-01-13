@@ -72,7 +72,7 @@ describe('Entries API Tests', () => {
       });
   });
 
-  it.only('"getEntries" with the typeId param for multiple typeIds should return the same entries when written as CSV or an array of strings', () => {
+  it('"getEntries" with the typeId param for multiple typeIds should return the same entries when written as CSV or an array of strings', () => {
     const paramsCSV = Object.assign({}, paginationOptions, {
       typeId: '56ea7bca935f75032a2fd42c,56ea7bca935f75032a2fd42c',
     });

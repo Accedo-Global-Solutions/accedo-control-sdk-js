@@ -2,7 +2,12 @@
 
 - MAJOR: remove the deprecated static method getCurrentTimeOfDayDimValue
 - MAJOR: provide the ES6 package as the default, and the ES5 one as a legacy package at appgrid/legacy
+- MAJOR: streamline the API by accepting only an array for the typeId parameter in getEntry ?
 - MINOR: basic robot detection with a default deviceId for them all ?
+
+# Unreleased
+
+- PATCH: only one unit test was run due to a mistake in 2.3.0
 
 # 2.3.0
 
