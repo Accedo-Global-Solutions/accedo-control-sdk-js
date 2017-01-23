@@ -13,6 +13,7 @@
 
 # Unreleased
 
+- PATCH: there's now a browser build
 - PATCH: only one unit test was run due to a mistake in 2.3.0
 
 # 2.3.0
