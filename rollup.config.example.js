@@ -8,5 +8,6 @@ export default {
   format: 'cjs',
   intro: 'require("source-map-support").install();',
   dest: './build/example.js',
-  sourceMap: true
+  sourceMap: true,
+  external: ['uuid', 'stampit', 'qs', 'isomorphic-fetch', 'chalk'],
 };

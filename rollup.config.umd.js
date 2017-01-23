@@ -7,5 +7,6 @@ export default {
   dest: 'dist/bundle.umd.js',
   moduleName: 'appgrid',
   sourceMap: false,
-  plugins: [buble()]
+  plugins: [buble()],
+  external: ['uuid', 'stampit', 'qs', 'isomorphic-fetch'],
 };
