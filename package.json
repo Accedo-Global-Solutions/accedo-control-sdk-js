@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "The Official vanilla-JS AppGrid SDK for browsers",
   "main": "dist/bundle.umd.js",
-  "jsnext:main": "dist/bundle.es6.js",
+  "module": "dist/bundle.es6.js",
   "scripts": {
     "clean": "rimraf dist/*",
     "prebuild": "npm run clean",
