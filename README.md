@@ -173,7 +173,7 @@ client.getAssetById(idToDownload)
 ## SDK development
 
   * Clone/fork this repo
-  * Run `npm install`
+  * Run `yarn` (you should have yarn installed globally)
   * Develop !
   * Before pushing, remember to:
     - generate updated UMD and ES6 bundles (`npm run build`)
