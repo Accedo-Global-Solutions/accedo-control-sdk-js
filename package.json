@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Accedo-Products/appgrid-sdk-node.git"
+    "url": "git@github.com:Accedo-Products/appgrid-sdk-js.git"
   },
   "keywords": [
     "appgrid",
