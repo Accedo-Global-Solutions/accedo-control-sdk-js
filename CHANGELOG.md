@@ -1,18 +1,14 @@
 # TODO
 
-- MAJOR: remove the deprecated static method getCurrentTimeOfDayDimValue
 - MAJOR: provide the ES6 package as the default, and the ES5 one as a legacy package at appgrid/legacy
 - MAJOR: streamline the API by accepting only an array for the typeId parameter in getEntry ?
 - MINOR: basic robot detection with a default deviceId for them all ?
 
-# Browser initial release, based on the Node SDK 2.3.0
+# Unreleased 3.0.0 (fist release targetting browsers as well as Node)
 
-- Removed express-related code
-- Removed deprecated getCurrentTimeOfDayDimValue method
-- Using yarn lockfile rather than npm shrinkwrap
-
-# Unreleased
-
+- MAJOR: move express-related code to [a separate repo](https://github.com/Accedo-Products/appgrid-sdk-express)
+- MAJOR: remove deprecated `getCurrentTimeOfDayDimValue` method
+- PATCH: use yarn lockfile rather than npm shrinkwrap
 - PATCH: there's now a browser build
 - PATCH: only one unit test was run due to a mistake in 2.3.0
 

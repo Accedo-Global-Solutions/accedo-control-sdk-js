@@ -1,7 +1,7 @@
 {
-  "name": "appgrid-browser",
-  "version": "0.1.0",
-  "description": "The Official vanilla-JS AppGrid SDK for browsers",
+  "name": "appgrid",
+  "version": "2.3.0",
+  "description": "The Official vanilla-JS AppGrid SDK for Node.js and browsers",
   "main": "dist/bundle.umd.js",
   "browser": "dist/bundle.browser.js",
   "module": "dist/bundle.es6.js",
