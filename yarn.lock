@@ -170,7 +170,7 @@ aws4@^1.2.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.5.0.tgz#0a29ffb79c31c9e712eeb087e8e7a64b4a56d755"
 
-babel-code-frame@^6.20.0:
+babel-code-frame@^6.16.0, babel-code-frame@^6.20.0:
   version "6.20.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.20.0.tgz#b968f839090f9a8bc6d41938fb96cb84f7387b26"
   dependencies:
@@ -1263,14 +1263,7 @@ disparity@^2.0.0:
     ansi-styles "^2.0.1"
     diff "^1.3.2"
 
-doctrine@1.3.x:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.3.0.tgz#13e75682b55518424276f7c173783456ef913d26"
-  dependencies:
-    esutils "^2.0.2"
-    isarray "^1.0.0"
-
-doctrine@^1.1.0, doctrine@^1.2.2:
+doctrine@1.5.0, doctrine@^1.1.0, doctrine@^1.2.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
   dependencies:
@@ -1448,7 +1441,7 @@ eslint-config-airbnb-base@~9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-9.0.0.tgz#03e135562aa6c4d0d9f1bbda96d901326bf58ad2"
 
-eslint-import-resolver-node@^0.2.0, eslint-import-resolver-node@^0.2.2:
+eslint-import-resolver-node@^0.2.0:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.2.3.tgz#5add8106e8c928db2cba232bcd9efa846e3da16c"
   dependencies:
@@ -1456,32 +1449,40 @@ eslint-import-resolver-node@^0.2.0, eslint-import-resolver-node@^0.2.2:
     object-assign "^4.0.1"
     resolve "^1.1.6"
 
-eslint-module-utils@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-module-utils/-/eslint-module-utils-1.0.0.tgz#c4a57fd3a53efd8426cc2d5550aadab9bbd05fd0"
+eslint-import-resolver-node@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.0.tgz#4c8c78bd64fb7f7d491261937a64fe5d7eabc41a"
+  dependencies:
+    debug "^2.2.0"
+    resolve "^1.2.0"
+
+eslint-module-utils@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-module-utils/-/eslint-module-utils-2.0.0.tgz#a6f8c21d901358759cdc35dbac1982ae1ee58bce"
   dependencies:
     debug "2.2.0"
     pkg-dir "^1.0.0"
 
-eslint-plugin-import@~2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.0.1.tgz#dcfe96357d476b3f822570d42c29bec66f5d9c5c"
+eslint-plugin-import@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.2.0.tgz#72ba306fad305d67c4816348a4699a4229ac8b4e"
   dependencies:
     builtin-modules "^1.1.1"
     contains-path "^0.1.0"
     debug "^2.2.0"
-    doctrine "1.3.x"
+    doctrine "1.5.0"
     eslint-import-resolver-node "^0.2.0"
-    eslint-module-utils "^1.0.0"
+    eslint-module-utils "^2.0.0"
     has "^1.0.1"
     lodash.cond "^4.3.0"
     minimatch "^3.0.3"
     pkg-up "^1.0.0"
 
-eslint@~3.8.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.8.1.tgz#7d02db44cd5aaf4fa7aa489e1f083baa454342ba"
+eslint@^3.14.0:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.14.0.tgz#2c617e5f782fda5cbee5bc8be7ef5053af8e63a3"
   dependencies:
+    babel-code-frame "^6.16.0"
     chalk "^1.1.3"
     concat-stream "^1.4.6"
     debug "^2.1.1"
@@ -1492,8 +1493,8 @@ eslint@~3.8.1:
     esutils "^2.0.2"
     file-entry-cache "^2.0.0"
     glob "^7.0.3"
-    globals "^9.2.0"
-    ignore "^3.1.5"
+    globals "^9.14.0"
+    ignore "^3.2.0"
     imurmurhash "^0.1.4"
     inquirer "^0.12.0"
     is-my-json-valid "^2.10.0"
@@ -1509,9 +1510,9 @@ eslint@~3.8.1:
     pluralize "^1.2.1"
     progress "^1.1.8"
     require-uncached "^1.0.2"
-    shelljs "^0.6.0"
+    shelljs "^0.7.5"
     strip-bom "^3.0.0"
-    strip-json-comments "~1.0.1"
+    strip-json-comments "~2.0.1"
     table "^3.7.8"
     text-table "~0.2.0"
     user-home "^2.0.0"
@@ -1881,7 +1882,7 @@ globals-docs@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/globals-docs/-/globals-docs-2.2.0.tgz#28d9e2937cb9a6bce7e786510a5d4e337d61d3ef"
 
-globals@^9.0.0, globals@^9.2.0:
+globals@^9.0.0, globals@^9.14.0:
   version "9.14.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-9.14.0.tgz#8859936af0038741263053b39d0e76ca241e4034"
 
@@ -2021,7 +2022,7 @@ iconv-lite@~0.4.13:
   version "0.4.15"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.15.tgz#fe265a218ac6a57cfe854927e9d04c19825eddeb"
 
-ignore@^3.1.5:
+ignore@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.2.0.tgz#8d88f03c3002a0ac52114db25d2c673b0bf1e435"
 
@@ -2065,6 +2066,10 @@ inquirer@^0.12.0:
     string-width "^1.0.1"
     strip-ansi "^3.0.0"
     through "^2.3.6"
+
+interpret@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.1.tgz#d579fb7f693b858004947af39fa0db49f795602c"
 
 invariant@^2.2.0:
   version "2.2.2"
@@ -2624,9 +2629,9 @@ mkdirp@0.5.1, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@~3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.1.2.tgz#51f93b432bf7e1b175ffc22883ccd0be32dba6b5"
+mocha@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.2.0.tgz#7dc4f45e5088075171a68896814e6ae9eb7a85e3"
   dependencies:
     browser-stdout "1.3.0"
     commander "2.9.0"
@@ -3080,6 +3085,12 @@ readline2@^1.0.1:
     is-fullwidth-code-point "^1.0.0"
     mute-stream "0.0.5"
 
+rechoir@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
+  dependencies:
+    resolve "^1.1.6"
+
 regenerate@^1.2.1:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
@@ -3264,7 +3275,7 @@ resolve@1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
-resolve@^1.1.3, resolve@^1.1.6, resolve@^1.1.7:
+resolve@^1.1.3, resolve@^1.1.6, resolve@^1.1.7, resolve@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.2.0.tgz#9589c3f2f6149d1417a40becc1663db6ec6bc26c"
 
@@ -3369,9 +3380,13 @@ set-immediate-shim@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz#4b2b1b27eb808a9f8dcc481a58e5e56f599f3f61"
 
-shelljs@^0.6.0:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.6.1.tgz#ec6211bed1920442088fe0f70b2837232ed2c8a8"
+shelljs@^0.7.5:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.6.tgz#379cccfb56b91c8601e4793356eb5382924de9ad"
+  dependencies:
+    glob "^7.0.0"
+    interpret "^1.0.0"
+    rechoir "^0.6.2"
 
 shellsubstitute@^1.1.0:
   version "1.2.0"
@@ -3404,9 +3419,9 @@ sntp@1.x.x:
   dependencies:
     hoek "2.x.x"
 
-source-map-support@^0.4.0, source-map-support@^0.4.2, source-map-support@~0.4.5:
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.8.tgz#4871918d8a3af07289182e974e32844327b2e98b"
+source-map-support@^0.4.0, source-map-support@^0.4.10, source-map-support@^0.4.2:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.10.tgz#d7b19038040a14c0837a18e630a196453952b378"
   dependencies:
     source-map "^0.5.3"
 
@@ -3531,11 +3546,11 @@ strip-bom@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/strip-bom/-/strip-bom-3.0.0.tgz#2334c18e9c759f7bdd56fdef7e9ae3d588e68ed3"
 
-strip-json-comments@^2.0.0:
+strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-strip-json-comments@~1.0.1, strip-json-comments@~1.0.4:
+strip-json-comments@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-1.0.4.tgz#1e15fbcac97d3ee99bf2d73b4c656b082bbafb91"
 
