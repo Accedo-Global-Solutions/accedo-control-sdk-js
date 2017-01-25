@@ -7,7 +7,7 @@ import uglify from 'rollup-plugin-uglify'; // eslint-disable-line import/extensi
 export default {
   entry: 'src/index.js',
   format: 'umd',
-  dest: 'dist/bundle.browser.js',
+  dest: 'dist/appgrid.umd.min.js',
   moduleName: 'appgrid',
   sourceMap: false,
   plugins: [
@@ -19,7 +19,7 @@ export default {
       // specifies alternative files to load for people bundling
       // for the browser. If that's you, use this option, otherwise
       // pkg.browser will be ignored
-      browser: true,  // Default: false
+      browser: true,
     }),
     commonjs(),
     buble(),

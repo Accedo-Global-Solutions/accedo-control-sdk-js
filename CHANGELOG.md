@@ -4,12 +4,23 @@
 - MAJOR: streamline the API by accepting only an array for the typeId parameter in getEntry ?
 - MINOR: basic robot detection with a default deviceId for them all ?
 
-# Unreleased 3.0.0 (fist release targetting browsers as well as Node)
+# Unreleased 3.0.0
 
+ :sparkles: This is the first release targeting browsers as well as Node !
+
+ For browsers you can use a module bundler as you probably already do (Webpack, Rollup, Browserify...), then it's up to you to also include a compilation step (Babel, etc); or a good old script tag pointing to the file  in `dist/appgrid.min.js` (that file is minified and compiled to ES5).
+
+ Also, note we used to have an ES6 (with ES6 module) and an UMD (with CommonJS) build.
+ The ES6 build is intended for intended for use by module bundlers (like Webpack) or Node.js, and uses CommonJS.
+ The UMD build is intended for browsers if you do not use a module bundler (using a script tag or tools like RequireJS), it includes dependencies and is minified.
+
+ Providing an ES6 module (with the new import/export syntax) in another bundle made little sense as there is just one default export that you should use.
+
+- MAJOR: different bundles are now provided, as noted above.
 - MAJOR: move express-related code to [a separate repo](https://github.com/Accedo-Products/appgrid-sdk-express)
 - MAJOR: remove deprecated `getCurrentTimeOfDayDimValue` method
 - PATCH: use yarn lockfile rather than npm shrinkwrap
-- PATCH: there's now a browser build
+- PATCH: compatible with most browsers (down to ES5 via Webpack or the UMD build)
 - PATCH: only one unit test was run due to a mistake in 2.3.0
 
 # 2.3.0

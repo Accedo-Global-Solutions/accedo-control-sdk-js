@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 // NOTE: this would normally be: import appgrid from 'appgrid';
-import appgrid from './dist/bundle.es6';
+const appgrid = require('../dist/appgrid.js');
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
