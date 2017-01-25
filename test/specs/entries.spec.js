@@ -63,7 +63,7 @@ describe('Entries API Tests', () => {
 
   it('"getEntries" with the typeId param should return multiple entries', () => {
     const params = Object.assign({}, paginationOptions, {
-      typeId: '56ea7bca935f75032a2fd42c',
+      typeId: ['56ea7bca935f75032a2fd42c'],
       at: new Date()
     });
     return client.getEntries(params)
@@ -72,16 +72,13 @@ describe('Entries API Tests', () => {
       });
   });
 
-  it('"getEntries" with the typeId param for multiple typeIds should return the same entries when written as CSV or an array of strings', () => {
-    const paramsCSV = Object.assign({}, paginationOptions, {
-      typeId: '56ea7bca935f75032a2fd42c,56ea7bca935f75032a2fd42c',
-    });
+  it('"getEntries" with the typeId param for multiple typeIds should perform a request too', () => {
     const paramsArray = Object.assign({}, paginationOptions, {
       typeId: ['56ea7bca935f75032a2fd42c', '56ea7bca935f75032a2fd42c'],
     });
-    return Promise.all([client.getEntries(paramsCSV), client.getEntries(paramsArray)])
-      .then(([{ entries: entriesCSV }, { entries: entriesArray }]) => {
-        entriesCSV.length.should.equal(entriesArray.length);
+    return client.getEntries(paramsArray)
+      .then(({ entries }) => {
+        entries.length.should.be.greaterThan(0);
       });
   });
 
