@@ -1,7 +1,8 @@
 {
   "env": {
     "mocha": true,
-    "browser": true
+    "browser": true,
+    "node": true
   },
   "plugins": [ "import" ],
   "extends": "airbnb-base",
