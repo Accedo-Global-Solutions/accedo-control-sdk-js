@@ -2,6 +2,10 @@
 
 - MINOR: basic robot detection with a default deviceId for them all ?
 
+# 3.0.1
+
+- PATCH: update the builds and doc, as v3.0.0 was slightly outdated
+
 # 3.0.0
 
 - MAJOR: streamline the API by accepting only an array for the typeId parameter in getEntries
