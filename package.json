@@ -1,19 +1,18 @@
 {
   "name": "appgrid",
   "version": "2.3.0",
-  "description": "The Official AppGrid SDK for Node.js",
-  "main": "dist/bundle.umd.js",
-  "jsnext:main": "dist/bundle.es6.js",
+  "description": "The Official vanilla-JS AppGrid SDK for Node.js and browsers",
+  "main": "dist/appgrid.js",
   "scripts": {
     "clean": "rimraf dist/*",
     "prebuild": "npm run clean",
     "build": "npm run buildLib && npm run buildExample",
     "prebuildLib": "npm run lint",
-    "buildLib": "rollup -c rollup.config.umd.js && rollup -c rollup.config.es6.js",
+    "buildLib": "rollup -c rollup.config.node.js && rollup -c rollup.config.browser.js",
     "buildExample": "rollup -c rollup.config.example.js",
     "preexample": "npm run build",
     "example": "node build/example",
-    "lint": "eslint . --ext .js",
+    "lint": "eslint src/ --ext .js",
     "pretest": "rollup -c rollup.config.test.js",
     "test": "mocha --opts ./test/mocha.opts build/test-bundle.js",
     "doc": "documentation build src/index.js -c doc_config.yml --format html -o docs",
@@ -22,13 +21,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Accedo-Products/appgrid-sdk-node.git"
+    "url": "git@github.com:Accedo-Products/appgrid-sdk-js.git"
   },
   "keywords": [
     "appgrid",
     "accedo",
     "sdk",
-    "node"
+    "es6"
   ],
   "author": "Accedo, AB",
   "contributors": [
@@ -44,24 +43,26 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chalk": "^1.1.3",
-    "documentation": "~4.0.0-beta11",
-    "eslint": "~3.8.1",
-    "eslint-config-airbnb-base": "~9.0.0",
-    "eslint-import-resolver-node": "^0.2.2",
-    "eslint-plugin-import": "~2.0.1",
-    "mocha": "~3.1.2",
+    "documentation": "4.0.0-beta.18",
+    "eslint": "^3.14.0",
+    "eslint-config-airbnb-base": "^9.0.0",
+    "eslint-import-resolver-node": "^0.3.0",
+    "eslint-plugin-import": "^2.2.0",
+    "mocha": "^3.2.0",
     "rimraf": "^2.5.4",
-    "rollup": "~0.36.3",
-    "rollup-plugin-buble": "~0.14.0",
+    "rollup": "^0.41.4",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-multi-entry": "^2.0.1",
-    "sinon": "~1.17.6",
-    "source-map-support": "~0.4.5"
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "sinon": "^1.17.6",
+    "source-map-support": "^0.4.10"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.3",
     "isomorphic-fetch": "^2.2.1",
-    "qs": "~6.3.0",
+    "qs": "^6.3.0",
     "stampit": "^2.1.2",
-    "uuid": "~2.0.3"
+    "uuid": "^3.0.1"
   }
 }

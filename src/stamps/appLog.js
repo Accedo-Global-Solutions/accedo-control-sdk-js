@@ -28,26 +28,6 @@ const getLogEvent = (details = {}, metadata) => {
   };
 };
 
-// DEPRECATED, please do not rely on this. Will be removed in version 3
-export const getCurrentTimeOfDayDimValue = () => {
-  const hour = new Date().getHours();
-  // NOTE: These strings are expected by AppGrid
-  switch (true) {
-  case (hour >= 1 && hour < 5):
-    return '01-05';
-  case (hour >= 5 && hour < 9):
-    return '05-09';
-  case (hour >= 9 && hour < 13):
-    return '09-13';
-  case (hour >= 13 && hour < 17):
-    return '13-17';
-  case (hour >= 17 && hour < 21):
-    return '17-21';
-  default:
-    return '21-01';
-  }
-};
-
 function request(path) {
   return this.withSessionHandling(() => grab(path, this.props.config));
 }

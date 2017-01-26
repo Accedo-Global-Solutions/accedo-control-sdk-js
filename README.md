@@ -1,4 +1,4 @@
-# AppGrid SDK for Node.js [![npm](https://img.shields.io/npm/v/appgrid.svg?maxAge=3600)](https://www.npmjs.com/package/appgrid)
+# AppGrid SDK for Node.js and browsers [![npm](https://img.shields.io/npm/v/appgrid.svg?maxAge=3600)](https://www.npmjs.com/package/appgrid)
 
 ```
 *******************************************************************************
@@ -19,8 +19,8 @@
 ```
 
 ## Summary
-This is the official [Accedo AppGrid](https://www.accedo.tv/appgrid/) SDK for Node.js.
-While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a better integration with Node.js.
+This is the official [Accedo AppGrid](https://www.accedo.tv/appgrid/) SDK for Node.js and browsers.
+While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a smoother experience when coding in JS.
 It also encourages the use of best practices (for example: reusing the same sessionId for a client, but different clients for different devices).
 
 We follow [semantic versioning](http://semver.org/).
@@ -35,19 +35,12 @@ These features are provided by the manual creation of AppGrid client instances (
  - automatic session re-creation when the existing one has expired (lazy)
  - ensures only one session will be created at a time, even if a request triggers concurrent AppGrid calls
 
-An express-compatible middleware is included and adds those extras on top :
- - automatic creation of AppGrid client instances for each request, attached to the response object for further use
- - automatically passes the requester's IP onto AppGrid calls for analytics and geolocated services
- - automatic reuse of the deviceId through cookies (can be customized to use anything else based on requests)
- - automatic reuse of the sessionKey through cookies (can be customized to use anything else based on requests)
-
-Note when you use the middleware, you should also [configure Express to handle proxies correctly](http://expressjs.com/en/4x/api.html#trust.proxy.options.table) as we rely on the IP it gives us.
-
-For instance: `app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])`
+:information_source: _For Node, an [express-compatible middleware is also available as a separate package](https://github.com/Accedo-Products/appgrid-sdk-express).
+You should really consider using it if possible, as it makes things even easier and provides extra features._
 
 ## Documentation
 
-Refer to the [API docs for this SDK](https://accedo-products.github.io/appgrid-sdk-node/).
+Refer to the [API docs for this SDK](https://accedo-products.github.io/appgrid-sdk-js/).
 
 You may also want to refer to the [AppGrid Rest API documentation](http://docs.appgrid.apiary.io/) that this SDK uses behind the scenes. AppGrid-specific terminology is defined there.
 
@@ -67,31 +60,9 @@ import appgrid from 'appgrid'
 ## Examples
 Below are a few examples, refer to `examples-es6.js` for more of them that you can run yourself (clone this repo then execute `npm run example`).
 
-### Use the middleware to persist deviceId and sessionKey via cookies
-
-```js
-const appgrid = require('appgrid');
-const express = require('express');
-
-const PORT = 3000;
-
-express()
-// handle proxy servers if needed, to pass the user's IP instead of the proxy's.
-.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
-// place the appgrid middleware before your request handlers
-.use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
-.get('/test', (req, res) => {
-   // access your client instance, it's already linked to the deviceId and sessionKey via cookies
-   res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
-   .then(entry => res.send(entry))
-   .catch(err => res.status(500).send('Failed to get the result'));
-})
-.listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
-```
-
 ### Create an AppGrid client instance
 
-_Note: this is not needed if you use the middleware. You can access a client instance at `res.locals.appgridClient`._
+:point_right: _On Node, we recommend you use the [Express middleware](https://github.com/Accedo-Products/appgrid-sdk-express) instead, as it makes it easier and enforces some more best practices._
 
 An instance of an AppGrid client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
@@ -113,11 +84,11 @@ const client = factory({
 
 You should create a new client for every device that needs to access the AppGrid APIs.
 
-**DO NOT** reuse a single client, in your Node server, to relay requests from various consumers.
+:warning: **DO NOT** reuse a single client, in your Node server, to relay requests from various consumers.
 
 If you are triggering some AppGrid API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's deviceId (typically you would persist a consumer deviceId via the cookies, or as a request parameter in your server APIs - unless the device lets you use some unique ID like a MAC address).
 
-Note again, the middleware (described above) does that work for you, so it's best to use it whenever possible.
+:bulb: Note again, the middleware (see above) does that work for you, so it's best to use it whenever possible.
 
 ### Get a new AppGrid SessionId
 
@@ -173,7 +144,7 @@ client.getAssetById(idToDownload)
 ## SDK development
 
   * Clone/fork this repo
-  * Run `npm install`
+  * Run `yarn` (you should have yarn installed globally)
   * Develop !
   * Before pushing, remember to:
     - generate updated UMD and ES6 bundles (`npm run build`)
@@ -185,6 +156,7 @@ client.getAssetById(idToDownload)
 
 * [AppGrid homepage](http://appgrid.accedo.tv/)
 * [AppGrid knowledge base and API documentation](http://docs.appgrid.accedo.tv)
+* [The Express-compatible middleware](https://github.com/Accedo-Products/appgrid-sdk-express) that relies on this library.
 
 ## Unit Tests
 

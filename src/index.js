@@ -1,9 +1,11 @@
 import uuidLib from 'uuid';
 import stamp from './stamps/appgridClient';
-import { getCurrentTimeOfDayDimValue } from './stamps/appLog';
-import expressMwFactory from './express';
 
 const noop = () => {};
+
+const hasLocalStorage = (typeof localStorage !== 'undefined');
+const hasSessionStorage = (typeof sessionStorage !== 'undefined');
+const hasSomeWebStorage = hasLocalStorage || hasSessionStorage;
 
 /**
  * Check the parameters given are good enough to make api calls
@@ -54,7 +56,7 @@ const appgrid = (config) => {
   }
   // Generate a uuid if no deviceId was given
   if (!deviceId) {
-    deviceId = appgrid.generateUuid();
+    deviceId = uuidLib.v4();
     // trigger the callback
     onDeviceIdGenerated(deviceId);
   }
@@ -70,103 +72,80 @@ const appgrid = (config) => {
   });
 };
 
-/**
- * Generate a UUID.
- *
- * Use this for a device/appKey tuple when you do not have a sessionKey already.
- *
- * This utility method is not used through an appgrid client instance, but available statically
- * @function
- * @return {string} a new UUID
- */
-appgrid.generateUuid = () => uuidLib.v4();
+const WEBSTORAGE_DEVICE_ID = 'ag_d';
+const WEBSTORAGE_SESSION_KEY = 'ag_s';
 
 /**
- * DEPRECATED - will be removed in version 3.
+ * Default implementation for the browserInfoProvider option (applied to browsers only).
+ * This will persist deviceId in localStorage and sessionKey in sessionStorage.
  *
- * This is application-specific, each app should have its own logic for such use of dimensions.
- *
- * Returns the range of the current hour of the day, as a string such as '01-05' for 1am to 5 am.
- * Useful for some specific AppGrid log events.
- *
- * This utility method is not used through an appgrid client instance, but available statically
- * @function
- * @return {string} a range of hours
+ * @private
+ * @return {Object} An object with both deviceId and sessionKey
  */
-appgrid.getCurrentTimeOfDayDimValue = getCurrentTimeOfDayDimValue;
+const defaultBrowserInfoProvider = () => {
+  // Take deviceId from localStorage
+  const deviceId = localStorage[WEBSTORAGE_DEVICE_ID];
 
-/**
- * An express-compatible middleware.
- *
- * This uses the cookie-parser middleware, so you can also take advantage of the `req.cookies` array.
- *
- * This middleware takes care of creating an AppGrid client instance for each request automatically.
- * By default, it will also reuse and persist the deviceId and sessionKey using the request and response cookies.
- * That strategy can be changed by passing the optional callbacks,
- * so you could make use of headers or request parameters for instance.
- *
- * Each instance is attached to the response object and available to the next express handlers as `res.locals.appgridClient`.
- *
- * Note any extra argument provided in the config object will be passed onto the appgrid client factory during instanciation.
- *
- * This utility method is not used through an appgrid client instance, but available statically
- * @function
- * @param  {object} config the configuration
- * @param  {string} config.appKey the application Key that will be used for all appgrid clients
- * @param  {function} [config.getRequestInfo] callback that receives the request and returns an object with deviceId, sessionKey and gid properties.
- * @param  {function} [config.onDeviceIdGenerated] callback that receives the new deviceId (if one was not returned by getRequestInfo) and the response
- * @param  {function} [config.onSessionKeyChanged] callback that receives the new sessionKey (anytime a new one gets generated) and the response
- * @param  {any} [config.___] You can also pass any extra option accepted by the appgrid factory function (log, gid, ...)
- * @alias middleware.express
- * @return {function} a middleware function compatible with express
- * @example <caption>Using the default cookie strategy</caption>
- * const appgrid = require('appgrid');
- * const express = require('express');
- *
- * const PORT = 3000;
- *
- * express()
- * // handle proxy servers if needed, to pass the user's IP instead of the proxy's.
- * .set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
- * // place the appgrid middleware before your request handlers
- * .use(appgrid.middleware.express({ appKey: '56ea6a370db1bf032c9df5cb' }))
- * .get('/test', (req, res) => {
- *    // access your client instance, it's already linked to the deviceId and sessionKey via cookies
- *    res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
- *    .then(entry => res.send(entry))
- *    .catch(err => res.status(500).send('Failed to get the result'));
- * })
- * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
- *
- * @example <caption>Using custom headers to extract deviceId and sessionKey and to pass down any change</caption>
- * const appgrid = require('appgrid');
- * const express = require('express');
- *
- * const PORT = 3000;
- * const HEADER_DEVICE_ID = 'X-AG-DEVICE-ID';
- * const HEADER_SESSION_KEY = 'X-AG-SESSION-KEY';
- * const HEADER_GID = 'X-AG-GID';
- *
- * express()
- * .use(appgrid.middleware.express({
- *   appKey: '56ea6a370db1bf032c9df5cb',
- *   // extract deviceId, sessionKey and gid from custom headers
- *   getRequestInfo: req => ({ deviceId: req.get(HEADER_DEVICE_ID), sessionKey: req.get(HEADER_SESSION_KEY), gid: req.get(HEADER_GID) }),
- *   // pass down any change on the deviceId (the header won't be set if unchanged compared to the value in getRequestInfo)
- *   onDeviceIdGenerated: (id, res) => res.set(HEADER_DEVICE_ID, id),
- *   // pass down any change on the sessionKey (the header won't be set if unchanged compared to the value in getRequestInfo)
- *   onSessionKeyChanged: (key, res) => res.set(HEADER_SESSION_KEY, key),
- *   log(...args) { console.log(...args) }
- * }))
- * .get('/test', (req, res) => {
- *   res.locals.appgridClient.getEntryById('56ea7bd6935f75032a2fd431')
- *   .then(entry => res.send(entry))
- *   .catch(err => res.status(500).send('Failed to get the result'));
- * })
- * .listen(PORT, () => console.log(`Server is on ! Try http://localhost:${PORT}/test`));
- */
-appgrid.middleware = {
-  express: expressMwFactory(appgrid)
+  // Take sessionKey from sessionStorage
+  const sessionKey = (hasSessionStorage) ? sessionStorage[WEBSTORAGE_SESSION_KEY] : undefined;
+
+  return { deviceId, sessionKey };
 };
 
-export default appgrid;
+const defaultBrowserOnDeviceIdGenerated = (id) => {
+  if (!hasLocalStorage) { return; }
+
+  localStorage[WEBSTORAGE_DEVICE_ID] = id;
+};
+
+const defaultBrowserOnSessionKeyChanged = (key) => {
+  if (!hasSessionStorage) { return; }
+
+  sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
+};
+
+/**
+ * A wrapper over the appgrid factory for clients that support Web Storage by default
+ * (most browsers). Provides default `onDeviceIdGenerated` and `onSessionKeyChanged` callbacks for
+ * persistency through Web Storage. Also sets the `deviceId` and `sessionKey` values from
+ * Web Storage to the factory when not given as an option.
+ *
+ * This behaviour can be customised by providing a `browserInfoProvider` function returning an
+ * object with the keys `deviceId` and `sessionKey`. You could implement a different strategy
+ * relying on cookies or a device-specific API for instance.
+ *
+ * If you do, you will want to customise the `onSessionKeyChanged` and `onDeviceIdGenerated`
+ * callbacks as well.
+ *
+ * Refer to the factory's documentation to see other available options.
+ *
+ * Note this is this library's default export for Web Storage-enabled devices.
+ *
+ * @function
+ * @param  {object} config the configuration for the new instance
+ * @param  {string} config.browserInfoProvider A function to customise the persistency strategy
+ * @param  {any} [config.appKey/log/gid/etc] You should also pass any extra option accepted by the appgrid factory function (appKey, log, gid, ...)
+ * @return {client}        an AppGrid client tied to the given params
+ */
+const appgridWrapperForBrowsers = (config) => {
+  if (!hasSomeWebStorage) {
+    return appgrid(config);
+  }
+
+  const {
+    browserInfoProvider = defaultBrowserInfoProvider,
+    onDeviceIdGenerated = defaultBrowserOnDeviceIdGenerated,
+    onSessionKeyChanged = defaultBrowserOnSessionKeyChanged
+  } = config;
+  let { deviceId, sessionKey } = config;
+
+  if ((!deviceId || !sessionKey) && browserInfoProvider) {
+    const browserInfo = browserInfoProvider();
+    deviceId = deviceId || browserInfo.deviceId;
+    sessionKey = sessionKey || browserInfo.sessionKey;
+  }
+
+  return appgrid(Object.assign({}, config, { deviceId, sessionKey, onDeviceIdGenerated, onSessionKeyChanged }));
+};
+
+export default hasSomeWebStorage ? appgridWrapperForBrowsers : appgrid;
