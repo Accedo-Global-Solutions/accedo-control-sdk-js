@@ -1,9 +1,13 @@
 # this is used by the auto-generated documentation tool
 toc:
+
   - name: AppGrid client factory
     description: |
-      This is the default export for this library.
+      'appgridWrapperForBrowsers' is the default export for devices supporting Web Storage.
 
+      'appgrid' is the default export for other devices (including Node.js).
+
+  - appgridWrapperForBrowsers
   - appgrid
 
   - name: Instance methods

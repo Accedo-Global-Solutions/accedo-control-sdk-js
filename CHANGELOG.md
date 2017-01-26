@@ -1,7 +1,6 @@
 # TODO
 
 - MINOR: basic robot detection with a default deviceId for them all ?
-- PATCH: add a browser-specific default implementation to persist the deviceId, customisable
 
 # 3.0.0
 
@@ -9,8 +8,10 @@
 - MAJOR: different bundles are now provided, as noted above.
 - MAJOR: move express-related code to [a separate repo](https://github.com/Accedo-Products/appgrid-sdk-express)
 - MAJOR: remove deprecated `getCurrentTimeOfDayDimValue` method
+- MAJOR: remove `appgrid.generateUuid` method (not necessary - the SDK generates one if needed)
 - PATCH: use yarn lockfile rather than npm shrinkwrap
 - PATCH: compatible with most browsers (down to ES5 via Webpack or the UMD build)
+- PATCH: add a browser-specific default implementation to persist the deviceId, customisable
 - PATCH: only one unit test was run due to a mistake in 2.3.0
 
 :sparkles: **This is the first release targeting browsers as well as Node !**

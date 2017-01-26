@@ -35,28 +35,21 @@
               
                 
                 <li><a
-                  href='#appgrid'
-                  class=" toggle-sibling">
-                  appgrid
-                  <span class='icon'>▸</span>
+                  href='#appgridwrapperforbrowsers'
+                  class="">
+                  appgridWrapperForBrowsers
+                  
                 </a>
                 
-                <div class='toggle-target display-none'>
+                </li>
+              
+                
+                <li><a
+                  href='#appgrid'
+                  class="">
+                  appgrid
                   
-                  <ul class='list-reset py1-ul pl1'>
-                    <li class='h5'><span>Static members</span></li>
-                    
-                      <li><a
-                        href='#appgrid.generateUuid'
-                        class='regular pre-open'>
-                        .generateUuid
-                      </a></li>
-                    
-                    </ul>
-                  
-                  
-                  
-                </div>
+                </a>
                 
                 </li>
               
@@ -347,11 +340,120 @@
   </h2>
 
   
-    <p>This is the default export for this library.</p>
+    <p>'appgridWrapperForBrowsers' is the default export for devices supporting Web Storage.</p>
+<p>'appgrid' is the default export for other devices and Node.js.</p>
 
   
 </section>
 </div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='appgridwrapperforbrowsers'>
+      appgridWrapperForBrowsers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>A wrapper over the appgrid factory for clients that support Web Storage by default
+(most browsers). Provides default <code>onDeviceIdGenerated</code> and <code>onSessionKeyChanged</code> callbacks for
+persistency through Web Storage. Also sets the <code>deviceId</code> and <code>sessionKey</code> values from
+Web Storage to the factory when not given as an option.</p>
+<p>This behaviour can be customised by providing a <code>browserInfoProvider</code> function returning an
+object with the keys <code>deviceId</code> and <code>sessionKey</code>. You could implement a different strategy
+relying on cookies or a device-specific API for instance.</p>
+<p>If you do, you will want to customise the <code>onSessionKeyChanged</code> and <code>onDeviceIdGenerated</code>
+callbacks as well.</p>
+<p>Refer to the factory's documentation to see other available options.</p>
+<p>Note this is this library's default export for Web Storage-enabled devices.</p>
+
+
+  <div class='pre p1 fill-light mt0'>appgridWrapperForBrowsers(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    the configuration for the new instance
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.browserInfoProvider</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>A function to customise the persistency strategy
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>config.appKey/log/gid/etc</span> <code class='quiet'>any?</code>
+                  </td>
+                  <td class='break-word'><span>You should also pass any extra option accepted by the appgrid factory function (appKey, log, gid, ...)
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>client</code>:
+        an AppGrid client tied to the given params
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
           
         
           
@@ -495,67 +597,6 @@
   
 
   
-    <div class='py1 quiet mt1 prose-big'>Static Members</div>
-    <div class="clearfix">
-  
-    <div class='border-bottom' id='appgrid.generateUuid'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>generateUuid()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Generate a UUID.</p>
-<p>Use this for a device/appKey tuple when you do not have a sessionKey already.</p>
-<p>This utility method is not used through an appgrid client instance, but available statically</p>
-
-
-  <div class='pre p1 fill-light mt0'>generateUuid(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        a new UUID
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-</div>
-
-  
 
   
 
@@ -596,7 +637,7 @@ Code examples can be found in the github repository.</p>
   
 
   <p>Get all the content entries, based on the given parameters.
-<strong>DO NOT</strong> use several of id, alias, typeId and typeAlias at the same time - behaviour would be ungaranteed.</p>
+<strong>DO NOT</strong> use several of the id, alias, typeId and typeAlias options at the same time - behaviour would be ungaranteed.</p>
 
 
   <div class='pre p1 fill-light mt0'>getEntries(params: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
@@ -662,16 +703,9 @@ Code examples can be found in the github repository.</p>
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.typeId</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)?</code>
+                  <td class='break-word'><span class='code bold'>params.typeId</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>?</code>
                   </td>
-                  <td class='break-word'><span>only return entries of the given type id(s).
-It can be passed as a single-value string 
-<code>'type1'</code>
-,
-a CSV string 
-<code>'type1,type2'</code>
- or an array of strings 
-<code>['type1', 'type2']</code>
+                  <td class='break-word'><span>only return entries of the given type ids (strings)
 </span></td>
                 </tr>
               

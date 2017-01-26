@@ -56,7 +56,7 @@ const appgrid = (config) => {
   }
   // Generate a uuid if no deviceId was given
   if (!deviceId) {
-    deviceId = appgrid.generateUuid();
+    deviceId = uuidLib.v4();
     // trigger the callback
     onDeviceIdGenerated(deviceId);
   }
@@ -147,16 +147,5 @@ const appgridWrapperForBrowsers = (config) => {
 
   return appgrid(Object.assign({}, config, { deviceId, sessionKey, onDeviceIdGenerated, onSessionKeyChanged }));
 };
-
-/**
- * Generate a UUID.
- *
- * Use this for a device/appKey tuple when you do not have a sessionKey already.
- *
- * This utility method is not used through an appgrid client instance, but available statically
- * @function
- * @return {string} a new UUID
- */
-appgrid.generateUuid = () => uuidLib.v4();
 
 export default hasSomeWebStorage ? appgridWrapperForBrowsers : appgrid;
