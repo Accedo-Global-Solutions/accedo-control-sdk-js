@@ -2,6 +2,10 @@
 
 - MINOR: basic robot detection with a default deviceId for them all ?
 
+# 3.0.2
+
+- PATCH: instead of throwing an error when a sessionKey is provided without a deviceId, just ignore the sessionKey (a new one will be created). Thanks for the bug report @artgryn
+
 # 3.0.1
 
 - PATCH: update the builds and doc, as v3.0.0 was slightly outdated
@@ -20,7 +24,7 @@
 
 :sparkles: **This is the first release targeting browsers as well as Node !**
 
-For browsers you can use a module bundler as you probably already do (Webpack, Rollup, Browserify...), then it's up to you to also include a compilation step (Babel, etc); or a good old script tag pointing to the file  in `dist/appgrid.min.js` (that file is minified and compiled to ES5).
+For browsers you can use a module bundler as you probably already do (Webpack, Rollup, Browserify...), then it's up to you to also include a compilation step (Babel, etc); or a good old script tag pointing to the file in `dist/appgrid.min.js` (that file is minified and compiled to ES5).
 
 Also, note we used to have an ES6 (with ES6 module) and an UMD (with CommonJS) build.
 The ES6 build is intended for intended for use by module bundlers (like Webpack) or Node.js, and uses CommonJS.

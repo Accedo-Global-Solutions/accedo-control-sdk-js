@@ -50,8 +50,12 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
 const appgrid = (config) => {
   const { gid, appKey, ip, log = noop, onDeviceIdGenerated = noop, onSessionKeyChanged = noop } = config;
   let { deviceId, sessionKey } = config;
-  // First, check the params are OK
-  if (!checkUsability(config)) {
+  // If there is no deviceId, do not allow reusing a sessionKey
+  if (!deviceId) {
+    sessionKey = null;
+  }
+  // Check the params are OK
+  if (!checkUsability({ appKey, deviceId, sessionKey })) {
     throw new Error('You must provide an appKey | an appKey and a deviceId | an appKey, a deviceId and a sessionKey');
   }
   // Generate a uuid if no deviceId was given
