@@ -285,7 +285,7 @@ const exampleAppGridContentEntries = () => {
     logExampleHeader('Requesting ContentEntries by typeId from AppGrid');
     const params = {
       size: 50,
-      typeId: '56ea7bca935f75032a2fd42c',
+      typeId: ['56ea7bca935f75032a2fd42c'],
       at: new Date()
     };
     return client.getEntries(params)

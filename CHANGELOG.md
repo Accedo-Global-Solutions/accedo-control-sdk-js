@@ -2,6 +2,10 @@
 
 - MINOR: basic robot detection with a default deviceId for them all ?
 
+# 3.0.3
+
+- PATCH: Fixed the ES6 example that was using a string rather than an array for the `typeId` parameter
+
 # 3.0.2
 
 - PATCH: instead of throwing an error when a sessionKey is provided without a deviceId, just ignore the sessionKey (a new one will be created). Thanks for the bug report @artgryn
