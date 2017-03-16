@@ -25,7 +25,8 @@ const getSessionHeader = ({ sessionKey }) => {
 const getContentTypeHeader = () => ({ 'Content-Type': MIME_TYPE_JSON });
 
 const getQueryString = (config, existingQs = {}) => {
-  const defaultQs = {
+  // When there is a sessionKey, these are useless
+  const defaultQs = config.sessionKey ? {} : {
     appKey: config.appKey,
     uuid: config.deviceId
   };
