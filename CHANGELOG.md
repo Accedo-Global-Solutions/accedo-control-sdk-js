@@ -2,6 +2,10 @@
 
 - MINOR: basic robot detection with a default deviceId for them all ?
 
+# 3.0.4
+
+- PATCH: Stop passing unnecessary query parameters to most API requests
+
 # 3.0.3
 
 - PATCH: Fixed the ES6 example that was using a string rather than an array for the `typeId` parameter
