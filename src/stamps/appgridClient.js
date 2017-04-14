@@ -9,6 +9,7 @@ import pluginsStamp from './plugins';
 import profileStamp from './profile';
 import metadataStamp from './metadata';
 import userDataStamp from './userData';
+import locales from './locales';
 
 // Simply compose all the stamps in one single stamp to give access to all methods
 const stamp = stampit().compose(
@@ -21,7 +22,8 @@ const stamp = stampit().compose(
   pluginsStamp,
   profileStamp,
   metadataStamp,
-  userDataStamp
+  userDataStamp,
+  locales
 );
 
 export default stamp;

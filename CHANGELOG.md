@@ -2,6 +2,11 @@
 
 - MINOR: basic robot detection with a default deviceId for them all ?
 
+# Unreleased
+
+- MINOR: add getAvailableLocales method
+- MINOR: content APIs can specify a `locale` in the option argument
+
 # 3.0.4
 
 - PATCH: Stop passing unnecessary query parameters to most API requests

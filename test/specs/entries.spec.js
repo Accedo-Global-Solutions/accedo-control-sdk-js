@@ -41,6 +41,22 @@ describe('Entries API Tests', () => {
       });
   });
 
+  it.only('using the locale option should return a localized entry when available', () => {
+    const alias = 'erik';
+    return Promise.all([
+      client.getEntryByAlias(alias, { locale: 'fr' }),
+      client.getEntryByAlias(alias, { locale: 'en' }),
+      // client.getEntryByAlias(alias, { locale: 'es' }),
+    ])
+      .then(([fr, en]) => {
+        fr.hello.should.equal('bonjour');
+        en.hello.should.equal('hello');
+        // PENDING the AppGrid 2.12 release (currently returns a 404)
+        // no spanish locale - should return the default, french in this case
+        // es.hello.should.equal('ola');
+      });
+  });
+
   it('"getEntries" should return at least one entry', () => {
     const { offset, size } = paginationOptions;
     return client.getEntries({ offset, size })

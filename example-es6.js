@@ -321,7 +321,25 @@ const exampleAppGridPlugins = () => {
   };
 
   return getAllEnabledPlugins()
-    .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
+    .then(() => logExampleCategoryHeader('End AppGrid Plugin Examples'));
+};
+
+const exampleAppGridLocales = () => {
+  logExampleCategoryHeader('AppGrid Locales Examples:');
+
+  const getLocales = () => {
+    logExampleHeader('Requesting all available locales from AppGrid');
+    return client.getAvailableLocales()
+      .then((locales) => {
+        console.log('\t\t Successfully requested all available locales from AppGrid', locales);
+      })
+      .catch((error) => {
+        logError('Oops! There was an error while requesting all available locales from AppGrid!', error);
+      });
+  };
+
+  return getLocales()
+    .then(() => logExampleCategoryHeader('End AppGrid Locales Examples'));
 };
 
 const exampleAppGridSessions = () => {
@@ -543,6 +561,7 @@ const runAllExamples = () => {
     .then(exampleAppGridMetadata)
     .then(exampleAppGridAssets)
     .then(exampleAppGridContentEntries)
+    .then(exampleAppGridLocales)
     .then(exampleAppGridPlugins)
     .then(exampleAppGridUserData)
     .catch((error) => {

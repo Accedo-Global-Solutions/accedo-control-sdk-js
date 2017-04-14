@@ -4,7 +4,7 @@ import sessionStamp from './session';
 import { grab } from '../apiHelper';
 
 function getPathWithQs(path, params = {}) {
-  const { id, typeId, alias, typeAlias, preview, at, offset, size } = params;
+  const { id, typeId, alias, typeAlias, preview, at, offset, size, locale } = params;
   const qsParams = {};
   // The id array must be turned into CSV
   if (id && Array.isArray(id)) { qsParams.id = id.join(','); }
@@ -21,7 +21,7 @@ function getPathWithQs(path, params = {}) {
     qsParams.at = at.toISOString();
   }
   // Add curated and non-curated params
-  const queryString = qs.stringify(Object.assign({}, qsParams, { typeAlias, offset, size }));
+  const queryString = qs.stringify(Object.assign({}, qsParams, { typeAlias, offset, size, locale }));
   return `${path}?${queryString}`;
 }
 
@@ -44,6 +44,7 @@ const stamp = stampit()
    * @param {string} [params.typeAlias] only return entries whose entry type has this alias
    * @param {number|string} [params.size] limit to that many results per page (limits as per AppGrid API, currently 1 to 50, default 20)
    * @param {number|string} [params.offset] offset the result by that many pages
+   * @param {string} [params.locale] if available, get the version for the given locale
    * @return {promise}  a promise of an array of entries (objects)
    */
   getEntries(params) {
@@ -56,6 +57,7 @@ const stamp = stampit()
    * @param {object} [params] a parameters object
    * @param {boolean} [params.preview] when true, get the preview version
    * @param {string|date} [params.at] when given, get the version at the given time
+   * @param {string} [params.locale] if available, get the version for the given locale
    * @return {promise}  a promise of an entry (object)
    */
   getEntryById(id, params) {
@@ -68,6 +70,7 @@ const stamp = stampit()
    * @param {object} [params] a parameters object
    * @param {boolean} [params.preview] when true, get the preview version
    * @param {string|date} [params.at] when given, get the version at the given time
+   * @param {string} [params.locale] if available, get the version for the given locale
    * @return {promise}  a promise of an entry (object)
    */
   getEntryByAlias(alias, params) {
