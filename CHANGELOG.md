@@ -1,11 +1,8 @@
-# TODO
-
-- MINOR: basic robot detection with a default deviceId for them all ?
-
-# Unreleased
+# 3.1.0
 
 - MINOR: add getAvailableLocales method
 - MINOR: content APIs can specify a `locale` in the option argument
+- PATCH: add a browser field to package.json, fixes issues with minified webpack builds
 
 # 3.0.4
 
