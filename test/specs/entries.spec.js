@@ -41,7 +41,7 @@ describe('Entries API Tests', () => {
       });
   });
 
-  it.only('using the locale option should return a localized entry when available', () => {
+  it('using the locale option should return a localized entry when available', () => {
     const alias = 'erik';
     return Promise.all([
       client.getEntryByAlias(alias, { locale: 'fr' }),
