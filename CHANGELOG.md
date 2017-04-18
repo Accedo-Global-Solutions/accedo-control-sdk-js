@@ -1,3 +1,7 @@
+# 3.1.1
+
+- PATCH: fix the `package.engine` field to avoid warnings/errors on Node 5, 6, 7
+
 # 3.1.0
 
 - MINOR: add getAvailableLocales method

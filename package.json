@@ -38,7 +38,7 @@
   ],
   "license": "Apache-2.0",
   "engines": {
-    "node": "4+"
+    "node": ">= 4"
   },
   "homepage": "http://appgrid.accedo.tv/",
   "files": [
