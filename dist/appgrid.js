@@ -623,9 +623,10 @@ const hasSomeWebStorage = hasLocalStorage || hasSessionStorage;
 /**
  * Check the parameters given are good enough to make api calls
  * @function
- * @param  {string} $0.appKey        the application key
- * @param  {string} [$0.deviceId]        a deviceId identifying the client we will make requests for
- * @param  {string} [$0.sessionKey]  a session key corresponding to this deviceId/appKey tuple
+ * @param  {Object} options              options
+ * @param  {string} options.appKey       the application key
+ * @param  {string} [options.deviceId]   a deviceId identifying the client we will make requests for
+ * @param  {string} [options.sessionKey] a session key corresponding to this deviceId/appKey tuple
  * @return {boolean}                 true when all is well
  * @private
  */

@@ -1,6 +1,7 @@
 # 3.1.3
 
 - Change the fetch polyfill to save 3kB on the browser build
+- Apply the easy dependency updates
 
 # 3.1.2
 
