@@ -1,40 +1,44 @@
+# 3.1.2
+
+- FIX: Change the asset download endpoint (we were using a deprecated one that is down at the moment). Change the tested asset ID as the previous one is gone.
+
 # 3.1.1
 
-- PATCH: fix the `package.engine` field to avoid warnings/errors on Node 5, 6, 7
+- FIX: fix the `package.engine` field to avoid warnings/errors on Node 5, 6, 7
 
 # 3.1.0
 
-- MINOR: add getAvailableLocales method
-- MINOR: content APIs can specify a `locale` in the option argument
-- PATCH: add a browser field to package.json, fixes issues with minified webpack builds
+- FEATURE: add getAvailableLocales method
+- FEATURE: content APIs can specify a `locale` in the option argument
+- FIX: add a browser field to package.json, fixes issues with minified webpack builds
 
 # 3.0.4
 
-- PATCH: Stop passing unnecessary query parameters to most API requests
+- FIX: Stop passing unnecessary query parameters to most API requests
 
 # 3.0.3
 
-- PATCH: Fixed the ES6 example that was using a string rather than an array for the `typeId` parameter
+- FIX: Fixed the ES6 example that was using a string rather than an array for the `typeId` parameter
 
 # 3.0.2
 
-- PATCH: instead of throwing an error when a sessionKey is provided without a deviceId, just ignore the sessionKey (a new one will be created). Thanks for the bug report @artgryn
+- FIX: instead of throwing an error when a sessionKey is provided without a deviceId, just ignore the sessionKey (a new one will be created). Thanks for the bug report @artgryn
 
 # 3.0.1
 
-- PATCH: update the builds and doc, as v3.0.0 was slightly outdated
+- FIX: update the builds and doc, as v3.0.0 was slightly outdated
 
 # 3.0.0
 
-- MAJOR: streamline the API by accepting only an array for the typeId parameter in getEntries
-- MAJOR: different bundles are now provided, as noted above.
-- MAJOR: move express-related code to [a separate repo](https://github.com/Accedo-Products/appgrid-sdk-express)
-- MAJOR: remove deprecated `getCurrentTimeOfDayDimValue` method
-- MAJOR: remove `appgrid.generateUuid` method (not necessary - the SDK generates one if needed)
-- PATCH: use yarn lockfile rather than npm shrinkwrap
-- PATCH: compatible with most browsers (down to ES5 via Webpack or the UMD build)
-- PATCH: add a browser-specific default implementation to persist the deviceId, customisable
-- PATCH: only one unit test was run due to a mistake in 2.3.0
+- BREAKING: streamline the API by accepting only an array for the typeId parameter in getEntries
+- BREAKING: different bundles are now provided, as noted above.
+- BREAKING: move express-related code to [a separate repo](https://github.com/Accedo-Products/appgrid-sdk-express)
+- BREAKING: remove deprecated `getCurrentTimeOfDayDimValue` method
+- BREAKING: remove `appgrid.generateUuid` method (not necessary - the SDK generates one if needed)
+- FIX: use yarn lockfile rather than npm shrinkwrap
+- FIX: compatible with most browsers (down to ES5 via Webpack or the UMD build)
+- FIX: add a browser-specific default implementation to persist the deviceId, customisable
+- FIX: only one unit test was run due to a mistake in 2.3.0
 
 :sparkles: **This is the first release targeting browsers as well as Node !**
 
@@ -56,51 +60,51 @@ Most likely, you did not use the deprecated `getCurrentTimeOfDayDimValue` method
 
 # 2.3.0
 
-- MINOR: getEntries can now take a typeAlias parameter
-- MINOR: getEntries's typeId parameter can now be an array of strings (previously, only a string)
-- MINOR: Added the new method to add Application Logs in batch (sendLogs)
-- MINOR: have extra configuration params given go through the middleware so they are used in the factory (log, gid, etc)
-- MINOR: by default, the middleware will now pass the gid from each request parameter (if found in the `gid` querystring) to the factory
-- PATCH: The sendLog method was not sending log dimensions properly.
-- PATCH: The sendLog method's metadata param can be anything (not only an array as documented).
-- PATCH: Changed the AppGrid REST API link to its new location
-- PATCH: doc: installing this SDK should usually be done with --save, not --save-dev
-- PATCH: the static method getCurrentTimeOfDayDimValue was deprecated, will be removed in version 3
-- PATCH: updated non-breaking dependencies
+- FEATURE: getEntries can now take a typeAlias parameter
+- FEATURE: getEntries's typeId parameter can now be an array of strings (previously, only a string)
+- FEATURE: Added the new method to add Application Logs in batch (sendLogs)
+- FEATURE: have extra configuration params given go through the middleware so they are used in the factory (log, gid, etc)
+- FEATURE: by default, the middleware will now pass the gid from each request parameter (if found in the `gid` querystring) to the factory
+- FIX: The sendLog method was not sending log dimensions properly.
+- FIX: The sendLog method's metadata param can be anything (not only an array as documented).
+- FIX: Changed the AppGrid REST API link to its new location
+- FIX: doc: installing this SDK should usually be done with --save, not --save-dev
+- FIX: the static method getCurrentTimeOfDayDimValue was deprecated, will be removed in version 3
+- FIX: updated non-breaking dependencies
 
 # 2.2.1
 
-- PATCH: Replaced the old link to AppGrid's help section with the new one for the knowledge base
+- FIX: Replaced the old link to AppGrid's help section with the new one for the knowledge base
 
 # 2.2.0
 
-- MINOR: Added ip optional param on AppGrid client instantiation
-- MINOR: Express middleware: automatically pass on the IP for each client it creates
-- MINOR: ensure only one new session may be created at a time, in case of many calls happening before the first finishes
-- PATCH: Replaced object spread by Object.assign so that we do not need any transpilation for the ES6 bundle
-- PATCH: The ES6 bundle was transpiled to ES5 (except for import/export), not any more
+- FEATURE: Added ip optional param on AppGrid client instantiation
+- FEATURE: Express middleware: automatically pass on the IP for each client it creates
+- FEATURE: ensure only one new session may be created at a time, in case of many calls happening before the first finishes
+- FIX: Replaced object spread by Object.assign so that we do not need any transpilation for the ES6 bundle
+- FIX: The ES6 bundle was transpiled to ES5 (except for import/export), not any more
 
 # 2.1.0
 
-- MINOR: Added a middleware for Express to handle the session and deviceId propagation on server requests/responses
-- PATCH: Added the npm chip to the README
-- PATCH: Now checking against the HTTP response status (401) to recreate a session. Fixes a bug as the JSON response for this seems to have changed slightly.
+- FEATURE: Added a middleware for Express to handle the session and deviceId propagation on server requests/responses
+- FIX: Added the npm chip to the README
+- FIX: Now checking against the HTTP response status (401) to recreate a session. Fixes a bug as the JSON response for this seems to have changed slightly.
 
 # 2.0.0
 
-- MAJOR: big overhaul, all APIs changed, the first step is to go through client creation first, then you do not need to redefine the client options for each call
-- MAJOR: throughout the APIs, use dictionary parameters rather than multiple optional params
-- MAJOR: getEntries replaces getAllEntries, getEntriesByTypeId and getEntriesByIds
-- MAJOR: getAssetStreamById was renamed to getAssetById
-- MAJOR: validateSession was removed (incorrectly fell back to getApplicationStatus).
-- MAJOR: removed the method to update the uuid of an existing session
-- MAJOR: renamed the uuid optional parameter (when creating a client) to deviceId
-- MINOR: getEntries can take an alias parameter (an array of aliases)
-- MINOR: Added getEntryByAlias
-- PATCH: Added automatically generated docs
-- PATCH: Renamed this library and repo name, this is the SDK for Node.js, not for "the web".
-- PATCH: Renamed npm scripts (build rather than compile, new doc scripts, etc)
-- PATCH: Now with an Apache-2.0 license, and published on npm !
+- BREAKING: big overhaul, all APIs changed, the first step is to go through client creation first, then you do not need to redefine the client options for each call
+- BREAKING: throughout the APIs, use dictionary parameters rather than multiple optional params
+- BREAKING: getEntries replaces getAllEntries, getEntriesByTypeId and getEntriesByIds
+- BREAKING: getAssetStreamById was renamed to getAssetById
+- BREAKING: validateSession was removed (incorrectly fell back to getApplicationStatus).
+- BREAKING: removed the method to update the uuid of an existing session
+- BREAKING: renamed the uuid optional parameter (when creating a client) to deviceId
+- FEATURE: getEntries can take an alias parameter (an array of aliases)
+- FEATURE: Added getEntryByAlias
+- FIX: Added automatically generated docs
+- FIX: Renamed this library and repo name, this is the SDK for Node.js, not for "the web".
+- FIX: Renamed npm scripts (build rather than compile, new doc scripts, etc)
+- FIX: Now with an Apache-2.0 license, and published on npm !
 
 # 1.1.1
 
