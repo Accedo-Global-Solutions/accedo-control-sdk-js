@@ -5,5 +5,5 @@ export default {
   moduleName: 'appgrid',
   exports: 'default',
   sourceMap: false,
-  external: ['uuid', 'stampit', 'qs', 'isomorphic-fetch'],
+  external: ['uuid', 'stampit', 'qs', 'isomorphic-unfetch'],
 };

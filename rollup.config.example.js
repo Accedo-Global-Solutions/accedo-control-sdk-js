@@ -8,5 +8,5 @@ export default {
   intro: 'require("source-map-support").install();',
   dest: './build/example.js',
   sourceMap: true,
-  external: ['uuid', 'stampit', 'qs', 'isomorphic-fetch', 'chalk', 'fs'],
+  external: ['uuid', 'stampit', 'qs', 'isomorphic-unfetch', 'chalk', 'fs'],
 };

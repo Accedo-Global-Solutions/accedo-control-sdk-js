@@ -5,7 +5,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var uuidLib = _interopDefault(require('uuid'));
 var stampit = _interopDefault(require('stampit'));
 var qs = _interopDefault(require('qs'));
-var fetch = _interopDefault(require('isomorphic-fetch'));
+var fetch = _interopDefault(require('isomorphic-unfetch'));
 
 const MIME_TYPE_JSON = 'application/json';
 const HOST = 'https://appgrid-api.cloud.accedo.tv';

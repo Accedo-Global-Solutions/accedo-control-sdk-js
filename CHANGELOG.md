@@ -1,3 +1,7 @@
+# 3.1.3
+
+- Change the fetch polyfill to save 3kB on the browser build
+
 # 3.1.2
 
 - FIX: Change the asset download endpoint (we were using a deprecated one that is down at the moment). Change the tested asset ID as the previous one is gone.
@@ -35,10 +39,10 @@
 - BREAKING: move express-related code to [a separate repo](https://github.com/Accedo-Products/appgrid-sdk-express)
 - BREAKING: remove deprecated `getCurrentTimeOfDayDimValue` method
 - BREAKING: remove `appgrid.generateUuid` method (not necessary - the SDK generates one if needed)
-- FIX: use yarn lockfile rather than npm shrinkwrap
-- FIX: compatible with most browsers (down to ES5 via Webpack or the UMD build)
-- FIX: add a browser-specific default implementation to persist the deviceId, customisable
 - FIX: only one unit test was run due to a mistake in 2.3.0
+- use yarn lockfile rather than npm shrinkwrap
+- compatible with most browsers (down to ES5 via Webpack or the UMD build)
+- add a browser-specific default implementation to persist the deviceId, customisable
 
 :sparkles: **This is the first release targeting browsers as well as Node !**
 
@@ -69,8 +73,8 @@ Most likely, you did not use the deprecated `getCurrentTimeOfDayDimValue` method
 - FIX: The sendLog method's metadata param can be anything (not only an array as documented).
 - FIX: Changed the AppGrid REST API link to its new location
 - FIX: doc: installing this SDK should usually be done with --save, not --save-dev
-- FIX: the static method getCurrentTimeOfDayDimValue was deprecated, will be removed in version 3
-- FIX: updated non-breaking dependencies
+- the static method getCurrentTimeOfDayDimValue was deprecated, will be removed in version 3
+- updated non-breaking dependencies
 
 # 2.2.1
 
@@ -87,8 +91,8 @@ Most likely, you did not use the deprecated `getCurrentTimeOfDayDimValue` method
 # 2.1.0
 
 - FEATURE: Added a middleware for Express to handle the session and deviceId propagation on server requests/responses
-- FIX: Added the npm chip to the README
 - FIX: Now checking against the HTTP response status (401) to recreate a session. Fixes a bug as the JSON response for this seems to have changed slightly.
+- Added the npm chip to the README
 
 # 2.0.0
 
@@ -101,10 +105,10 @@ Most likely, you did not use the deprecated `getCurrentTimeOfDayDimValue` method
 - BREAKING: renamed the uuid optional parameter (when creating a client) to deviceId
 - FEATURE: getEntries can take an alias parameter (an array of aliases)
 - FEATURE: Added getEntryByAlias
-- FIX: Added automatically generated docs
 - FIX: Renamed this library and repo name, this is the SDK for Node.js, not for "the web".
-- FIX: Renamed npm scripts (build rather than compile, new doc scripts, etc)
-- FIX: Now with an Apache-2.0 license, and published on npm !
+- Added automatically generated docs
+- Renamed npm scripts (build rather than compile, new doc scripts, etc)
+- Now with an Apache-2.0 license, and published on npm !
 
 # 1.1.1
 

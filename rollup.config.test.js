@@ -8,5 +8,5 @@ export default {
   intro: 'require("source-map-support").install();',
   dest: 'build/test-bundle.js',
   sourceMap: true,
-  external: ['uuid', 'stampit', 'qs', 'isomorphic-fetch', 'chai', 'sinon'],
+  external: ['uuid', 'stampit', 'qs', 'isomorphic-unfetch', 'chai', 'sinon'],
 };
