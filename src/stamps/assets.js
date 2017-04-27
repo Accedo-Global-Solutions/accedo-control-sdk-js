@@ -19,7 +19,7 @@ const stamp = stampit()
    */
   getAssetById(id) {
     // note this method does not need a session
-    return grabRaw(`/asset/${id}`, this.props.config);
+    return grabRaw(`/asset/file/${id}`, this.props.config);
   }
 })
 // Make sure we have the sessionStamp withSessionHandling method
