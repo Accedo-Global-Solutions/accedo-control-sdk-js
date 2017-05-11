@@ -13,7 +13,8 @@ const stamp = stampit()
   },
 
   /**
-   * Get a stream for one asset by id
+   * Get a stream for one asset by id. DEPRECATED, DO NOT USE ! Always rely on getAllAssets instead.
+   * @deprecated
    * @param {string} id the asset id
    * @return {promise}  a promise of a node stream
    */

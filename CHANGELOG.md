@@ -1,3 +1,7 @@
+# Unreleased
+
+- Mark the method as deprecated. It'll be removed in version 4.
+
 # 3.1.3
 
 - Change the fetch polyfill to save 3kB on the browser build
