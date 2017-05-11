@@ -2,14 +2,14 @@ import stampit from 'stampit';
 import { grab } from '../apiHelper';
 
 export default stampit()
-.init(({ stamp }) => {
+.init(({ instance }) => {
   // the promise of a session being created
   let creatingSessionPromise;
   /**
    * Create a session and store it for reuse in this client instance
    * @return {promise}  a promise of a string, the sessionKey
    */
-  stamp.fixed.methods.createSession = function createSession() {
+  instance.createSession = function createSession() {
     // if we have a promise of a session, return it
     if (creatingSessionPromise) { return creatingSessionPromise; }
 

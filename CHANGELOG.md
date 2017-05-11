@@ -1,5 +1,10 @@
 # Unreleased
 
+This is an important fix, especially when using this SDK server-side.
+
+- FIX: A race condition and an unexpectedly shared variable means AppGrid sessions were sometimes not created when they should.
+This problem is unlikely to affect you if you used the SDK on the browser, but it will definitely affect you if you use it on the server and your traffic is not very low.
+Thanks to @nicolas-nannoni for pointing at this issue.
 - Mark the method as deprecated. It'll be removed in version 4.
 
 # 3.1.3
