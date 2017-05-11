@@ -1,4 +1,4 @@
-# Unreleased
+# 3.1.4
 
 This is an important fix, especially when using this SDK server-side.
 
