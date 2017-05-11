@@ -103,14 +103,14 @@ const post = (path, config, body = {}) => {
 };
 
 var sessionStamp = stampit()
-.init(({ stamp }) => {
+.init(({ instance }) => {
   // the promise of a session being created
   let creatingSessionPromise;
   /**
    * Create a session and store it for reuse in this client instance
    * @return {promise}  a promise of a string, the sessionKey
    */
-  stamp.fixed.methods.createSession = function createSession() {
+  instance.createSession = function createSession() {
     // if we have a promise of a session, return it
     if (creatingSessionPromise) { return creatingSessionPromise; }
 
@@ -273,11 +273,7 @@ const stamp$4 = stampit()
     return this.withSessionHandling(() => grab('/asset', this.props.config));
   },
 
-  /**
-   * Get a stream for one asset by id
-   * @param {string} id the asset id
-   * @return {promise}  a promise of a node stream
-   */
+  // DEPRECATED, DO NOT USE ! Always rely on getAllAssets instead.
   getAssetById(id) {
     // note this method does not need a session
     return grabRaw(`/asset/file/${id}`, this.props.config);
