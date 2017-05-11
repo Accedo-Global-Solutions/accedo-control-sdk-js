@@ -16,13 +16,4 @@ describe('Assets API Tests', () => {
         Object.keys(assets).length.should.be.greaterThan(0);
       });
   });
-
-  it('getAssetById should return a valid stream for a valid assetId', () => {
-    const idToDownload = '56ea69db0db1bf032c9df5b5';
-    return client.getAssetById(idToDownload)
-      .then((assetStream) => {
-        assetStream.should.be.ok;
-        assetStream.pipe.should.be.a('function');
-      });
-  });
 });

@@ -117,30 +117,6 @@ client.getAllMetadata()
   });
 ```
 
-### Download an asset from AppGrid
-```javascript
-import { createWriteStream } from 'fs';
-
-// NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
-const idToDownload = 'someValidAssetId';
-const fileName = `downloads/someFilename.png`;
-
-client.getAssetById(idToDownload)
-  .then((assetStream) => {
-    return new Promise((resolve, reject) => {
-      assetStream.pipe(createWriteStream(fileName))
-        .on('close', resolve)
-        .on('error', reject);
-    });
-  })
-  .then(() => {
-    console.log(`\t\t Successfully downloaded an asset by id from AppGrid.\n\t\t AssetId used: ${idToDownload}.\n\t\t Filename: ${fileName}`);
-  })
-  .catch((error) => {
-    // TODO handle error
-  });
-```
-
 ## SDK development
 
   * Clone/fork this repo

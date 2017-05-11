@@ -6,6 +6,7 @@ This is an important fix, especially when using this SDK server-side.
 This problem is unlikely to affect you if you used the SDK on the browser, but it will definitely affect you if you use it on the server and your traffic is not very low.
 Thanks to @nicolas-nannoni for pointing at this issue.
 - Remove the getAssetById method from the docs. It is deprecated and will be removed in version 4.
+Use getAllAssets instead, as the asset IDs and URLs may change without warning.
 
 # 3.1.3
 

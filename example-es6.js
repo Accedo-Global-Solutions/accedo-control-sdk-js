@@ -1,15 +1,12 @@
 /* eslint-disable no-console, import/no-unresolved, import/no-extraneous-dependencies */
 
 import chalk from 'chalk';
-import { createWriteStream, existsSync, mkdirSync } from 'fs';
 // NOTE: this would normally be: import appgrid from 'appgrid';
 const appgrid = require('../dist/appgrid.js');
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);
 };
-
-const downloadsDirectoryName = 'downloads';
 
 const client = appgrid({
   appKey: '56ea6a370db1bf032c9df5cb',
@@ -205,29 +202,7 @@ const exampleAppGridAssets = () => {
       });
   };
 
-  const getAssetById = () => {
-    logExampleHeader('Downloading asset by id from AppGrid');
-    const idToDownload = '5566eeaa669ad3b700ddbb11bbff003322cc99ddff55bc7b'; // NOTE: You can get a list of all assets including their IDs by calling the 'getAllAssets' API
-    const fileName = `${downloadsDirectoryName}/appLogoLarge.png`;
-    return client.getAssetById(idToDownload)
-      .then((assetStream) => {
-        return new Promise((resolve, reject) => {
-          if (!existsSync(downloadsDirectoryName)) { mkdirSync(downloadsDirectoryName); }
-          assetStream.pipe(createWriteStream(fileName))
-            .on('close', resolve)
-            .on('error', reject);
-        });
-      })
-      .then(() => {
-        console.log(`\t\t Successfully downloaded an asset by id from AppGrid.\n\t\t AssetId used: ${chalk.blue(idToDownload)}.\n\t\t Filename: ${chalk.blue(fileName)}`);
-      })
-      .catch((error) => {
-        logError('Oops! There was an error while downloading an asset by id from AppGrid!', error);
-      });
-  };
-
   return getAllAssets()
-    .then(getAssetById)
     .then(() => logExampleCategoryHeader('End AppGrid Asset Examples'));
 };
 
