@@ -2,6 +2,7 @@
 
 - FEATURE: You can now change the target endpoint with the `target` option (the default is still the production AppGrid API URL).
 Possible use: target a proxy to avoid all CORS pre-flight requests (when using the SDK from the browser), or modify the requests before redirecting them to AppGrid (allowing you to fix the request headers IE/Edge sends unencoded).
+- Updated dev dependencies
 
 # 3.1.4
 
