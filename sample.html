@@ -12,7 +12,8 @@
     const ag = appgrid({
       // this points to an existing sample app in AppGrid
       appKey: '56740393e4b046a34cf049d1',
-      // this is a hack - here we set the device ID manually to avoid creating new ones for everyone running this sample
+      // here we set the device ID manually to avoid creating new ones for everyone running this sample
+      // DO NOT do this on production apps
       deviceId: 'sdk-browser-sample',
       // activate verbose mode
       log(...args) { console.log(...args); },
