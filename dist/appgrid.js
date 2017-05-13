@@ -37,11 +37,12 @@ const getQueryString = (config, existingQs = {}) => {
 };
 
 const getRequestUrlWithQueryString = (path, config) => {
+  const { target = HOST } = config;
   const splitUrl = path.split('?');
   const pathWithoutQs = splitUrl[0];
   const existingQs = qs.parse(splitUrl[1]);
   const queryString = getQueryString(config, existingQs);
-  return `${HOST}${pathWithoutQs}?${queryString}`;
+  return `${target}${pathWithoutQs}?${queryString}`;
 };
 
 const getExtraHeaders = (config) => {
@@ -644,6 +645,7 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * @param  {function} [config.log] a function to use to see this SDK's logs
  * @param  {function} [config.onDeviceIdGenerated] callback to obtain the new deviceId, if one gets generated
  * @param  {function} [config.onSessionKeyChanged] callback to obtain the sessionKey, anytime a new one gets generated
+ * @param  {string} [config.target] all APIs calls will use this as the base API URL (defaults to the AppGrid API URL)
  * @return {client}        an AppGrid client tied to the given params
  * @example
  * import appgrid from 'appgrid';
@@ -658,7 +660,8 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
 const appgrid = (config) => {
-  const { gid, appKey, ip, log = noop, onDeviceIdGenerated = noop, onSessionKeyChanged = noop } = config;
+  const { gid, appKey, ip, target } = config;
+  const { log = noop, onDeviceIdGenerated = noop, onSessionKeyChanged = noop } = config;
   let { deviceId, sessionKey } = config;
   // If there is no deviceId, do not allow reusing a sessionKey
   if (!deviceId) {
@@ -675,7 +678,7 @@ const appgrid = (config) => {
     onDeviceIdGenerated(deviceId);
   }
 
-  const stampConfig = { deviceId, gid, ip, appKey, log, onSessionKeyChanged };
+  const stampConfig = { deviceId, gid, ip, appKey, target, log, onSessionKeyChanged };
   Object.defineProperty(stampConfig, 'sessionKey', {
     set(val) { sessionKey = val; onSessionKeyChanged(val); },
     get() { return sessionKey; }

@@ -1,8 +1,13 @@
+# 3.2.0
+
+- FEATURE: You can now change the target endpoint with the `target` option (the default is still the production AppGrid API URL).
+Possible use: target a proxy to avoid all CORS pre-flight requests (when using the SDK from the browser), or modify the requests before redirecting them to AppGrid (allowing you to fix the request headers IE/Edge sends unencoded).
+
 # 3.1.4
 
 :warning: **This is an important fix, especially when using this SDK server-side**
 
-- FIX: A race condition and an unexpectedly shared variable means AppGrid sessions were sometimes not created when they should.
+- FIX: A race condition on an expectedly shared method means AppGrid sessions were sometimes not created when they should, so the very next calls for the affected instances would fail.
 This problem is unlikely to affect you if you used the SDK on the browser, but it will definitely affect you if you use it on the server and your traffic is not very low.
 Thanks to @nicolas-nannoni for pointing at this issue.
 - Remove the getAssetById method from the docs. It is deprecated and will be removed in version 4.

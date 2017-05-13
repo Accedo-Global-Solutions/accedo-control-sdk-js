@@ -31,11 +31,12 @@ const getQueryString = (config, existingQs = {}) => {
 };
 
 const getRequestUrlWithQueryString = (path, config) => {
+  const { target = HOST } = config;
   const splitUrl = path.split('?');
   const pathWithoutQs = splitUrl[0];
   const existingQs = qs.parse(splitUrl[1]);
   const queryString = getQueryString(config, existingQs);
-  return `${HOST}${pathWithoutQs}?${queryString}`;
+  return `${target}${pathWithoutQs}?${queryString}`;
 };
 
 const getExtraHeaders = (config) => {
