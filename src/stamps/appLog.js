@@ -12,8 +12,8 @@ const LOG_LEVELS = [DEBUG, INFO, WARN, ERROR];
 const getConcatenatedCode = (facilityCode = '0', errorCode = '0') =>
   parseInt(`${facilityCode}${errorCode}`, 10);
 
-const getLogMessage = (message, metadata) =>
-  message + (!metadata ? '' : ` | Metadata: ${JSON.stringify(metadata)}`);
+const getLogMessage = (message, metadata) => (
+  !metadata ? message : JSON.stringify([message, metadata]));
 
 const getLogEvent = (details = {}, metadata) => {
   const message = getLogMessage(details.message, metadata);
@@ -66,7 +66,12 @@ const stamp = stampit()
    */
   sendLog(level, details, ...metadata) {
     if (!LOG_LEVELS.includes(level)) { return Promise.reject('Unsupported log level'); }
-    const log = getLogEvent(details, metadata);
+    const cleanMeta = !metadata.length
+      ? undefined
+      : metadata.length === 1
+        ? metadata[0]
+        : metadata;
+    const log = getLogEvent(details, cleanMeta);
     return postLog.call(this, level, log);
   },
 

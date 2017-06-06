@@ -1,3 +1,10 @@
+# 3.2.1
+
+- FIX: Better display on application logs, when viewed in the AppGrid webpage.
+When no metadata is given, the log message will appear as is on Appgrid (without a useless suffix).
+When one metadata argument is given, the log message will appear as a JSON array (message first, metadata second).
+When more metadata args are given, the same will happen but the second array item will be an array.
+
 # 3.2.0
 
 - FEATURE: You can now change the target endpoint with the `target` option (the default is still the production AppGrid API URL).
