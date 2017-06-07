@@ -19,12 +19,24 @@
 ```
 
 ## Summary
+
 This is the official [Accedo AppGrid](https://www.accedo.tv/appgrid/) SDK for Node.js and browsers.
 While AppGrid exposes a set of friendly REST APIs, this SDK is intended to provide a smoother experience when coding in JS.
 It also encourages the use of best practices (for example: reusing the same sessionId for a client, but different clients for different devices).
 
 We follow [semantic versioning](http://semver.org/).
 Check the [change log](./CHANGELOG.md) to find out what changed between versions.
+
+## Supported browsers
+
+This project is written in ES2015 and the browsers build is transpiled to ES5.
+All modern browsers are supported (Firefox, Chrome, Opera, Safari, Edge, their mobile versions and declinations).
+
+⚠️ If you need to support IE 11 (or other legacy browsers), make sure to load polyfills for the ES2015 features before loading this library. You can either use one such as what babel offers, or just the strict necessary: an ES6 Promise polyfill and another one for `Object.assign`.
+
+## Supported Node.js versions
+
+This should work from version 4, but we test on, and recommend to use Node LTS version 6 or above.
 
 ## Features
 
