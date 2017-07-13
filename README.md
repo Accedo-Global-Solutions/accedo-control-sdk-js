@@ -140,6 +140,10 @@ client.getAllMetadata()
     - add examples and check they all work (`npm run example`)
     - document any public API with JSDoc comments and generate the new doc (`npm run doc`)
 
+### Testing code in browser
+
+`npm run sample`. This will start a local php server and open the sample page in your browser. The sample includes the required polyfills to it can easily be tested on older browsers as well as newer ones.
+
 ## More information & Links
 
 * [AppGrid homepage](http://appgrid.accedo.tv/)

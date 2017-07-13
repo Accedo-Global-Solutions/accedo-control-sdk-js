@@ -2,11 +2,13 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>AppGrid SDK sample</title>
-  <script src="./dist/appgrid.umd.min.js"></script>
+  <title>AppGrid SDK sample with Polyfills</title>
+  <!-- Polyfills for older browsers -->
+  <script src="https://ft-polyfill-service.herokuapp.com/v2/polyfill.min.js?features=Object.assign,Promise"></script>
+  <script src="/dist/appgrid.umd.min.js"></script>
 </head>
 <body>
-  <div style="">The result of an AppGrid network call will appear below. Check the source to see how simple this can be :)</div>
+  <div>The result of an AppGrid network call will appear below. Check the source to see how simple this can be :)</div>
   <pre id="output">Loading...</pre>
   <script>
     const ag = appgrid({
@@ -16,9 +18,11 @@
       // DO NOT do this on production apps
       deviceId: 'sdk-browser-sample',
       // activate verbose mode
-      log(...args) { console.log(...args); },
+      // log(...args) { console.log(...args); },
     });
-    ag.getEntries().then(d => document.getElementById('output').innerHTML = JSON.stringify(d, null, 2));
+    ag.getEntries().then(function(d) {
+      document.getElementById('output').innerHTML = JSON.stringify(d, null, 2);
+    });
   </script>
 </body>
 </html>
