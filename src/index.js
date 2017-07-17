@@ -1,6 +1,5 @@
 import uuidLib from 'uuid';
 import stamp from './stamps/appgridClient';
-import Persistance from './stamps/persistance';
 
 const noop = () => {};
 
@@ -83,12 +82,34 @@ const appgrid = (config) => {
 const WEBSTORAGE_DEVICE_ID = 'ag_d';
 const WEBSTORAGE_SESSION_KEY = 'ag_s';
 
-const persistance = Persistance({
-  props: {
-    storageKeyDeviceId: WEBSTORAGE_DEVICE_ID,
-    storageKeySessionKey: WEBSTORAGE_SESSION_KEY,
-  }
-});
+/**
+ * Default implementation for the browserInfoProvider option (applied to browsers only).
+ * This will persist deviceId in localStorage and sessionKey in sessionStorage.
+ *
+ * @private
+ * @return {Object} An object with both deviceId and sessionKey
+ */
+const defaultBrowserInfoProvider = () => {
+  // Take deviceId from localStorage
+  const deviceId = localStorage[WEBSTORAGE_DEVICE_ID];
+
+  // Take sessionKey from sessionStorage
+  const sessionKey = (hasSessionStorage) ? sessionStorage[WEBSTORAGE_SESSION_KEY] : undefined;
+
+  return { deviceId, sessionKey };
+};
+
+const defaultBrowserOnDeviceIdGenerated = (id) => {
+  if (!hasLocalStorage) { return; }
+
+  localStorage[WEBSTORAGE_DEVICE_ID] = id;
+};
+
+const defaultBrowserOnSessionKeyChanged = (key) => {
+  if (!hasSessionStorage) { return; }
+
+  sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
+};
 
 /**
  * A wrapper over the appgrid factory for clients that support Web Storage by default
@@ -119,9 +140,9 @@ const appgridWrapperForBrowsers = (config) => {
   }
 
   const {
-    browserInfoProvider = persistance.getBrowserInfoProvider.bind(persistance),
-    onDeviceIdGenerated = persistance.setDeviceId.bind(persistance),
-    onSessionKeyChanged = persistance.setSessionKey.bind(persistance)
+    browserInfoProvider = defaultBrowserInfoProvider,
+    onDeviceIdGenerated = defaultBrowserOnDeviceIdGenerated,
+    onSessionKeyChanged = defaultBrowserOnSessionKeyChanged
   } = config;
   let { deviceId, sessionKey } = config;
 
