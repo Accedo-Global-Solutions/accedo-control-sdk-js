@@ -142,7 +142,8 @@ client.getAllMetadata()
 
 ### Testing code in browser
 
-`npm run sample`. This will start a local php server and open the sample page in your browser. The sample includes the required polyfills to it can easily be tested on older browsers as well as newer ones.
+Open the `sample.html` file in your browser. On an OSX shell, you can use `open sample.html`.
+The sample includes the polyfills necessary for older browsers (those that do not support ES6).
 
 ## More information & Links
 

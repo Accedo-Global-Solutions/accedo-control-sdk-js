@@ -18,9 +18,7 @@
     "test": "mocha --opts ./test/mocha.opts build/test-bundle.js",
     "doc": "documentation build src/index.js -c doc_config.yml --format html -o docs",
     "docmd": "documentation build src/index.js -c doc_config.yml --format md > API.md",
-    "prepublish": "npm test && npm run doc && npm run build",
-    "presample": "npm run build",
-    "sample": "open http://localhost:9000/sample.html && php -S localhost:9000"
+    "prepublish": "npm test && npm run doc && npm run build"
   },
   "repository": {
     "type": "git",
