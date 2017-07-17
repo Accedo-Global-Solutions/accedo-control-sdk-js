@@ -1,3 +1,8 @@
+# 3.2.2
+
+- FIX: #7 - The default, browser-only persistency strategy (towards Web Storage) failed on private-mode browsing, and when the browser Web Storage was full, causing an exception. This is now silently caught.
+Thanks to @SNikon who reported the issue.
+
 # 3.2.1
 
 - FIX: Better display on application logs, when viewed in the AppGrid webpage.
