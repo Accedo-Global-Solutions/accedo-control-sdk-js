@@ -143,7 +143,9 @@ const defaultBrowserOnSessionKeyChanged = (key) => {
  *
  * @function
  * @param  {object} config the configuration for the new instance
- * @param  {string} config.browserInfoProvider A function to customise the persistency strategy
+ * @param  {string} config.browserInfoProvider A function that should return an object
+ *                                             with `deviceId` and `sessionKey` properties, saved from
+ *                                             previous sessions (see `onDeviceIdGenerated`, `onSessionKeyChanged`)
  * @param  {any} [config.appKey/log/gid/etc] You should also pass any extra option accepted by the appgrid factory function (appKey, log, gid, ...)
  * @return {client}        an AppGrid client tied to the given params
  */
