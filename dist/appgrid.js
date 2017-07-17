@@ -616,80 +616,6 @@ const stamp = stampit().compose(
   stamp$11
 );
 
-const memoryStorage = {};
-
-const Stamp$1 = stampit({
-  props: {
-    storageKeyDeviceId: 'ag_d',
-    storageKeySessionKey: 'ag_s',
-    hasLocalStorage: false,
-    hasSessionStorage: false,
-    hasSomeWebStorage: false,
-  },
-  methods: {
-    getDeviceId() {
-      if (this.isAllowedToUseBrowserStorage) { return localStorage[this.storageKeyDeviceId]; }
-      return memoryStorage[this.storageKeyDeviceId];
-    },
-    setDeviceId(id) {
-      let storage = memoryStorage;
-      if (this.isAllowedToUseBrowserStorage) {
-        storage = localStorage;
-      }
-      storage[this.storageKeyDeviceId] = id;
-      return storage[this.storageKeyDeviceId];
-    },
-    getSessionKey() {
-      if (this.isAllowedToUseBrowserStorage) { return sessionStorage[this.storageKeySessionKey]; }
-      return memoryStorage[this.storageKeySessionKey];
-    },
-    setSessionKey(key) {
-      let storage = memoryStorage;
-      if (this.isAllowedToUseBrowserStorage) {
-        storage = sessionStorage;
-      }
-      storage[this.storageKeySessionKey] = key;
-      return storage[this.storageKeySessionKey];
-    },
-    getBrowserInfoProvider() {
-      const deviceId = this.getDeviceId();
-      const sessionKey = this.getSessionKey();
-      return {
-        deviceId,
-        sessionKey,
-      };
-    },
-  },
-  init: function init({ storageKeyDeviceId, storageKeySessionKey }) {
-    // Storage keys
-    this.storageKeyDeviceId = storageKeyDeviceId || this.storageKeyDeviceId;
-    this.storageKeySessionKey = storageKeySessionKey || this.storageKeySessionKey;
-
-    // Flags for what storage is available
-    this.hasLocalStorage = (typeof localStorage !== 'undefined');
-    this.hasSessionStorage = (typeof sessionStorage !== 'undefined');
-    this.hasSomeWebStorage = this.hasSessionStorage || this.hasLocalStorage;
-
-    function checkIsAllowedToUseBrowserStorage(hasWebStorage) {
-      if (!hasWebStorage) { return false; }
-      try {
-        const testKey = '___a___';
-        const testValue = 'abc';
-        localStorage[testKey] = testValue;
-        sessionStorage[testKey] = testValue;
-        return true;
-      } catch (err) {
-        return false;
-      }
-    }
-
-    // Check that we're allowed to use the storage.
-    // In private mode browser might have the feature but deny access to it
-    this.isAllowedToUseBrowserStorage = checkIsAllowedToUseBrowserStorage(this.hasSomeWebStorage);
-    return this;
-  }
-});
-
 const noop = () => {};
 
 const hasLocalStorage = (typeof localStorage !== 'undefined');
@@ -771,12 +697,47 @@ const appgrid = (config) => {
 const WEBSTORAGE_DEVICE_ID = 'ag_d';
 const WEBSTORAGE_SESSION_KEY = 'ag_s';
 
-const persistance = Stamp$1({
-  props: {
-    storageKeyDeviceId: WEBSTORAGE_DEVICE_ID,
-    storageKeySessionKey: WEBSTORAGE_SESSION_KEY,
+/**
+ * Default implementation for the browserInfoProvider option (applied to browsers only).
+ * This will persist deviceId in localStorage and sessionKey in sessionStorage.
+ *
+ * @private
+ * @return {Object} An object with both deviceId and sessionKey
+ */
+const defaultBrowserInfoProvider = () => {
+  // try-catch in case of an exotic device that would crash on webstorage access
+  try {
+    // Take deviceId from localStorage
+    const deviceId = localStorage[WEBSTORAGE_DEVICE_ID];
+
+    // Take sessionKey from sessionStorage
+    const sessionKey = (hasSessionStorage) ? sessionStorage[WEBSTORAGE_SESSION_KEY] : undefined;
+
+    return { deviceId, sessionKey };
+  } catch (error) {
+    return {};
   }
-});
+};
+
+const defaultBrowserOnDeviceIdGenerated = (id) => {
+  if (!hasLocalStorage) { return; }
+  // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
+  try {
+    localStorage[WEBSTORAGE_DEVICE_ID] = id;
+  } catch (error) {
+    // nothing we can do on Safari's private mode or lack of storage space
+  }
+};
+
+const defaultBrowserOnSessionKeyChanged = (key) => {
+  if (!hasSessionStorage) { return; }
+  // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
+  try {
+    sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
+  } catch (error) {
+    // nothing we can do on Safari's private mode or lack of storage space
+  }
+};
 
 /**
  * A wrapper over the appgrid factory for clients that support Web Storage by default
@@ -807,9 +768,9 @@ const appgridWrapperForBrowsers = (config) => {
   }
 
   const {
-    browserInfoProvider = persistance.getBrowserInfoProvider.bind(persistance),
-    onDeviceIdGenerated = persistance.setDeviceId.bind(persistance),
-    onSessionKeyChanged = persistance.setSessionKey.bind(persistance)
+    browserInfoProvider = defaultBrowserInfoProvider,
+    onDeviceIdGenerated = defaultBrowserOnDeviceIdGenerated,
+    onSessionKeyChanged = defaultBrowserOnSessionKeyChanged
   } = config;
   let { deviceId, sessionKey } = config;
 
