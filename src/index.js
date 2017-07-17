@@ -90,25 +90,38 @@ const WEBSTORAGE_SESSION_KEY = 'ag_s';
  * @return {Object} An object with both deviceId and sessionKey
  */
 const defaultBrowserInfoProvider = () => {
-  // Take deviceId from localStorage
-  const deviceId = localStorage[WEBSTORAGE_DEVICE_ID];
+  // try-catch in case of an exotic device that would crash on webstorage access
+  try {
+    // Take deviceId from localStorage
+    const deviceId = localStorage[WEBSTORAGE_DEVICE_ID];
 
-  // Take sessionKey from sessionStorage
-  const sessionKey = (hasSessionStorage) ? sessionStorage[WEBSTORAGE_SESSION_KEY] : undefined;
+    // Take sessionKey from sessionStorage
+    const sessionKey = (hasSessionStorage) ? sessionStorage[WEBSTORAGE_SESSION_KEY] : undefined;
 
-  return { deviceId, sessionKey };
+    return { deviceId, sessionKey };
+  } catch (error) {
+    return {};
+  }
 };
 
 const defaultBrowserOnDeviceIdGenerated = (id) => {
   if (!hasLocalStorage) { return; }
-
-  localStorage[WEBSTORAGE_DEVICE_ID] = id;
+  // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
+  try {
+    localStorage[WEBSTORAGE_DEVICE_ID] = id;
+  } catch (error) {
+    // nothing we can do on Safari's private mode or lack of storage space
+  }
 };
 
 const defaultBrowserOnSessionKeyChanged = (key) => {
   if (!hasSessionStorage) { return; }
-
-  sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
+  // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
+  try {
+    sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
+  } catch (error) {
+    // nothing we can do on Safari's private mode or lack of storage space
+  }
 };
 
 /**
