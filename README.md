@@ -33,6 +33,7 @@ This project is written in ES2015 and the browsers build is transpiled to ES5.
 All modern browsers are supported (Firefox, Chrome, Opera, Safari, Edge, their mobile versions and declinations).
 
 ⚠️ If you need to support IE 11 (or other legacy browsers), make sure to load polyfills for the ES2015 features before loading this library. You can either use one such as what babel offers, or just the strict necessary: an ES6 Promise polyfill and another one for `Object.assign`.
+Refer to `sample.html` for an example on using such a polyfill.
 
 ## Supported Node.js versions
 
@@ -140,9 +141,14 @@ client.getAllMetadata()
     - add examples and check they all work (`npm run example`)
     - document any public API with JSDoc comments and generate the new doc (`npm run doc`)
 
-### Testing code in browser
+### Testing code in the browser
 
-Open the `sample.html` file in your browser. On an OSX shell, you can use `open sample.html`.
+Make sure to build as mentionned above, then open the `sample.html` file in your browser.
+
+On an OSX shell, you can use `open sample.html`.
+To serve it on a local web server, you can use `php -S localhost:9000` or `python -m SimpleHTTPServer 9000` if you have php or python binaries available on your path.
+Other options include Apache, Nginx, and Node-based servers such as [`http-server`](https://www.npmjs.com/package/http-server) or [`static-server`](https://www.npmjs.com/package/static-server).
+
 The sample includes the polyfills necessary for older browsers (those that do not support ES6).
 
 ## More information & Links
