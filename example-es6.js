@@ -43,7 +43,7 @@ const exampleAppGridLogging = () => {
   const getLogEventOptions = (message, facilityCode) => { // NOTE: This is simply a convenience/helper method for building a logEvent object.
     const networkErrorCode = '002'; // NOTE: The ErrorCode used must exist within your AppGrid Application's configuration.
     const middlewareSourceCode = 'service-mw'; // NOTE: The SourceCode used must exist within your AppGrid Application's configuration.
-    const noneViewName = ''; // NOTE: The ViewName used must exist within your AppGrid Application's configuration.
+    const noneViewName = 'sdk_unit_test'; // NOTE: The ViewName used must exist within your AppGrid Application's configuration.
     const deviceType = 'desktop'; // NOTE: The deviceType used must exist within your AppGrid Application's configuration.
     return {
       message,
