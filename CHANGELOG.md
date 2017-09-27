@@ -1,3 +1,10 @@
+# 3.2.3
+
+- FIX: Similar to version 3.2.2, this solves a new issue with Web Storage following the release of Safari 11.
+Here, an uncaught exception was thrown on Safari 11 when a user setting was forbidding the storage of website data.
+Interestingly, the mere fact of checking whether `localStorage` exists (using `typeof`) was enough to cause the crash.
+- All safe dependency updates
+
 # 3.2.2
 
 - FIX: #7 - The default, browser-only persistency strategy (towards Web Storage) failed on private-mode browsing, and when the browser Web Storage was full, causing an exception. This is now silently caught.
