@@ -5,13 +5,11 @@ import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify'; // eslint-disable-line import/extensions
 
 export default {
-  input: 'src/index.js',
-  output: {
-    format: 'umd',
-    file: 'dist/appgrid.umd.min.js',
-    name: 'appgrid',
-    sourcemap: false,
-  },
+  entry: 'src/index.js',
+  format: 'umd',
+  dest: 'dist/appgrid.umd.min.js',
+  moduleName: 'appgrid',
+  sourceMap: false,
   plugins: [
     nodeResolve({
       module: true,
