@@ -2,11 +2,13 @@
 import multiEntry from 'rollup-plugin-multi-entry'; // eslint-disable-line import/extensions
 
 export default {
-  entry: 'test/**/*.js',
+  input: 'test/**/*.js',
   plugins: [multiEntry()],
-  format: 'cjs',
-  intro: 'require("source-map-support").install();',
-  dest: 'build/test-bundle.js',
-  sourceMap: true,
+  output: {
+    format: 'cjs',
+    intro: 'require("source-map-support").install();',
+    file: 'build/test-bundle.js',
+    sourcemap: true,
+  },
   external: ['uuid', 'stampit', 'qs', 'isomorphic-unfetch', 'chai', 'sinon'],
 };
