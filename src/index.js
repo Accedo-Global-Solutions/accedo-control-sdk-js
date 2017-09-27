@@ -3,8 +3,14 @@ import stamp from './stamps/appgridClient';
 
 const noop = () => {};
 
-const hasLocalStorage = (typeof localStorage !== 'undefined');
-const hasSessionStorage = (typeof sessionStorage !== 'undefined');
+let hasLocalStorage = false;
+let hasSessionStorage = false;
+try {
+  hasLocalStorage = (typeof localStorage !== 'undefined');
+  hasSessionStorage = (typeof sessionStorage !== 'undefined');
+} catch (err) {
+  // Probably Safari 11 with 'website data' set to 'always blocked'
+}
 const hasSomeWebStorage = hasLocalStorage || hasSessionStorage;
 
 /**
@@ -110,7 +116,7 @@ const defaultBrowserOnDeviceIdGenerated = (id) => {
   try {
     localStorage[WEBSTORAGE_DEVICE_ID] = id;
   } catch (error) {
-    // nothing we can do on Safari's private mode or lack of storage space
+    // nothing we can do on private mode or lack of storage space
   }
 };
 
@@ -120,7 +126,7 @@ const defaultBrowserOnSessionKeyChanged = (key) => {
   try {
     sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
   } catch (error) {
-    // nothing we can do on Safari's private mode or lack of storage space
+    // nothing we can do on private mode or lack of storage space
   }
 };
 
