@@ -12,7 +12,7 @@
     "test": "jest",
     "doc": "documentation build src/index.js -c doc_config.yml --format html -o docs",
     "docmd": "documentation build src/index.js -c doc_config.yml --format md > API.md",
-    "prepublish": "yarn test && yarn run doc && yarn run build"
+    "prepublishOnly": "yarn test && yarn run doc && yarn run build"
   },
   "repository": {
     "type": "git",
