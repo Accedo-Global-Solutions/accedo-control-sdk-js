@@ -2,6 +2,7 @@
 
 - Replaced Mocha, Chai and Sinon with Jest
 - Replaced all import/export ES6 Module statements by CommonJS require/module.exports. This allows us to run tests without a build step, and also run them in 'watch' mode if we like. Also, this means there's no build step needed any more for the Node library, nor for the Node example, so no more rollup configuration is needed for those.
+- Now using Prettier for code style formatting
 
 # 3.2.3
 

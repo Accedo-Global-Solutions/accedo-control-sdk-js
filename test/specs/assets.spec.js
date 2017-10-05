@@ -8,9 +8,8 @@ describe('Assets API Tests', () => {
   });
 
   test('getAllAssets should should return at least one asset', () => {
-    return client.getAllAssets()
-      .then((assets) => {
-        expect(Object.keys(assets).length).toBeGreaterThan(0);
-      });
+    return client.getAllAssets().then(assets => {
+      expect(Object.keys(assets).length).toBeGreaterThan(0);
+    });
   });
 });

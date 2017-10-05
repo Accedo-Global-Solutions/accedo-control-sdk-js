@@ -7,12 +7,16 @@ const credentials = 'same-origin'; // NOTE: This option is required in order for
 const defaultHeaders = { accept: MIME_TYPE_JSON };
 
 const getForwardedForHeader = ({ ip }) => {
-  if (!ip) { return {}; }
+  if (!ip) {
+    return {};
+  }
   return { 'X-FORWARDED-FOR': ip };
 };
 
 const getSessionHeader = ({ sessionKey }) => {
-  if (!sessionKey) { return {}; }
+  if (!sessionKey) {
+    return {};
+  }
   return { 'X-SESSION': sessionKey };
 };
 
@@ -20,11 +24,15 @@ const getContentTypeHeader = () => ({ 'Content-Type': MIME_TYPE_JSON });
 
 const getQueryString = (config, existingQs = {}) => {
   // When there is a sessionKey, these are useless
-  const defaultQs = config.sessionKey ? {} : {
-    appKey: config.appKey,
-    uuid: config.deviceId
-  };
-  if (config.gid) { defaultQs.gid = config.gid; }
+  const defaultQs = config.sessionKey
+    ? {}
+    : {
+        appKey: config.appKey,
+        uuid: config.deviceId,
+      };
+  if (config.gid) {
+    defaultQs.gid = config.gid;
+  }
   const qsObject = Object.assign({}, existingQs, defaultQs);
   const queryString = qs.stringify(qsObject);
   return queryString;
@@ -39,60 +47,73 @@ const getRequestUrlWithQueryString = (path, config) => {
   return `${target}${pathWithoutQs}?${queryString}`;
 };
 
-const getExtraHeaders = (config) => {
-  return Object.assign({}, getForwardedForHeader(config), getSessionHeader(config));
+const getExtraHeaders = config => {
+  return Object.assign(
+    {},
+    getForwardedForHeader(config),
+    getSessionHeader(config)
+  );
 };
 
 const getFetch = (path, config) => {
   const headers = Object.assign({}, defaultHeaders, getExtraHeaders(config));
   const requestUrl = getRequestUrlWithQueryString(path, config);
-  config.log(`Sending a GET request to: ${requestUrl} with the following headers`, headers);
-  return fetch(requestUrl, { credentials, headers })
-    .then(res => {
-      if (res.status >= 400) {
-        config.log('GET failed with status', res.status);
-        throw res;
-      }
-      return res;
-    });
+  config.log(
+    `Sending a GET request to: ${requestUrl} with the following headers`,
+    headers
+  );
+  return fetch(requestUrl, { credentials, headers }).then(res => {
+    if (res.status >= 400) {
+      config.log('GET failed with status', res.status);
+      throw res;
+    }
+    return res;
+  });
 };
 
 module.exports.grab = (path, config) => {
   config.log('Requesting', path);
   return getFetch(path, config)
     .then(res => res.json())
-    .then((response) => {
+    .then(response => {
       config.log('GET response', response);
       return response;
     });
 };
 
 module.exports.grabRaw = (path, config) => {
-  return getFetch(path, config)
-    .then((response) => {
-      return response.body;
-    });
+  return getFetch(path, config).then(response => {
+    return response.body;
+  });
 };
 
 module.exports.post = (path, config, body = {}) => {
-  const headers = Object.assign({},
+  const headers = Object.assign(
+    {},
     defaultHeaders,
     getContentTypeHeader(),
     getExtraHeaders(config)
   );
   const requestUrl = getRequestUrlWithQueryString(path, config);
-  config.log(`Sending a POST request to: ${requestUrl}. With the following headers and body: `, headers, body);
+  config.log(
+    `Sending a POST request to: ${requestUrl}. With the following headers and body: `,
+    headers,
+    body
+  );
   const options = {
     headers,
     credentials,
     method: 'post',
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   };
-  return fetch(requestUrl, options)
-    .then(({ status, statusText }) => {
-      if (status !== 200) { throw new Error(`AppGrid POST request returned a non-200 response. Status Code: ${status}. Status Text: ${statusText}`); }
-      const result = { status, statusText };
-      config.log('POST response: ', { status, statusText });
-      return result;
-    });
+  return fetch(requestUrl, options).then(({ status, statusText }) => {
+    if (status !== 200) {
+      throw new Error(
+        `AppGrid POST request returned a non-200 response. Status Code: ${status}. Status Text: ${statusText}`
+      );
+    }
+    const result = { status, statusText };
+    config.log('POST response: ', { status, statusText });
+    return result;
+  });
 };

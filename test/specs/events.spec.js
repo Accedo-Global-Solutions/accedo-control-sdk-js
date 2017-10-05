@@ -8,30 +8,23 @@ describe('Events API Tests', () => {
     deviceId: 'gregTestingSDK',
   });
 
-  test(
-    'sendUsageStartEvent should successfully send a usage start event to AppGrid',
-    () => {
-      return client.sendUsageStartEvent()
+  test('sendUsageStartEvent should successfully send a usage start event to AppGrid', () => {
+    return client.sendUsageStartEvent().then(({ status }) => {
+      expect(status).toBe(okStatus);
+    });
+  });
+
+  test('sendUsageStopEvent should successfully send a usage stop event to AppGrid after 3 seconds', () => {
+    const rententionTimeInSeconds = 3;
+
+    return new Promise(resolve => {
+      setTimeout(() => resolve(), rententionTimeInSeconds * 1000);
+    }).then(() => {
+      return client
+        .sendUsageStopEvent(rententionTimeInSeconds)
         .then(({ status }) => {
           expect(status).toBe(okStatus);
         });
-    }
-  );
-
-  test(
-    'sendUsageStopEvent should successfully send a usage stop event to AppGrid after 3 seconds',
-    () => {
-      const rententionTimeInSeconds = 3;
-
-      return new Promise(resolve => {
-        setTimeout(() => resolve(), rententionTimeInSeconds * 1000);
-      })
-      .then(() => {
-        return client.sendUsageStopEvent(rententionTimeInSeconds)
-        .then(({ status }) => {
-          expect(status).toBe(okStatus);
-        });
-      });
-    }
-  );
+    });
+  });
 });

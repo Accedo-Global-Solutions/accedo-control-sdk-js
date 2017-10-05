@@ -8,11 +8,7 @@ const dataValueToSet = 'platinum';
 const userProfileData = {
   name: 'Johnny AppGridUser',
   email: 'johnny.appgriduser@email.com',
-  favoriteVideoIds: [
-    'abc123',
-    '321abc',
-    'cba321'
-  ]
+  favoriteVideoIds: ['abc123', '321abc', 'cba321'],
 };
 
 describe('UserData API Tests', () => {
@@ -22,89 +18,79 @@ describe('UserData API Tests', () => {
     // log: (...args) => console.log(...args)
   });
 
-  test(
-    'setApplicationScopeUserData should return an OK status from AppGrid',
-    () => {
-      return client.setApplicationScopeUserData(userName, userProfileData)
-        .then(({ status }) => {
-          expect(status).toBe(okStatus);
-        });
-    }
-  );
+  test('setApplicationScopeUserData should return an OK status from AppGrid', () => {
+    return client
+      .setApplicationScopeUserData(userName, userProfileData)
+      .then(({ status }) => {
+        expect(status).toBe(okStatus);
+      });
+  });
 
-  test(
-    'setApplicationGroupScopeUserData should return an OK status from AppGrid',
-    () => {
-      return client.setApplicationGroupScopeUserData(userName, userProfileData)
-        .then(({ status }) => {
-          expect(status).toBe(okStatus);
-        });
-    }
-  );
+  test('setApplicationGroupScopeUserData should return an OK status from AppGrid', () => {
+    return client
+      .setApplicationGroupScopeUserData(userName, userProfileData)
+      .then(({ status }) => {
+        expect(status).toBe(okStatus);
+      });
+  });
 
-  test(
-    'getAllApplicationScopeDataByUser should return the expected UserData Profile from AppGrid',
-    () => {
-      return client.getAllApplicationScopeDataByUser(userName)
-        .then((userData) => {
-          expect(userData).toBeTruthy();
-          expect(userData.name).toBe(userProfileData.name);
-          expect(userData.email).toBe(userProfileData.email);
-        });
-    }
-  );
+  test('getAllApplicationScopeDataByUser should return the expected UserData Profile from AppGrid', () => {
+    return client.getAllApplicationScopeDataByUser(userName).then(userData => {
+      expect(userData).toBeTruthy();
+      expect(userData.name).toBe(userProfileData.name);
+      expect(userData.email).toBe(userProfileData.email);
+    });
+  });
 
-  test(
-    'getAllApplicationGroupScopeDataByUser should the expected UserData Profile from AppGrid',
-    () => {
-      return client.getAllApplicationGroupScopeDataByUser(userName)
-        .then((userData) => {
-          expect(userData).toBeTruthy();
-          expect(userData.name).toBe(userProfileData.name);
-          expect(userData.email).toBe(userProfileData.email);
-        });
-    }
-  );
+  test('getAllApplicationGroupScopeDataByUser should the expected UserData Profile from AppGrid', () => {
+    return client
+      .getAllApplicationGroupScopeDataByUser(userName)
+      .then(userData => {
+        expect(userData).toBeTruthy();
+        expect(userData.name).toBe(userProfileData.name);
+        expect(userData.email).toBe(userProfileData.email);
+      });
+  });
 
-  test(
-    'setApplicationScopeUserDataByKey should return an OK status from AppGrid',
-    () => {
-      return client.setApplicationScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
-        .then(({ status }) => {
-          expect(status).toBe(okStatus);
-        });
-    }
-  );
+  test('setApplicationScopeUserDataByKey should return an OK status from AppGrid', () => {
+    return client
+      .setApplicationScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
+      .then(({ status }) => {
+        expect(status).toBe(okStatus);
+      });
+  });
 
-  test(
-    'setApplicationGroupScopeUserDataByKey should return an OK status from AppGrid',
-    () => {
-      return client.setApplicationGroupScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
-        .then(({ status }) => {
-          expect(status).toBe(okStatus);
-        });
-    }
-  );
+  test('setApplicationGroupScopeUserDataByKey should return an OK status from AppGrid', () => {
+    return client
+      .setApplicationGroupScopeUserDataByKey(
+        userName,
+        dataKeyToSet,
+        dataValueToSet
+      )
+      .then(({ status }) => {
+        expect(status).toBe(okStatus);
+      });
+  });
 
-  test(
-    'getApplicationScopeDataByUserAndKey should return an OK status from AppGrid',
-    () => {
-      return client.getApplicationScopeDataByUserAndKey(userName, dataKeyToRequest)
-        .then((userData) => {
-          expect(userData).toBeTruthy();
-          expect(userData[dataKeyToRequest]).toBe(userProfileData[dataKeyToRequest]);
-        });
-    }
-  );
+  test('getApplicationScopeDataByUserAndKey should return an OK status from AppGrid', () => {
+    return client
+      .getApplicationScopeDataByUserAndKey(userName, dataKeyToRequest)
+      .then(userData => {
+        expect(userData).toBeTruthy();
+        expect(userData[dataKeyToRequest]).toBe(
+          userProfileData[dataKeyToRequest]
+        );
+      });
+  });
 
-  test(
-    'getApplicationGroupScopeDataByUserAndKey should return an OK status from AppGrid',
-    () => {
-      return client.getApplicationGroupScopeDataByUserAndKey(userName, dataKeyToRequest)
-        .then((userData) => {
-          expect(userData).toBeTruthy();
-          expect(userData[dataKeyToRequest]).toBe(userProfileData[dataKeyToRequest]);
-        });
-    }
-  );
+  test('getApplicationGroupScopeDataByUserAndKey should return an OK status from AppGrid', () => {
+    return client
+      .getApplicationGroupScopeDataByUserAndKey(userName, dataKeyToRequest)
+      .then(userData => {
+        expect(userData).toBeTruthy();
+        expect(userData[dataKeyToRequest]).toBe(
+          userProfileData[dataKeyToRequest]
+        );
+      });
+  });
 });

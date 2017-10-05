@@ -6,8 +6,8 @@ const noop = () => {};
 let hasLocalStorage = false;
 let hasSessionStorage = false;
 try {
-  hasLocalStorage = (typeof localStorage !== 'undefined');
-  hasSessionStorage = (typeof sessionStorage !== 'undefined');
+  hasLocalStorage = typeof localStorage !== 'undefined';
+  hasSessionStorage = typeof sessionStorage !== 'undefined';
 } catch (err) {
   // Probably Safari 11 with 'website data' set to 'always blocked'
 }
@@ -55,9 +55,13 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * // when there is no known sessionKey or deviceId yet
  * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
  */
-const appgrid = (config) => {
+const appgrid = config => {
   const { gid, appKey, ip, target } = config;
-  const { log = noop, onDeviceIdGenerated = noop, onSessionKeyChanged = noop } = config;
+  const {
+    log = noop,
+    onDeviceIdGenerated = noop,
+    onSessionKeyChanged = noop,
+  } = config;
   let { deviceId, sessionKey } = config;
   // If there is no deviceId, do not allow reusing a sessionKey
   if (!deviceId) {
@@ -65,7 +69,9 @@ const appgrid = (config) => {
   }
   // Check the params are OK
   if (!checkUsability({ appKey, deviceId, sessionKey })) {
-    throw new Error('You must provide an appKey | an appKey and a deviceId | an appKey, a deviceId and a sessionKey');
+    throw new Error(
+      'You must provide an appKey | an appKey and a deviceId | an appKey, a deviceId and a sessionKey'
+    );
   }
   // Generate a uuid if no deviceId was given
   if (!deviceId) {
@@ -74,14 +80,27 @@ const appgrid = (config) => {
     onDeviceIdGenerated(deviceId);
   }
 
-  const stampConfig = { deviceId, gid, ip, appKey, target, log, onSessionKeyChanged };
+  const stampConfig = {
+    deviceId,
+    gid,
+    ip,
+    appKey,
+    target,
+    log,
+    onSessionKeyChanged,
+  };
   Object.defineProperty(stampConfig, 'sessionKey', {
-    set(val) { sessionKey = val; onSessionKeyChanged(val); },
-    get() { return sessionKey; }
+    set(val) {
+      sessionKey = val;
+      onSessionKeyChanged(val);
+    },
+    get() {
+      return sessionKey;
+    },
   });
 
   return stamp({
-    props: { config: stampConfig }
+    props: { config: stampConfig },
   });
 };
 
@@ -102,7 +121,9 @@ const defaultBrowserInfoProvider = () => {
     const deviceId = localStorage[WEBSTORAGE_DEVICE_ID];
 
     // Take sessionKey from sessionStorage
-    const sessionKey = (hasSessionStorage) ? sessionStorage[WEBSTORAGE_SESSION_KEY] : undefined;
+    const sessionKey = hasSessionStorage
+      ? sessionStorage[WEBSTORAGE_SESSION_KEY]
+      : undefined;
 
     return { deviceId, sessionKey };
   } catch (error) {
@@ -110,8 +131,10 @@ const defaultBrowserInfoProvider = () => {
   }
 };
 
-const defaultBrowserOnDeviceIdGenerated = (id) => {
-  if (!hasLocalStorage) { return; }
+const defaultBrowserOnDeviceIdGenerated = id => {
+  if (!hasLocalStorage) {
+    return;
+  }
   // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
   try {
     localStorage[WEBSTORAGE_DEVICE_ID] = id;
@@ -120,8 +143,10 @@ const defaultBrowserOnDeviceIdGenerated = (id) => {
   }
 };
 
-const defaultBrowserOnSessionKeyChanged = (key) => {
-  if (!hasSessionStorage) { return; }
+const defaultBrowserOnSessionKeyChanged = key => {
+  if (!hasSessionStorage) {
+    return;
+  }
   // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
   try {
     sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
@@ -155,7 +180,7 @@ const defaultBrowserOnSessionKeyChanged = (key) => {
  * @param  {any} [config.appKey/log/gid/etc] You should also pass any extra option accepted by the appgrid factory function (appKey, log, gid, ...)
  * @return {client}        an AppGrid client tied to the given params
  */
-const appgridWrapperForBrowsers = (config) => {
+const appgridWrapperForBrowsers = config => {
   if (!hasSomeWebStorage) {
     return appgrid(config);
   }
@@ -163,7 +188,7 @@ const appgridWrapperForBrowsers = (config) => {
   const {
     browserInfoProvider = defaultBrowserInfoProvider,
     onDeviceIdGenerated = defaultBrowserOnDeviceIdGenerated,
-    onSessionKeyChanged = defaultBrowserOnSessionKeyChanged
+    onSessionKeyChanged = defaultBrowserOnSessionKeyChanged,
   } = config;
   let { deviceId, sessionKey } = config;
 
@@ -173,7 +198,14 @@ const appgridWrapperForBrowsers = (config) => {
     sessionKey = sessionKey || browserInfo.sessionKey;
   }
 
-  return appgrid(Object.assign({}, config, { deviceId, sessionKey, onDeviceIdGenerated, onSessionKeyChanged }));
+  return appgrid(
+    Object.assign({}, config, {
+      deviceId,
+      sessionKey,
+      onDeviceIdGenerated,
+      onSessionKeyChanged,
+    })
+  );
 };
 
 module.exports = hasSomeWebStorage ? appgridWrapperForBrowsers : appgrid;

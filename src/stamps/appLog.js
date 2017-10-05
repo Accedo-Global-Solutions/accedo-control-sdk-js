@@ -12,8 +12,8 @@ const LOG_LEVELS = [DEBUG, INFO, WARN, ERROR];
 const getConcatenatedCode = (facilityCode = '0', errorCode = '0') =>
   parseInt(`${facilityCode}${errorCode}`, 10);
 
-const getLogMessage = (message, metadata) => (
-  !metadata ? message : JSON.stringify([message, metadata]));
+const getLogMessage = (message, metadata) =>
+  !metadata ? message : JSON.stringify([message, metadata]);
 
 const getLogEvent = (details = {}, metadata) => {
   const message = getLogMessage(details.message, metadata);
@@ -33,23 +33,29 @@ function request(path) {
 }
 
 function postLog(level, log) {
-  return this.withSessionHandling(() => post(`/application/log/${level}`, this.props.config, log));
+  return this.withSessionHandling(() =>
+    post(`/application/log/${level}`, this.props.config, log)
+  );
 }
 
 function postLogs(logs) {
-  return this.withSessionHandling(() => post('/application/logs', this.props.config, logs));
+  return this.withSessionHandling(() =>
+    post('/application/logs', this.props.config, logs)
+  );
 }
 
 const stamp = stampit()
-.methods({
-  /**
+  .methods({
+    /**
    * Get the current log level
    * @return {promise}  a promise of the log level (string)
    */
-  getLogLevel() {
-    return request.call(this, '/application/log/level').then(json => json.logLevel);
-  },
-  /**
+    getLogLevel() {
+      return request
+        .call(this, '/application/log/level')
+        .then(json => json.logLevel);
+    },
+    /**
    * Send a log with the given level, details and extra metadata.
    * @param {'debug'|'info'|'warn'|'error'} level the log level
    * @param {object} details the log information
@@ -64,18 +70,18 @@ const stamp = stampit()
    *                         Can be passed as any number of trailing arguments.
    * @return {promise}  a promise of the success of the operation
    */
-  sendLog(level, details, ...metadata) {
-    if (!LOG_LEVELS.includes(level)) { return Promise.reject('Unsupported log level'); }
-    const cleanMeta = !metadata.length
-      ? undefined
-      : metadata.length === 1
-        ? metadata[0]
-        : metadata;
-    const log = getLogEvent(details, cleanMeta);
-    return postLog.call(this, level, log);
-  },
+    sendLog(level, details, ...metadata) {
+      if (!LOG_LEVELS.includes(level)) {
+        return Promise.reject('Unsupported log level');
+      }
+      const cleanMeta = !metadata.length
+        ? undefined
+        : metadata.length === 1 ? metadata[0] : metadata;
+      const log = getLogEvent(details, cleanMeta);
+      return postLog.call(this, level, log);
+    },
 
-  /**
+    /**
    * Send batched logs, each with its own level, timestamp, details and extra metadata.
    * @param {object[]} logs Log description objects
    * @param {'debug'|'info'|'warn'|'error'} logs[].logType the log type
@@ -92,15 +98,18 @@ const stamp = stampit()
    * @param {any} [logs[].metadata] extra metadata (will go through JSON.stringify).
    * @return {promise}  a promise of the success of the operation
    */
-  sendLogs(logs) {
-    const preparedLogs = logs.map(log => {
-      const { logType, timestamp } = log;
-      return Object.assign(getLogEvent(log, log.metadata), { logType, timestamp });
-    });
-    return postLogs.call(this, preparedLogs);
-  }
-})
-// Make sure we have the sessionStamp withSessionHandling method
-.compose(sessionStamp);
+    sendLogs(logs) {
+      const preparedLogs = logs.map(log => {
+        const { logType, timestamp } = log;
+        return Object.assign(getLogEvent(log, log.metadata), {
+          logType,
+          timestamp,
+        });
+      });
+      return postLogs.call(this, preparedLogs);
+    },
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(sessionStamp);
 
 module.exports = stamp;

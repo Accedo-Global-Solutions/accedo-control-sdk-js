@@ -30,88 +30,105 @@ function setUserDataByKey(scope, userName, key, data) {
 }
 
 const stamp = stampit()
-.methods({
-  /**
+  .methods({
+    /**
    * Get all the application-scope data for a given user
    * @param {string} userName an appgrid user
    * @return {promise}  a promise of the requested data
    */
-  getAllApplicationScopeDataByUser(userName) {
-    return getAllDataByUser.call(this, APPLICATION_SCOPE, userName);
-  },
+    getAllApplicationScopeDataByUser(userName) {
+      return getAllDataByUser.call(this, APPLICATION_SCOPE, userName);
+    },
 
-  /**
+    /**
    * Get all the application-group-scope data for a given user
    * @param {string} userName an appgrid user
    * @return {promise}  a promise of the requested data
    */
-  getAllApplicationGroupScopeDataByUser(userName) {
-    return getAllDataByUser.call(this, APPLICATION_GROUP_SCOPE, userName);
-  },
+    getAllApplicationGroupScopeDataByUser(userName) {
+      return getAllDataByUser.call(this, APPLICATION_GROUP_SCOPE, userName);
+    },
 
-  /**
+    /**
    * Get all the application-scope data for a given user and data key
    * @param {string} userName an appgrid user
    * @param {string} key a key to specify what data to obtain
    * @return {promise}  a promise of the requested data
    */
-  getApplicationScopeDataByUserAndKey(userName, key) {
-    return getDataByUserAndKey.call(this, APPLICATION_SCOPE, userName, key);
-  },
+    getApplicationScopeDataByUserAndKey(userName, key) {
+      return getDataByUserAndKey.call(this, APPLICATION_SCOPE, userName, key);
+    },
 
-  /**
+    /**
    * Get all the application-group-scope data for a given user
    * @param {string} userName an appgrid user
    * @param {string} key a key to specify what data to obtain
    * @return {promise}  a promise of the requested data
    */
-  getApplicationGroupScopeDataByUserAndKey(userName, key) {
-    return getDataByUserAndKey.call(this, APPLICATION_GROUP_SCOPE, userName, key);
-  },
+    getApplicationGroupScopeDataByUserAndKey(userName, key) {
+      return getDataByUserAndKey.call(
+        this,
+        APPLICATION_GROUP_SCOPE,
+        userName,
+        key
+      );
+    },
 
-  /**
+    /**
    * Set the application-scope data for a given user
    * @param {string} userName an appgrid user
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data
    */
-  setApplicationScopeUserData(userName, data) {
-    return setUserData.call(this, APPLICATION_SCOPE, userName, data);
-  },
+    setApplicationScopeUserData(userName, data) {
+      return setUserData.call(this, APPLICATION_SCOPE, userName, data);
+    },
 
-  /**
+    /**
    * Set the application-group-scope data for a given user
    * @param {string} userName an appgrid user
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data
    */
-  setApplicationGroupScopeUserData(userName, data) {
-    return setUserData.call(this, APPLICATION_GROUP_SCOPE, userName, data);
-  },
+    setApplicationGroupScopeUserData(userName, data) {
+      return setUserData.call(this, APPLICATION_GROUP_SCOPE, userName, data);
+    },
 
-  /**
+    /**
    * Set the application-scope data for a given user
    * @param {string} userName an appgrid user
    * @param {string} key a key to specify what data to obtain
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data
    */
-  setApplicationScopeUserDataByKey(userName, key, data) {
-    return setUserDataByKey.call(this, APPLICATION_SCOPE, userName, key, data);
-  },
+    setApplicationScopeUserDataByKey(userName, key, data) {
+      return setUserDataByKey.call(
+        this,
+        APPLICATION_SCOPE,
+        userName,
+        key,
+        data
+      );
+    },
 
-  /**
+    /**
    * Set the application-group-scope data for a given user
    * @param {string} userName an appgrid user
    * @param {string} key a key to specify what data to obtain
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data
    */
-  setApplicationGroupScopeUserDataByKey(userName, key, data) {
-    return setUserDataByKey.call(this, APPLICATION_GROUP_SCOPE, userName, key, data);
-  }
-})
-// Make sure we have the sessionStamp withSessionHandling method
-.compose(sessionStamp);
+    setApplicationGroupScopeUserDataByKey(userName, key, data) {
+      return setUserDataByKey.call(
+        this,
+        APPLICATION_GROUP_SCOPE,
+        userName,
+        key,
+        data
+      );
+    },
+  })
+  // Make sure we have the sessionStamp withSessionHandling method
+  .compose(sessionStamp);
 
 module.exports = stamp;

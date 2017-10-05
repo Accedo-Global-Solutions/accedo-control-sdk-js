@@ -3,17 +3,13 @@ const factory = require('../../src/index');
 describe('Profile API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
-    deviceId: 'gregTestingSDK'
+    deviceId: 'gregTestingSDK',
   });
 
-  test(
-    'getProfileInfo should at least return a profile id and a profile name',
-    () => {
-      return client.getProfileInfo()
-        .then((profileInfo) => {
-          expect(profileInfo).toHaveProperty('profileId');
-          expect(profileInfo).toHaveProperty('profileName');
-        });
-    }
-  );
+  test('getProfileInfo should at least return a profile id and a profile name', () => {
+    return client.getProfileInfo().then(profileInfo => {
+      expect(profileInfo).toHaveProperty('profileId');
+      expect(profileInfo).toHaveProperty('profileName');
+    });
+  });
 });
