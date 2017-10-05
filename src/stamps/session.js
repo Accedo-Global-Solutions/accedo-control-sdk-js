@@ -1,7 +1,7 @@
-import stampit from 'stampit';
-import { grab } from '../apiHelper';
+const stampit = require('stampit');
+const { grab } = require('../apiHelper');
 
-export default stampit()
+module.exports = stampit()
 .init(({ instance }) => {
   // the promise of a session being created
   let creatingSessionPromise;

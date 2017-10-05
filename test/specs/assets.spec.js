@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 describe('Assets API Tests', () => {
   const client = factory({
@@ -10,10 +7,10 @@ describe('Assets API Tests', () => {
     // log(...args) { console.log(...args); }
   });
 
-  it('getAllAssets should should return at least one asset', () => {
+  test('getAllAssets should should return at least one asset', () => {
     return client.getAllAssets()
       .then((assets) => {
-        Object.keys(assets).length.should.be.greaterThan(0);
+        expect(Object.keys(assets).length).toBeGreaterThan(0);
       });
   });
 });

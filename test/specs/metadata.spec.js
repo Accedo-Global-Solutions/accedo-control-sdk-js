@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 describe('Metadata API Tests', () => {
   const client = factory({
@@ -9,31 +6,31 @@ describe('Metadata API Tests', () => {
     deviceId: 'gregTestingSDK'
   });
 
-  it('getAllMetadata should return at least one item from AppGrid', () => {
+  test('getAllMetadata should return at least one item from AppGrid', () => {
     return client.getAllMetadata()
       .then((metadata) => {
-        Object.keys(metadata).length.should.be.greaterThan(0);
+        expect(Object.keys(metadata).length).toBeGreaterThan(0);
       });
   });
 
-  it('getMetadataByKey should return a valid metadata item', () => {
+  test('getMetadataByKey should return a valid metadata item', () => {
     const key = 'android';
     return client.getMetadataByKey(key)
       .then((metadata) => {
-        metadata.should.be.ok;
-        metadata.should.have.property(key);
+        expect(metadata).toBeTruthy();
+        expect(metadata).toHaveProperty(key);
       });
   });
 
-  it('getMetadataByKeys should return valid metadata items', () => {
+  test('getMetadataByKeys should return valid metadata items', () => {
     const keys = [
       'android',
       'colorScheme'
     ];
     return client.getMetadataByKeys(keys)
       .then((metadata) => {
-        metadata.should.be.ok;
-        keys.forEach((key) => metadata.should.have.property(key));
+        expect(metadata).toBeTruthy();
+        keys.forEach((key) => expect(metadata).toHaveProperty(key));
       });
   });
 });

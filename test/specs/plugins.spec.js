@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 describe('Plugins API Tests', () => {
   const client = factory({
@@ -9,10 +6,10 @@ describe('Plugins API Tests', () => {
     deviceId: 'gregTestingSDK'
   });
 
-  it('getAllEnabledPlugins should return an array from AppGrid', () => {
+  test('getAllEnabledPlugins should return an array from AppGrid', () => {
     return client.getAllEnabledPlugins()
       .then((plugins) => {
-        plugins.should.be.an('array');
+        expect(Array.isArray(plugins)).toBe(true);
       });
   });
 });

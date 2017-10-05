@@ -1,6 +1,6 @@
-import stampit from 'stampit';
-import sessionStamp from './session';
-import { grab, post } from '../apiHelper';
+const stampit = require('stampit');
+const sessionStamp = require('./session');
+const { grab, post } = require('../apiHelper');
 
 const APPLICATION_SCOPE = 'user';
 const APPLICATION_GROUP_SCOPE = 'group';
@@ -114,4 +114,4 @@ const stamp = stampit()
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-export default stamp;
+module.exports = stamp;

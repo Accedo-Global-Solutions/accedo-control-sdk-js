@@ -1,15 +1,15 @@
-import stampit from 'stampit';
-import entriesStamp from './entries';
-import sessionStamp from './session';
-import applicationStamp from './application';
-import assetsStamp from './assets';
-import eventsStamp from './events';
-import appLogStamp from './appLog';
-import pluginsStamp from './plugins';
-import profileStamp from './profile';
-import metadataStamp from './metadata';
-import userDataStamp from './userData';
-import locales from './locales';
+const stampit = require('stampit');
+const entriesStamp = require('./entries');
+const sessionStamp = require('./session');
+const applicationStamp = require('./application');
+const assetsStamp = require('./assets');
+const eventsStamp = require('./events');
+const appLogStamp = require('./appLog');
+const pluginsStamp = require('./plugins');
+const profileStamp = require('./profile');
+const metadataStamp = require('./metadata');
+const userDataStamp = require('./userData');
+const locales = require('./locales');
 
 // Simply compose all the stamps in one single stamp to give access to all methods
 const stamp = stampit().compose(
@@ -26,4 +26,4 @@ const stamp = stampit().compose(
   locales
 );
 
-export default stamp;
+module.exports = stamp;

@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 const okStatus = 200;
 
@@ -11,24 +8,30 @@ describe('Events API Tests', () => {
     deviceId: 'gregTestingSDK',
   });
 
-  it('sendUsageStartEvent should successfully send a usage start event to AppGrid', () => {
-    return client.sendUsageStartEvent()
-      .then(({ status }) => {
-        status.should.equal(okStatus);
-      });
-  });
+  test(
+    'sendUsageStartEvent should successfully send a usage start event to AppGrid',
+    () => {
+      return client.sendUsageStartEvent()
+        .then(({ status }) => {
+          expect(status).toBe(okStatus);
+        });
+    }
+  );
 
-  it('sendUsageStopEvent should successfully send a usage stop event to AppGrid after 3 seconds', () => {
-    const rententionTimeInSeconds = 3;
+  test(
+    'sendUsageStopEvent should successfully send a usage stop event to AppGrid after 3 seconds',
+    () => {
+      const rententionTimeInSeconds = 3;
 
-    return new Promise(resolve => {
-      setTimeout(() => resolve(), rententionTimeInSeconds * 1000);
-    })
-    .then(() => {
-      return client.sendUsageStopEvent(rententionTimeInSeconds)
-      .then(({ status }) => {
-        status.should.equal(okStatus);
+      return new Promise(resolve => {
+        setTimeout(() => resolve(), rententionTimeInSeconds * 1000);
+      })
+      .then(() => {
+        return client.sendUsageStopEvent(rententionTimeInSeconds)
+        .then(({ status }) => {
+          expect(status).toBe(okStatus);
+        });
       });
-    });
-  });
+    }
+  );
 });

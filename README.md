@@ -33,7 +33,7 @@ This project is written in ES2015 and the browsers build is transpiled to ES5.
 All modern browsers are supported (Firefox, Chrome, Opera, Safari, Edge, their mobile versions and declinations).
 
 ⚠️ If you need to support IE 11 (or other legacy browsers), make sure to load polyfills for the ES2015 features before loading this library. You can either use one such as what babel offers, or just the strict necessary: an ES6 Promise polyfill and another one for `Object.assign`.
-Refer to `sample.html` for an example on using such a polyfill.
+Refer to `example-browser.html` for an example on using such a polyfill.
 
 ## Supported Node.js versions
 
@@ -71,7 +71,7 @@ import appgrid from 'appgrid'
 ```
 
 ## Examples
-Below are a few examples, refer to `examples-es6.js` for more of them that you can run yourself (clone this repo then execute `npm run example`).
+Below are a few examples, refer to `example-node.js` for more of them that you can run yourself (clone this repo then execute `node example-node.js`).
 
 ### Create an AppGrid client instance
 
@@ -136,16 +136,16 @@ client.getAllMetadata()
   * Run `yarn` (you should have yarn installed globally)
   * Develop !
   * Before pushing, remember to:
-    - generate updated UMD and ES6 bundles (`npm run build`)
-    - add tests and check they all pass (`npm test`)
-    - add examples and check they all work (`npm run example`)
-    - document any public API with JSDoc comments and generate the new doc (`npm run doc`)
+    - generate updated UMD and ES6 bundles (`yarn run build`)
+    - add tests and check they all pass (`yarn test`)
+    - add examples and check they all work (`node example-node.js`)
+    - document any public API with JSDoc comments and generate the new doc (`yarn run doc`)
 
 ### Testing code in the browser
 
-Make sure to build as mentionned above, then open the `sample.html` file in your browser.
+Make sure to build as mentioned above, then open the `example-browser.html` file in your browser.
 
-On an OSX shell, you can use `open sample.html`.
+On an OSX shell, you can use `open example-browser.html`.
 To serve it on a local web server, you can use `php -S localhost:9000` or `python -m SimpleHTTPServer 9000` if you have php or python binaries available on your path.
 Other options include Apache, Nginx, and Node-based servers such as [`http-server`](https://www.npmjs.com/package/http-server) or [`static-server`](https://www.npmjs.com/package/static-server).
 
@@ -159,10 +159,7 @@ The sample includes the polyfills necessary for older browsers (those that do no
 
 ## Unit Tests
 
-Mocha (with Chai) unit tests have been written to cover all of the exported APIs from this module. Follow the following steps in order to run them:
-
-  * Follow the **Getting Started** steps above.
-  * Run `npm test`
+Jest unit tests have been written to cover all of the exported APIs from this module. Tests will we called by running `npm test` or `yarn test`.
 
 ## License
 

@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 describe('Profile API Tests', () => {
   const client = factory({
@@ -9,11 +6,14 @@ describe('Profile API Tests', () => {
     deviceId: 'gregTestingSDK'
   });
 
-  it('getProfileInfo should at least return a profile id and a profile name', () => {
-    return client.getProfileInfo()
-      .then((profileInfo) => {
-        profileInfo.should.have.property('profileId');
-        profileInfo.should.have.property('profileName');
-      });
-  });
+  test(
+    'getProfileInfo should at least return a profile id and a profile name',
+    () => {
+      return client.getProfileInfo()
+        .then((profileInfo) => {
+          expect(profileInfo).toHaveProperty('profileId');
+          expect(profileInfo).toHaveProperty('profileName');
+        });
+    }
+  );
 });

@@ -1,6 +1,6 @@
-import stampit from 'stampit';
-import sessionStamp from './session';
-import { post } from '../apiHelper';
+const stampit = require('stampit');
+const sessionStamp = require('./session');
+const { post } = require('../apiHelper');
 
 function sendUsageEvent(eventType, retentionTime) {
   const payload = { eventType };
@@ -30,4 +30,4 @@ const stamp = stampit()
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-export default stamp;
+module.exports = stamp;

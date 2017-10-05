@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 const okStatus = 200;
 const logFacilityCode = '13';
@@ -41,52 +38,61 @@ describe('Logging API Tests', () => {
     // log(...args) { console.log(...args); },
   });
 
-  it('getLogLevel should yield a string', () => {
+  test('getLogLevel should yield a string', () => {
     return client.getLogLevel()
       .then((logLevel) => {
-        logLevel.should.be.a('string');
+        expect(typeof logLevel).toBe('string');
       });
   });
 
-  it('sendLog should successfully send a log-message to AppGrid for each log-level', () => {
-    const promises = ['debug', 'info', 'warn', 'error']
-      .map((level) => {
-        const exampleInfoEventOptions = getLogEventOptions(`This is a ${level} entry!`, logFacilityCode);
-        return client.sendLog(level, exampleInfoEventOptions)
-          .then((response) => {
-            // NOTE: for some reason: debug results in an undefined response from AppGrid
-            if (!response && level === 'debug') { return; }
-            response.status.should.equal(okStatus);
-          });
+  test(
+    'sendLog should successfully send a log-message to AppGrid for each log-level',
+    () => {
+      const promises = ['debug', 'info', 'warn', 'error']
+        .map((level) => {
+          const exampleInfoEventOptions = getLogEventOptions(`This is a ${level} entry!`, logFacilityCode);
+          return client.sendLog(level, exampleInfoEventOptions)
+            .then((response) => {
+              // NOTE: for some reason: debug results in an undefined response from AppGrid
+              if (!response && level === 'debug') { return; }
+              expect(response.status).toBe(okStatus);
+            });
+        });
+      return Promise.all(promises);
+    }
+  );
+
+  test(
+    'sendLog should successfully send a log-message with Metadata to AppGrid for each log-level',
+    () => {
+      const promises = ['debug', 'info', 'warn', 'error']
+        .map((level) => {
+          const exampleInfoEventOptions = getLogEventOptions(`This is a new ${level} entry with Metadata!`, logFacilityCode);
+          const exampleMetadata = { someMetadataKey: 'someValue' };
+          return client.sendLog(level, exampleInfoEventOptions, exampleMetadata)
+            .then((response) => {
+              // NOTE: for some reason: debug results in an undefined response from AppGrid
+              if (!response && level === 'debug') { return; }
+              expect(response.status).toBe(okStatus);
+            });
+        });
+      return Promise.all(promises);
+    }
+  );
+
+  test(
+    'sendLog should successfully send batched logs with Metadata to AppGrid',
+    () => {
+      const messages = [{ timestamp: Date.now() - 2000, logType: 'error' }, { timestamp: Date.now() - 500, logType: 'warn' }]
+      .map((msg, ix) => {
+        const exampleInfoEventOptions = getLogEventOptions(`This is batched entry #${ix + 1} with Metadata !`, logFacilityCode);
+        return Object.assign(exampleInfoEventOptions, msg, { metadata: "Hey, I'm some metadata" });
       });
-    return Promise.all(promises);
-  });
 
-  it('sendLog should successfully send a log-message with Metadata to AppGrid for each log-level', () => {
-    const promises = ['debug', 'info', 'warn', 'error']
-      .map((level) => {
-        const exampleInfoEventOptions = getLogEventOptions(`This is a new ${level} entry with Metadata!`, logFacilityCode);
-        const exampleMetadata = { someMetadataKey: 'someValue' };
-        return client.sendLog(level, exampleInfoEventOptions, exampleMetadata)
-          .then((response) => {
-            // NOTE: for some reason: debug results in an undefined response from AppGrid
-            if (!response && level === 'debug') { return; }
-            response.status.should.equal(okStatus);
-          });
+      return client.sendLogs(messages)
+      .then((response) => {
+        expect(response.status).toBe(okStatus);
       });
-    return Promise.all(promises);
-  });
-
-  it('sendLog should successfully send batched logs with Metadata to AppGrid', () => {
-    const messages = [{ timestamp: Date.now() - 2000, logType: 'error' }, { timestamp: Date.now() - 500, logType: 'warn' }]
-    .map((msg, ix) => {
-      const exampleInfoEventOptions = getLogEventOptions(`This is batched entry #${ix + 1} with Metadata !`, logFacilityCode);
-      return Object.assign(exampleInfoEventOptions, msg, { metadata: "Hey, I'm some metadata" });
-    });
-
-    return client.sendLogs(messages)
-    .then((response) => {
-      response.status.should.equal(okStatus);
-    });
-  });
+    }
+  );
 });

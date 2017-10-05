@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 describe('Locales API Tests', () => {
   const client = factory({
@@ -9,14 +6,14 @@ describe('Locales API Tests', () => {
     deviceId: 'gregTestingSDK'
   });
 
-  it('getAvailableLocales should at return an array of locales', () => {
+  test('getAvailableLocales should at return an array of locales', () => {
     return client.getAvailableLocales()
       .then((res) => {
-        res.should.be.an('object');
-        res.should.have.property('locales');
-        res.locales.should.be.an('array');
-        res.locales[0].should.have.property('code');
-        res.locales[0].should.have.property('displayName');
+        expect(typeof res).toBe('object');
+        expect(res).toHaveProperty('locales');
+        expect(Array.isArray(res.locales)).toBe(true);
+        expect(res.locales[0]).toHaveProperty('code');
+        expect(res.locales[0]).toHaveProperty('displayName');
       });
   });
 });

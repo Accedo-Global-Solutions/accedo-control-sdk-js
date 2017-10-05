@@ -1,8 +1,8 @@
 /* eslint-disable no-console, import/no-unresolved, import/no-extraneous-dependencies */
 
-import chalk from 'chalk';
+const chalk = require('chalk');
 // NOTE: this would normally be: import appgrid from 'appgrid';
-const appgrid = require('../dist/appgrid.js');
+const appgrid = require('./src/index');
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);

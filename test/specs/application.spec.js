@@ -1,7 +1,4 @@
-import chai from 'chai';
-import factory from '../../src/index';
-
-chai.should();
+const factory = require('../../src/index');
 
 describe('Application API Tests', () => {
   const client = factory({
@@ -9,10 +6,10 @@ describe('Application API Tests', () => {
     deviceId: 'gregTestingSDK'
   });
 
-  it('getStatus should return the status of AppGrid', () => {
+  test('getStatus should return the status of AppGrid', () => {
     return client.getApplicationStatus()
       .then(({ status }) => {
-        status.should.be.ok;
+        expect(status).toBeTruthy();
       });
   });
 });

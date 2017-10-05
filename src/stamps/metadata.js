@@ -1,6 +1,6 @@
-import stampit from 'stampit';
-import sessionStamp from './session';
-import { grab } from '../apiHelper';
+const stampit = require('stampit');
+const sessionStamp = require('./session');
+const { grab } = require('../apiHelper');
 
 function request(path) {
   return this.withSessionHandling(() => grab(path, this.props.config));
@@ -37,4 +37,4 @@ const stamp = stampit()
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-export default stamp;
+module.exports = stamp;

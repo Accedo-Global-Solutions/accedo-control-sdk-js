@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-unfetch';
-import qs from 'qs';
+const fetch = require('isomorphic-unfetch');
+const qs = require('qs');
 
 const MIME_TYPE_JSON = 'application/json';
 const HOST = 'https://appgrid-api.cloud.accedo.tv';
@@ -57,7 +57,7 @@ const getFetch = (path, config) => {
     });
 };
 
-export const grab = (path, config) => {
+module.exports.grab = (path, config) => {
   config.log('Requesting', path);
   return getFetch(path, config)
     .then(res => res.json())
@@ -67,14 +67,14 @@ export const grab = (path, config) => {
     });
 };
 
-export const grabRaw = (path, config) => {
+module.exports.grabRaw = (path, config) => {
   return getFetch(path, config)
     .then((response) => {
       return response.body;
     });
 };
 
-export const post = (path, config, body = {}) => {
+module.exports.post = (path, config, body = {}) => {
   const headers = Object.assign({},
     defaultHeaders,
     getContentTypeHeader(),

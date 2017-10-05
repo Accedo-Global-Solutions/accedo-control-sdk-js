@@ -1,7 +1,7 @@
-import qs from 'qs';
-import stampit from 'stampit';
-import sessionStamp from './session';
-import { grab } from '../apiHelper';
+const qs = require('qs');
+const stampit = require('stampit');
+const sessionStamp = require('./session');
+const { grab } = require('../apiHelper');
 
 function getPathWithQs(path, params = {}) {
   const { id, typeId, alias, typeAlias, preview, at, offset, size, locale } = params;
@@ -80,4 +80,4 @@ const stamp = stampit()
 // Make sure we have the sessionStamp withSessionHandling method
 .compose(sessionStamp);
 
-export default stamp;
+module.exports = stamp;

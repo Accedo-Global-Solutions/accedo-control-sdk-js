@@ -1,5 +1,5 @@
-import uuidLib from 'uuid';
-import stamp from './stamps/appgridClient';
+const uuidLib = require('uuid');
+const stamp = require('./stamps/appgridClient');
 
 const noop = () => {};
 
@@ -44,7 +44,7 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
  * @param  {string} [config.target] all APIs calls will use this as the base API URL (defaults to the AppGrid API URL)
  * @return {client}        an AppGrid client tied to the given params
  * @example
- * import appgrid from 'appgrid';
+ * const appgrid = require('appgrid');
  *
  * // when all info is available - use all of it !
  * const client = appgrid({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });
@@ -145,7 +145,7 @@ const defaultBrowserOnSessionKeyChanged = (key) => {
  *
  * Refer to the factory's documentation to see other available options.
  *
- * Note this is this library's default export for Web Storage-enabled devices.
+ * Note this is this library's module export for Web Storage-enabled devices.
  *
  * @function
  * @param  {object} config the configuration for the new instance
@@ -176,4 +176,4 @@ const appgridWrapperForBrowsers = (config) => {
   return appgrid(Object.assign({}, config, { deviceId, sessionKey, onDeviceIdGenerated, onSessionKeyChanged }));
 };
 
-export default hasSomeWebStorage ? appgridWrapperForBrowsers : appgrid;
+module.exports = hasSomeWebStorage ? appgridWrapperForBrowsers : appgrid;

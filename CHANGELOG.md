@@ -1,3 +1,8 @@
+# 3.2.4_UNRELEASED
+
+- Replaced Mocha, Chai and Sinon with Jest
+- Replaced all import/export ES6 Module statements by CommonJS require/module.exports. This allows us to run tests without a build step, and also run them in 'watch' mode if we like. Also, this means there's no build step needed any more for the Node library, nor for the Node example, so no more rollup configuration is needed for those.
+
 # 3.2.3
 
 - FIX: Similar to version 3.2.2, this solves a new issue with Web Storage following the release of Safari 11.

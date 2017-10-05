@@ -1,56 +1,55 @@
-import chai from 'chai';
-import sinon from 'sinon';
-import factory from '../../src/index';
-
-const should = chai.should();
+const factory = require('../../src/index');
 
 describe('Session API Tests', () => {
-  const onSessionKeyChanged = sinon.spy();
+  const onSessionKeyChanged = jest.fn();
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
     deviceId: 'gregTestingSDK',
     onSessionKeyChanged
   });
 
-  it('getSessionKey should return a falsy value at first', () => {
+  test('getSessionKey should return a falsy value at first', () => {
     const key = client.getSessionKey();
-    should.not.equal(true, !!key);
+    expect(key).toBeFalsy();
   });
 
-  it('should not have called onSessionKeyChanged yet', () => {
-    onSessionKeyChanged.called.should.be.false;
+  test('should not have called onSessionKeyChanged yet', () => {
+    expect(onSessionKeyChanged).not.toBeCalled();
   });
 
-  it('createSession should return a session key', () => {
+  test('createSession should return a session key', () => {
     return client.createSession()
       .then((response) => {
-        response.should.be.a('string');
+        expect(typeof response).toBe('string');
       });
   });
 
-  it('should have called onSessionKeyChanged by now', () => {
-    onSessionKeyChanged.called.should.be.true;
+  test('should have called onSessionKeyChanged by now', () => {
+    expect(onSessionKeyChanged).toBeCalled();
   });
 
-  it('getSessionKey should return a string value after a session was attached to the client', () => {
-    const key = client.getSessionKey();
-    key.should.be.a('string');
-  });
+  test(
+    'getSessionKey should return a string value after a session was attached to the client',
+    () => {
+      const key = client.getSessionKey();
+      expect(typeof key).toBe('string');
+    }
+  );
 
   describe('With concurrent calls by one same client...', () => {
-    const onSessionKeyChangedB = sinon.spy();
+    const onSessionKeyChangedB = jest.fn();
     const clientB = factory({
       appKey: '56ea6a370db1bf032c9df5cb',
       deviceId: 'gregTestingSDK',
       onSessionKeyChanged: onSessionKeyChangedB
     });
 
-    it('should only create one session and propagate it to all clients', () => {
+    test('should only create one session and propagate it to all clients', () => {
       return Promise.all([clientB.createSession(), clientB.createSession(), clientB.createSession()])
       .then(([key1, key2, key3]) => {
-        key1.should.equal(key2);
-        key1.should.equal(key3);
-        onSessionKeyChangedB.calledOnce.should.be.true;
+        expect(key1).toBe(key2);
+        expect(key1).toBe(key3);
+        expect(onSessionKeyChangedB.mock.calls.length).toBe(1);
       });
     });
   });
