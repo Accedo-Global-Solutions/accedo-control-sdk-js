@@ -6,9 +6,11 @@ module.exports = stampit()
     // the promise of a session being created
     let creatingSessionPromise;
     /**
-   * Create a session and store it for reuse in this client instance
-   * @return {promise}  a promise of a string, the sessionKey
-   */
+     * Create a session and store it for reuse in this client instance
+     * Note you do not usually need to worry about this. Other methods will call it
+     * automatically for you when it is needed.
+     * @return {promise}  a promise of a string, the sessionKey
+     */
     instance.createSession = function createSession() {
       // if we have a promise of a session, return it
       if (creatingSessionPromise) {

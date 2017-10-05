@@ -25,8 +25,7 @@ const hasSomeWebStorage = hasLocalStorage || hasSessionStorage;
  */
 const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
   (appKey && !deviceId && !sessionKey) ||
-  (appKey && deviceId && !sessionKey) ||
-  (appKey && deviceId && sessionKey);
+  (appKey && deviceId);
 
 /**
  * Factory function to create an instance of an AppGrid client.
