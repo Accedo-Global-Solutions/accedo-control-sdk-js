@@ -4,6 +4,7 @@ describe('Locales API Tests', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
     deviceId: 'gregTestingSDK',
+    // log: (...args) => console.log(...args),
   });
 
   test('getAvailableLocales should at return an array of locales', () => {

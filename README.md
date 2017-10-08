@@ -47,6 +47,10 @@ These features are provided by the manual creation of AppGrid client instances (
  - automatic session creation when none was provided (lazy - only when needed)
  - automatic session re-creation when the existing one has expired (lazy)
  - ensures only one session will be created at a time, even if a request triggers concurrent AppGrid calls
+ - specific to Detect:
+  - ensures concurrent calls to get the log level will result in one network call at most
+  - anytime the log level is obtained, it is cached for the next 3 minutes
+  - on the browser, individual logs are not sent when not necessary (i.e. when the log's level is lower than the current level set on the app)
 
 :information_source: _For Node, an [express-compatible middleware is also available as a separate package](https://github.com/Accedo-Products/appgrid-sdk-express).
 You should really consider using it if possible, as it makes things even easier and provides extra features._

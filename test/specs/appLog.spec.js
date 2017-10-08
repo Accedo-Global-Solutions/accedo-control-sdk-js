@@ -1,3 +1,4 @@
+require('../fakeNetworkCalls');
 const factory = require('../../src/index');
 
 const okStatus = 200;
@@ -31,7 +32,7 @@ const getLogEventOptions = (message, facilityCode) => {
   };
 };
 
-describe('Logging API Tests', () => {
+describe('Logging API', () => {
   const client = factory({
     appKey: '56ea6a370db1bf032c9df5cb',
     deviceId: 'gregTestingSDK',
@@ -81,7 +82,7 @@ describe('Logging API Tests', () => {
     return Promise.all(promises);
   });
 
-  test('sendLog should successfully send batched logs with Metadata to AppGrid', () => {
+  test('sendLogs should successfully send batched logs with Metadata to AppGrid', () => {
     const messages = [
       { timestamp: Date.now() - 2000, logType: 'error' },
       { timestamp: Date.now() - 500, logType: 'warn' },

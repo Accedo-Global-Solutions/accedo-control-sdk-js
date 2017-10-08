@@ -1,3 +1,4 @@
+require('../fakeNetworkCalls');
 const factory = require('../../src/index');
 
 const okStatus = 200;
@@ -17,14 +18,10 @@ describe('Events API Tests', () => {
   test('sendUsageStopEvent should successfully send a usage stop event to AppGrid after 3 seconds', () => {
     const rententionTimeInSeconds = 3;
 
-    return new Promise(resolve => {
-      setTimeout(() => resolve(), rententionTimeInSeconds * 1000);
-    }).then(() => {
-      return client
-        .sendUsageStopEvent(rententionTimeInSeconds)
-        .then(({ status }) => {
-          expect(status).toBe(okStatus);
-        });
-    });
+    return client
+      .sendUsageStopEvent(rententionTimeInSeconds)
+      .then(({ status }) => {
+        expect(status).toBe(okStatus);
+      });
   });
 });

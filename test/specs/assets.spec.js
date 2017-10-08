@@ -7,7 +7,7 @@ describe('Assets API Tests', () => {
     // log(...args) { console.log(...args); }
   });
 
-  test('getAllAssets should should return at least one asset', () => {
+  test('getAllAssets should return at least one asset', () => {
     return client.getAllAssets().then(assets => {
       expect(Object.keys(assets).length).toBeGreaterThan(0);
     });
