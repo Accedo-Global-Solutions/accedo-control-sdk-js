@@ -1,12 +1,7 @@
 require('../fakeNetworkCalls');
 
 // Pretend we're on Node (which we are, but Jest makes it look like it's a browser)
-jest.mock('../../src/env');
-const env = require('../../src/env');
-
-env.isBrowser.mockImplementation(() => false);
-
-const factory = require('../../src/index');
+const factory = require('../../src/node/index');
 
 const nightOrDay = () => {
   const hour = new Date().getHours();

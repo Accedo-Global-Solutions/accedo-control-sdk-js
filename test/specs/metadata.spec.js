@@ -1,4 +1,4 @@
-const factory = require('../../src/index');
+const factory = require('../../src/node/index');
 
 describe('Metadata API Tests', () => {
   const client = factory({

@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 // NOTE: this would normally be: import appgrid from 'appgrid';
-const appgrid = require('./src/index');
+const appgrid = require('./src/node/index');
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`\t\t ${message}`), ...metadata);

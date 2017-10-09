@@ -2,7 +2,7 @@
   "name": "appgrid",
   "version": "3.2.3",
   "description": "The Official vanilla-JS AppGrid SDK for Node.js and browsers",
-  "main": "src/index.js",
+  "main": "src/node/index.js",
   "browser": "dist/appgrid.umd.min.js",
   "scripts": {
     "clean": "rimraf dist/*",
@@ -12,8 +12,8 @@
     "lint:check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "prettier": "prettier --write \"{src,test}/**/*.js\"",
     "test": "jest",
-    "doc": "documentation build src/index.js -c doc_config.yml --format html -o docs",
-    "docmd": "documentation build src/index.js -c doc_config.yml --format md > API.md",
+    "doc": "documentation build src/**/index.js -c doc_config.yml --format html -o docs",
+    "docmd": "documentation build src/**/index.js -c doc_config.yml --format md > API.md",
     "prepublishOnly": "yarn test && yarn run doc && yarn run build"
   },
   "repository": {

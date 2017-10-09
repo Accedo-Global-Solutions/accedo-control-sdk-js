@@ -1,4 +1,4 @@
-const factory = require('../../src/index');
+const factory = require('../../src/node/index');
 
 const okStatus = 200;
 const userName = 'exampleUser';

@@ -1,8 +1,6 @@
 require('../fakeNetworkCalls');
-const factory = require('../../src/index');
+const factory = require('../../src/browser/index');
 const apiHelper = require('../../src/apiHelper');
-
-// By default, Jest creates an environment that is browser-like
 
 const nightOrDay = () => {
   const hour = new Date().getHours();

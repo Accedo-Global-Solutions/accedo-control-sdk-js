@@ -105,6 +105,16 @@
               
                 
                 <li><a
+                  href='#getloglevel'
+                  class="">
+                  getLogLevel
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#getsessionkey'
                   class="">
                   getSessionKey
@@ -148,36 +158,6 @@
                   href='#sendusagestopevent'
                   class="">
                   sendUsageStopEvent
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#getloglevel'
-                  class="">
-                  getLogLevel
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#sendlog'
-                  class="">
-                  sendLog
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#sendlogs'
-                  class="">
-                  sendLogs
                   
                 </a>
                 
@@ -323,6 +303,26 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#sendlog'
+                  class="">
+                  sendLog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#sendlogs'
+                  class="">
+                  sendLogs
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -372,7 +372,7 @@ relying on cookies or a device-specific API for instance.</p>
 <p>If you do, you will want to customise the <code>onSessionKeyChanged</code> and <code>onDeviceIdGenerated</code>
 callbacks as well.</p>
 <p>Refer to the factory's documentation to see other available options.</p>
-<p>Note this is this library's default export for Web Storage-enabled devices.</p>
+<p>Note this is this library's module export for Web Storage-enabled devices.</p>
 
 
   <div class='pre p1 fill-light mt0'>appgridWrapperForBrowsers(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
@@ -602,7 +602,7 @@ previous sessions (see
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> appgrid <span class="hljs-keyword">from</span> <span class="hljs-string">'appgrid'</span>;
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> appgrid = <span class="hljs-built_in">require</span>(<span class="hljs-string">'appgrid'</span>);
 
 <span class="hljs-comment">// when all info is available - use all of it !</span>
 <span class="hljs-keyword">const</span> client = appgrid({ <span class="hljs-attr">appKey</span>: <span class="hljs-string">'MY_APP_KEY'</span>, <span class="hljs-attr">deviceId</span>: <span class="hljs-string">'DEVICE_ID'</span>, <span class="hljs-attr">sessionKey</span>: <span class="hljs-string">'SOME_SESSION_KEY'</span> });
@@ -1034,7 +1034,9 @@ Code examples can be found in the github repository.</p>
   </div>
   
 
-  <p>Create a session and store it for reuse in this client instance</p>
+  <p>Create a session and store it for reuse in this client instance
+Note you do not usually need to worry about this. Other methods will call it
+automatically for you when it is needed.</p>
 
 
   <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
@@ -1057,6 +1059,61 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of a string, the sessionKey
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getloglevel'>
+      getLogLevel
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Get the current log level</p>
+
+
+  <div class='pre p1 fill-light mt0'>getLogLevel(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of the log level (string)
 
       
     
@@ -1346,371 +1403,6 @@ Code examples can be found in the github repository.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise denoting the success of the operation
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='getloglevel'>
-      getLogLevel
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Get the current log level</p>
-
-
-  <div class='pre p1 fill-light mt0'>getLogLevel(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of the log level (string)
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='sendlog'>
-      sendLog
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Send a log with the given level, details and extra metadata.</p>
-
-
-  <div class='pre p1 fill-light mt0'>sendLog(level: (<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>), details: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, metadata: any?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>level</span> <code class='quiet'>((<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>))</code>
-	    the log level
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>details</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    the log information
-
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the log message
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the facility code
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the error code
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 1 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 2 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 3 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 4 information
-</span></td>
-                </tr>
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>metadata</span> <code class='quiet'>(any?)</code>
-	    extra metadata (will go through JSON.stringify).
-Can be passed as any number of trailing arguments.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of the success of the operation
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='sendlogs'>
-      sendLogs
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Send batched logs, each with its own level, timestamp, details and extra metadata.</p>
-
-
-  <div class='pre p1 fill-light mt0'>sendLogs(logs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>logs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
-	    Log description objects
-
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].logType</span> <code class='quiet'>(<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>)</code>
-                  </td>
-                  <td class='break-word'><span>the log type
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].timestamp</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-                  </td>
-                  <td class='break-word'><span>the timestamp for the log,
-as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
-or a POSIX millisecond number
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the log message
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the facility code
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the error code
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 1 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 2 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 3 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 4 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>logs[].metadata</span> <code class='quiet'>any?</code>
-                  </td>
-                  <td class='break-word'><span>extra metadata (will go through JSON.stringify).
-</span></td>
-                </tr>
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of the success of the operation
 
       
     
@@ -2693,6 +2385,316 @@ or a POSIX millisecond number
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sendlog'>
+      sendLog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Send a log with the given level, details and extra metadata.</p>
+
+
+  <div class='pre p1 fill-light mt0'>sendLog(level: (<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>), details: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, metadata: any?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>level</span> <code class='quiet'>((<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>))</code>
+	    the log level
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>details</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    the log information
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the log message
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the facility code
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the error code
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 1 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 2 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 3 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 4 information
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>metadata</span> <code class='quiet'>(any?)</code>
+	    extra metadata (will go through JSON.stringify).
+Can be passed as any number of trailing arguments.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of the success of the operation
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sendlogs'>
+      sendLogs
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Send batched logs, each with its own level, timestamp, details and extra metadata.</p>
+
+
+  <div class='pre p1 fill-light mt0'>sendLogs(logs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>logs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+	    Log description objects
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].logType</span> <code class='quiet'>(<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>)</code>
+                  </td>
+                  <td class='break-word'><span>the log type
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].timestamp</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+                  </td>
+                  <td class='break-word'><span>the timestamp for the log,
+as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
+or a POSIX millisecond number
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the log message
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the facility code
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the error code
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 1 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 2 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 3 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 4 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>logs[].metadata</span> <code class='quiet'>any?</code>
+                  </td>
+                  <td class='break-word'><span>extra metadata (will go through JSON.stringify).
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of the success of the operation
 
       
     
