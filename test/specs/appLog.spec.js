@@ -101,3 +101,13 @@ describe('Logging API', () => {
     });
   });
 });
+
+/* eslint-disable global-require */
+describe('The environment-specific code for appLogs', () => {
+  const appLogNode = require('../../src/stamps/node/appLog');
+  const appLogBrowser = require('../../src/stamps/browser/appLog');
+
+  test('Exposes the same method names on browsers and Node', () => {
+    expect(Object.keys(appLogNode)).toEqual(Object.keys(appLogBrowser));
+  });
+});
