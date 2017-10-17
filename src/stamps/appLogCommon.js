@@ -49,9 +49,9 @@ const stamp = stampit()
     let currentLevelPromise;
 
     /**
-       * Get the current log level
-       * @return {promise}  a promise of the log level (string)
-       */
+     * Get the current log level
+     * @return {promise}  a promise of the log level (string)
+     */
     instance.getLogLevel = function getLogLevel() {
       if (currentLevelPromise) {
         return currentLevelPromise;
@@ -83,22 +83,22 @@ const stamp = stampit()
   })
   .methods({
     /**
-       * Send batched logs, each with its own level, timestamp, details and extra metadata.
-       * @param {object[]} logs Log description objects
-       * @param {'debug'|'info'|'warn'|'error'} logs[].logType the log type
-       * @param {string|number} logs[].timestamp the timestamp for the log,
-       *                                           as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
-       *                                           or a POSIX millisecond number
-       * @param {string} logs[].message the log message
-       * @param {string} logs[].facilityCode the facility code
-       * @param {string} logs[].errorCode the error code
-       * @param {string} logs[].dim1 the dimension 1 information
-       * @param {string} logs[].dim2 the dimension 2 information
-       * @param {string} logs[].dim3 the dimension 3 information
-       * @param {string} logs[].dim4 the dimension 4 information
-       * @param {any} [logs[].metadata] extra metadata (will go through JSON.stringify).
-       * @return {promise}  a promise of the success of the operation
-       */
+     * Send batched logs, each with its own level, timestamp, details and extra metadata.
+     * @param {object[]} logs Log description objects
+     * @param {'debug'|'info'|'warn'|'error'} logs[].logType the log type
+     * @param {string|number} logs[].timestamp the timestamp for the log,
+     *                                           as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
+     *                                           or a POSIX millisecond number
+     * @param {string} logs[].message the log message
+     * @param {string} logs[].facilityCode the facility code
+     * @param {string} logs[].errorCode the error code
+     * @param {string} logs[].dim1 the dimension 1 information
+     * @param {string} logs[].dim2 the dimension 2 information
+     * @param {string} logs[].dim3 the dimension 3 information
+     * @param {string} logs[].dim4 the dimension 4 information
+     * @param {any} [logs[].metadata] extra metadata (will go through JSON.stringify).
+     * @return {promise}  a promise of the success of the operation
+     */
     sendLogs(logs) {
       const preparedLogs = logs.map(log => {
         const { logType, timestamp } = log;

@@ -8,25 +8,27 @@ const OFF = 'off';
 const LOG_LEVELS = [...ALLOWED_LEVELS, OFF];
 
 const stamp = stampit()
-  .init(({ instance }) => {
-    instance.autoBatch = () => {};
+  .init(() => {
+    // TODO
+    // instance.autoBatch = () => {};
   })
   .methods({
     /**
-       * Send a log with the given level, details and extra metadata.
-       * @param {'debug'|'info'|'warn'|'error'} level the log level
-       * @param {object} details the log information
-       * @param {string} details.message the log message
-       * @param {string} details.facilityCode the facility code
-       * @param {string} details.errorCode the error code
-       * @param {string} details.dim1 the dimension 1 information
-       * @param {string} details.dim2 the dimension 2 information
-       * @param {string} details.dim3 the dimension 3 information
-       * @param {string} details.dim4 the dimension 4 information
-       * @param {any} [metadata] extra metadata (will go through JSON.stringify).
-       *                         Can be passed as any number of trailing arguments.
-       * @return {promise}  a promise of the success of the operation
-       */
+     * NOTE: This is the browser version, another version exists for Node
+     * Send a log with the given level, details and extra metadata.
+     * @param {'debug'|'info'|'warn'|'error'} level the log level
+     * @param {object} details the log information
+     * @param {string} details.message the log message
+     * @param {string} details.facilityCode the facility code
+     * @param {string} details.errorCode the error code
+     * @param {string} details.dim1 the dimension 1 information
+     * @param {string} details.dim2 the dimension 2 information
+     * @param {string} details.dim3 the dimension 3 information
+     * @param {string} details.dim4 the dimension 4 information
+     * @param {any} [metadata] extra metadata (will go through JSON.stringify).
+     *                         Can be passed as any number of trailing arguments.
+     * @return {promise}  a promise of the success of the operation
+     */
     sendLog(level, details, ...metadata) {
       if (!ALLOWED_LEVELS.includes(level)) {
         return Promise.reject('Unsupported log level');
