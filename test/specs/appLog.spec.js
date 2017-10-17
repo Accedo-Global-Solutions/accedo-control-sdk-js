@@ -39,8 +39,15 @@ describe('Logging API', () => {
     // log(...args) { console.log(...args); },
   });
 
+  const p1 = client.getLogLevel();
+  const p2 = client.getLogLevel();
+
+  test('getLogLevel returns the same promise when called twice before it yields a result', () => {
+    expect(p1).toBe(p2);
+  });
+
   test('getLogLevel should yield a string', () => {
-    return client.getLogLevel().then(logLevel => {
+    return p1.then(logLevel => {
       expect(typeof logLevel).toBe('string');
     });
   });

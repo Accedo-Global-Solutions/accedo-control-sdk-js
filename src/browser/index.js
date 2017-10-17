@@ -1,8 +1,8 @@
 const makeAppgrid = require('./clientWrapper');
-const combineStamps = require('../combineStamps');
-const { sendLog } = require('../stamps/browser/appLog');
+const commonStamps = require('../commonStamps');
+const appLogBrowser = require('../stamps/browser/appLog');
 
-const stamp = combineStamps(sendLog);
+const stamp = commonStamps.compose(appLogBrowser);
 
 /**
  * A wrapper over the appgrid factory for clients that support Web Storage by default

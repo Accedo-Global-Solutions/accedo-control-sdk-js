@@ -1,11 +1,13 @@
 # 3.2.4_UNRELEASED
 
 - When calling `getLogLevel`, the result will be cached for 3 minutes and reused with no network call within that period.
-- When the SDK is used on a browser, calling `sendLog` will transparently call `getLogLevel`. If sending the log is not necessary (as happens when the level is set to 'off' for instance), it won't be sent.
 - Separated the Node and browser index files and differing sources (appLogs only for now)
 - Replaced Mocha, Chai and Sinon with Jest
 - Replaced all import/export ES6 Module statements by CommonJS require/module.exports. This allows us to run tests without a build step, and also run them in 'watch' mode if we like. Also, this means there's no build step needed any more for the Node library, nor for the Node example, so no more rollup configuration is needed for those.
 - Now using Prettier for code style formatting
+
+And, for **browsers only**:
+- Calling `sendLog` will transparently call `getLogLevel` (using the cache if any). If sending the log is not necessary, as when the level is set to 'off' for instance, it won't be sent.
 
 # 3.2.3
 

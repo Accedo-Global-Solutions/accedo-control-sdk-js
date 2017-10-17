@@ -9,22 +9,21 @@ const profile = require('./stamps/profile');
 const metadata = require('./stamps/metadata');
 const userData = require('./stamps/userData');
 const locales = require('./stamps/locales');
-const makeAppLog = require('./stamps/makeAppLog');
+const appLogCommon = require('./stamps/appLogCommon');
 
 // Simply compose all the stamps in one single stamp to give access to all methods
-const makeStamp = sendLog =>
-  stampit().compose(
-    session,
-    entries,
-    application,
-    assets,
-    events,
-    plugins,
-    profile,
-    metadata,
-    userData,
-    locales,
-    makeAppLog(sendLog)
-  );
+const commonStamps = stampit().compose(
+  session,
+  entries,
+  application,
+  assets,
+  events,
+  plugins,
+  profile,
+  metadata,
+  userData,
+  locales,
+  appLogCommon
+);
 
-module.exports = makeStamp;
+module.exports = commonStamps;

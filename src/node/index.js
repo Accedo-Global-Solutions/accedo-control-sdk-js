@@ -1,8 +1,8 @@
 const makeAppgrid = require('./client');
-const combineStamps = require('../combineStamps');
-const { sendLog } = require('../stamps/node/appLog');
+const commonStamps = require('../commonStamps');
+const appLogNode = require('../stamps/node/appLog');
 
-const stamp = combineStamps(sendLog);
+const stamp = commonStamps.compose(appLogNode);
 
 /**
  * Factory function to create an instance of an AppGrid client.
