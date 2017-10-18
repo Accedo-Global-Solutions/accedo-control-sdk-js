@@ -6,8 +6,8 @@ const dataKeyToRequest = 'name';
 const dataKeyToSet = 'packageName';
 const dataValueToSet = 'platinum';
 const userProfileData = {
-  name: 'Johnny AppGridUser',
-  email: 'johnny.appgriduser@email.com',
+  name: 'Johnny AccedoOneUser',
+  email: 'johnny.accedooneuser@email.com',
   favoriteVideoIds: ['abc123', '321abc', 'cba321'],
 };
 
@@ -18,7 +18,7 @@ describe('UserData API Tests', () => {
     // log: (...args) => console.log(...args)
   });
 
-  test('setApplicationScopeUserData should return an OK status from AppGrid', () => {
+  test('setApplicationScopeUserData should return an OK status', () => {
     return client
       .setApplicationScopeUserData(userName, userProfileData)
       .then(({ status }) => {
@@ -26,7 +26,7 @@ describe('UserData API Tests', () => {
       });
   });
 
-  test('setApplicationGroupScopeUserData should return an OK status from AppGrid', () => {
+  test('setApplicationGroupScopeUserData should return an OK status', () => {
     return client
       .setApplicationGroupScopeUserData(userName, userProfileData)
       .then(({ status }) => {
@@ -34,7 +34,7 @@ describe('UserData API Tests', () => {
       });
   });
 
-  test('getAllApplicationScopeDataByUser should return the expected UserData Profile from AppGrid', () => {
+  test('getAllApplicationScopeDataByUser should return the expected UserData Profile', () => {
     return client.getAllApplicationScopeDataByUser(userName).then(userData => {
       expect(userData).toBeTruthy();
       expect(userData.name).toBe(userProfileData.name);
@@ -42,7 +42,7 @@ describe('UserData API Tests', () => {
     });
   });
 
-  test('getAllApplicationGroupScopeDataByUser should the expected UserData Profile from AppGrid', () => {
+  test('getAllApplicationGroupScopeDataByUser should the expected UserData Profile', () => {
     return client
       .getAllApplicationGroupScopeDataByUser(userName)
       .then(userData => {
@@ -52,7 +52,7 @@ describe('UserData API Tests', () => {
       });
   });
 
-  test('setApplicationScopeUserDataByKey should return an OK status from AppGrid', () => {
+  test('setApplicationScopeUserDataByKey should return an OK status', () => {
     return client
       .setApplicationScopeUserDataByKey(userName, dataKeyToSet, dataValueToSet)
       .then(({ status }) => {
@@ -60,7 +60,7 @@ describe('UserData API Tests', () => {
       });
   });
 
-  test('setApplicationGroupScopeUserDataByKey should return an OK status from AppGrid', () => {
+  test('setApplicationGroupScopeUserDataByKey should return an OK status', () => {
     return client
       .setApplicationGroupScopeUserDataByKey(
         userName,
@@ -72,7 +72,7 @@ describe('UserData API Tests', () => {
       });
   });
 
-  test('getApplicationScopeDataByUserAndKey should return an OK status from AppGrid', () => {
+  test('getApplicationScopeDataByUserAndKey should return an OK status', () => {
     return client
       .getApplicationScopeDataByUserAndKey(userName, dataKeyToRequest)
       .then(userData => {
@@ -83,7 +83,7 @@ describe('UserData API Tests', () => {
       });
   });
 
-  test('getApplicationGroupScopeDataByUserAndKey should return an OK status from AppGrid', () => {
+  test('getApplicationGroupScopeDataByUserAndKey should return an OK status', () => {
     return client
       .getApplicationGroupScopeDataByUserAndKey(userName, dataKeyToRequest)
       .then(userData => {

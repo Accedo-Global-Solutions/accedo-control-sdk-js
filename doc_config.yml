@@ -3,12 +3,12 @@ toc:
 
   - name: Accedo One client factory
     description: |
-      'appgridWrapperForBrowsers' is the default export for devices supporting Web Storage.
+      'accedoOneWrapperForBrowsers' is the default export for browsers.
 
-      'appgrid' is the default export for other devices (including Node.js).
+      'accedoOne' is the default export for other engines (including Node.js).
 
-  - appgridWrapperForBrowsers
-  - appgrid
+  - accedoOneWrapperForBrowsers
+  - accedoOne
 
   - name: Instance methods
     description: |

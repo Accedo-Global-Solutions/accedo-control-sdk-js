@@ -1,4 +1,4 @@
-const makeAppgrid = require('../node/client');
+const makeAccedoOne = require('../node/client');
 
 let hasLocalStorage = false;
 let hasSessionStorage = false;
@@ -41,7 +41,7 @@ const defaultBrowserOnDeviceIdGenerated = id => {
   if (!hasLocalStorage) {
     return;
   }
-  // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
+  // https://github.com/Accedo-Products/accedo-one-sdk-js/issues/7
   try {
     localStorage[WEBSTORAGE_DEVICE_ID] = id;
   } catch (error) {
@@ -53,7 +53,7 @@ const defaultBrowserOnSessionKeyChanged = key => {
   if (!hasSessionStorage) {
     return;
   }
-  // https://github.com/Accedo-Products/appgrid-sdk-js/issues/7
+  // https://github.com/Accedo-Products/accedo-one-sdk-js/issues/7
   try {
     sessionStorage[WEBSTORAGE_SESSION_KEY] = key;
   } catch (error) {
@@ -62,10 +62,10 @@ const defaultBrowserOnSessionKeyChanged = key => {
 };
 
 // Refer to `./index` for the doc
-const appgridWrapperForBrowsers = stamp => config => {
-  const appgrid = makeAppgrid(stamp);
+const makeAccedoOneWrapper = stamp => config => {
+  const accedoOne = makeAccedoOne(stamp);
   if (!hasSomeWebStorage) {
-    return appgrid(config);
+    return accedoOne(config);
   }
 
   const {
@@ -81,7 +81,7 @@ const appgridWrapperForBrowsers = stamp => config => {
     sessionKey = sessionKey || browserInfo.sessionKey;
   }
 
-  return appgrid(
+  return accedoOne(
     Object.assign({}, config, {
       deviceId,
       sessionKey,
@@ -91,4 +91,4 @@ const appgridWrapperForBrowsers = stamp => config => {
   );
 };
 
-module.exports = appgridWrapperForBrowsers;
+module.exports = makeAccedoOneWrapper;

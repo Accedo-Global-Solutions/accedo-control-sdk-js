@@ -1,14 +1,14 @@
 /* eslint-disable no-console, import/no-unresolved, import/no-extraneous-dependencies */
 
 const chalk = require('chalk');
-// NOTE: this would normally be: import appgrid from 'appgrid';
-const appgrid = require('./src/node/index');
+// NOTE: this would normally be: import accedoOne from '@accedo/accedo-one';
+const accedoOne = require('./src/node/index');
 
 const logError = (message, ...metadata) => {
   console.error(chalk.bgBlack.red.bold(`${message}`), ...metadata);
 };
 
-const client = appgrid({
+const client = accedoOne({
   appKey: '56ea6a370db1bf032c9df5cb',
   // typically you wouldn't set the deviceId here, but let the default persistency strategy get it for you (with Express or a browser)
   deviceId: 'fixedDeviceIDFromSDKSample',
@@ -498,8 +498,8 @@ const exampleUserData = () => {
   const dataKeyToSet = 'packageName';
   const dataValueToSet = 'platinum';
   const userProfileData = {
-    name: 'Johnny AppGridUser',
-    email: 'johnny.appgriduser@email.com',
+    name: 'Johnny AccedoOneUser',
+    email: 'johnny.accedooneuser@email.com',
     favoriteVideoIds: ['abc123', '321abc', 'cba321'],
   };
 

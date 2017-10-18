@@ -7,8 +7,8 @@ import uglify from 'rollup-plugin-uglify'; // eslint-disable-line import/extensi
 export default {
   entry: 'src/browser/index.js',
   format: 'umd',
-  dest: 'dist/appgrid.umd.min.js',
-  moduleName: 'appgrid',
+  dest: 'dist/accedo-one.umd.min.js',
+  moduleName: 'accedoOne',
   sourceMap: false,
   plugins: [
     nodeResolve({

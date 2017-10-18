@@ -2,6 +2,17 @@
 - BREAKING: in the functions related to application logs, the `facilityCode` property is now ignored. It used to be prepended to the `errorCode` when defined. This was a relic from a bespoke development that has nothing to do with Accedo One itself.
 Most likely, you were not using it. If you somehow did, only rely on the `errorCode` instead from now on.
 - BREAKING: the `getAssetById` method has been removed. It was already deprecated and nobody should relied on fetching assets by their ids.
+- BREAKING: this library is now published on NPM as `@accedo/accedo-one`, so you should now `npm install @accedo/accedo-one --save` or `yarn add @accedo/accedo-one`.
+
+And, for **browsers only**:
+- BREAKING: when this SDK is used through the UMD build, the global variable attached to `window` is now named `accedoOne` instead of `appgrid`. Same applies to the module name you should use in a requireJS-like statement.
+
+:sparkles: This is the first release published in NPM as @accedo/accedo-one.
+
+Accedo One is the new product that replaces AppGrid, and will bring additional possibilities
+
+As well as the new name-related breaking changes, we took the opportunity to remove things that were either deprecated or that did not have their place here.
+See details in the list above. We expect this major update to be painless for most people - just make sure to use the `accedoOne` identifier instead of `appgrid` on browsers.
 
 # 3.2.4
 

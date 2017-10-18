@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>appgrid 3.2.4 | Documentation</title>
+  <title>@accedo/accedo-one 4.0.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -13,8 +13,8 @@
     <div class='clearfix md-mxn2'>
       <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
         <div class='py1 px2'>
-          <h3 class='mb0 no-anchor'>appgrid</h3>
-          <div class='mb1'><code>3.2.4</code></div>
+          <h3 class='mb0 no-anchor'>@accedo/accedo-one</h3>
+          <div class='mb1'><code>4.0.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -35,9 +35,9 @@
               
                 
                 <li><a
-                  href='#appgridwrapperforbrowsers'
+                  href='#accedoonewrapperforbrowsers'
                   class="">
-                  appgridWrapperForBrowsers
+                  accedoOneWrapperForBrowsers
                   
                 </a>
                 
@@ -45,9 +45,9 @@
               
                 
                 <li><a
-                  href='#appgrid'
+                  href='#accedoone'
                   class="">
-                  appgrid
+                  accedoOne
                   
                 </a>
                 
@@ -340,8 +340,8 @@
   </h2>
 
   
-    <p>'appgridWrapperForBrowsers' is the default export for devices supporting Web Storage.</p>
-<p>'appgrid' is the default export for other devices (including Node.js).</p>
+    <p>'accedoOneWrapperForBrowsers' is the default export for browsers.</p>
+<p>'accedoOne' is the default export for other engines (including Node.js).</p>
 
   
 </section>
@@ -354,16 +354,16 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='appgridwrapperforbrowsers'>
-      appgridWrapperForBrowsers
+    <h3 class='fl m0' id='accedoonewrapperforbrowsers'>
+      accedoOneWrapperForBrowsers
     </h3>
     
     
   </div>
   
 
-  <p>A wrapper over the appgrid factory for clients that support Web Storage by default
-(most browsers). Provides default <code>onDeviceIdGenerated</code> and <code>onSessionKeyChanged</code> callbacks for
+  <p>A wrapper over the Accedo One factory for browsers. If Web Storage is supported,
+Provides default <code>onDeviceIdGenerated</code> and <code>onSessionKeyChanged</code> callbacks for
 persistency through Web Storage. Also sets the <code>deviceId</code> and <code>sessionKey</code> values from
 Web Storage to the factory when not given as an option.</p>
 <p>This behaviour can be customised by providing a <code>browserInfoProvider</code> function returning an
@@ -375,7 +375,7 @@ callbacks as well.</p>
 <p>Note this is this library's module export for Web Storage-enabled devices.</p>
 
 
-  <div class='pre p1 fill-light mt0'>appgridWrapperForBrowsers(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
+  <div class='pre p1 fill-light mt0'>accedoOneWrapperForBrowsers(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
   
   
 
@@ -430,7 +430,7 @@ previous sessions (see
                 <tr>
                   <td class='break-word'><span class='code bold'>config.appKey/log/gid/etc</span> <code class='quiet'>any?</code>
                   </td>
-                  <td class='break-word'><span>You should also pass any extra option accepted by the appgrid factory function (appKey, log, gid, ...)
+                  <td class='break-word'><span>You should also pass any extra option accepted by the accedoOne factory function (appKey, log, gid, ...)
 </span></td>
                 </tr>
               
@@ -448,7 +448,7 @@ previous sessions (see
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>client</code>:
-        an AppGrid client tied to the given params
+        an Accedo One client tied to the given params
 
       
     
@@ -473,8 +473,8 @@ previous sessions (see
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='appgrid'>
-      appgrid
+    <h3 class='fl m0' id='accedoone'>
+      accedoOne
     </h3>
     
     
@@ -485,7 +485,7 @@ previous sessions (see
 <p>You must get an instance before accessing any of the exposed client APIs.</p>
 
 
-  <div class='pre p1 fill-light mt0'>appgrid(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
+  <div class='pre p1 fill-light mt0'>accedoOne(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
   
   
 
@@ -602,16 +602,16 @@ previous sessions (see
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> appgrid = <span class="hljs-built_in">require</span>(<span class="hljs-string">'appgrid'</span>);
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> accedoOne = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@accedo/accedo-one'</span>);
 
 <span class="hljs-comment">// when all info is available - use all of it !</span>
-<span class="hljs-keyword">const</span> client = appgrid({ <span class="hljs-attr">appKey</span>: <span class="hljs-string">'MY_APP_KEY'</span>, <span class="hljs-attr">deviceId</span>: <span class="hljs-string">'DEVICE_ID'</span>, <span class="hljs-attr">sessionKey</span>: <span class="hljs-string">'SOME_SESSION_KEY'</span> });
+<span class="hljs-keyword">const</span> client = accedoOne({ <span class="hljs-attr">appKey</span>: <span class="hljs-string">'MY_APP_KEY'</span>, <span class="hljs-attr">deviceId</span>: <span class="hljs-string">'DEVICE_ID'</span>, <span class="hljs-attr">sessionKey</span>: <span class="hljs-string">'SOME_SESSION_KEY'</span> });
 
 <span class="hljs-comment">// when there is no known sessionKey yet</span>
-<span class="hljs-keyword">const</span> client2 = appgrid({ <span class="hljs-attr">appKey</span>: <span class="hljs-string">'MY_APP_KEY'</span>, <span class="hljs-attr">deviceId</span>: <span class="hljs-string">'DEVICE_ID'</span> });
+<span class="hljs-keyword">const</span> client2 = accedoOne({ <span class="hljs-attr">appKey</span>: <span class="hljs-string">'MY_APP_KEY'</span>, <span class="hljs-attr">deviceId</span>: <span class="hljs-string">'DEVICE_ID'</span> });
 
 <span class="hljs-comment">// when there is no known sessionKey or deviceId yet</span>
-<span class="hljs-keyword">const</span> client3 = appgrid({ <span class="hljs-attr">appKey</span>: <span class="hljs-string">'MY_APP_KEY'</span> });</pre>
+<span class="hljs-keyword">const</span> client3 = accedoOne({ <span class="hljs-attr">appKey</span>: <span class="hljs-string">'MY_APP_KEY'</span> });</pre>
     
   
 
@@ -2479,13 +2479,6 @@ or a POSIX millisecond number
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the facility code
-</span></td>
-                </tr>
-              
-                <tr>
                   <td class='break-word'><span class='code bold'>logs[].errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
                   </td>
                   <td class='break-word'><span>the error code
@@ -2626,13 +2619,6 @@ Send a log with the given level, details and extra metadata.</p>
                   <td class='break-word'><span class='code bold'>details.message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
                   </td>
                   <td class='break-word'><span>the log message
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the facility code
 </span></td>
                 </tr>
               

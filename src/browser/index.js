@@ -1,12 +1,12 @@
-const makeAppgrid = require('./clientWrapper');
+const makeAccedoOne = require('./clientWrapper');
 const commonStamps = require('../commonStamps');
 const appLogBrowser = require('../stamps/browser/appLog');
 
 const stamp = commonStamps.compose(appLogBrowser);
 
 /**
- * A wrapper over the appgrid factory for clients that support Web Storage by default
- * (most browsers). Provides default `onDeviceIdGenerated` and `onSessionKeyChanged` callbacks for
+ * A wrapper over the Accedo One factory for browsers. If Web Storage is supported,
+ * Provides default `onDeviceIdGenerated` and `onSessionKeyChanged` callbacks for
  * persistency through Web Storage. Also sets the `deviceId` and `sessionKey` values from
  * Web Storage to the factory when not given as an option.
  *
@@ -26,9 +26,9 @@ const stamp = commonStamps.compose(appLogBrowser);
  * @param  {string} config.browserInfoProvider A function that should return an object
  *                                             with `deviceId` and `sessionKey` properties, saved from
  *                                             previous sessions (see `onDeviceIdGenerated`, `onSessionKeyChanged`)
- * @param  {any} [config.appKey/log/gid/etc] You should also pass any extra option accepted by the appgrid factory function (appKey, log, gid, ...)
- * @return {client}        an AppGrid client tied to the given params
+ * @param  {any} [config.appKey/log/gid/etc] You should also pass any extra option accepted by the accedoOne factory function (appKey, log, gid, ...)
+ * @return {client}        an Accedo One client tied to the given params
  */
-const appgridWrapperForBrowsers = makeAppgrid(stamp);
+const accedoOneWrapperForBrowsers = makeAccedoOne(stamp);
 
-module.exports = appgridWrapperForBrowsers;
+module.exports = accedoOneWrapperForBrowsers;

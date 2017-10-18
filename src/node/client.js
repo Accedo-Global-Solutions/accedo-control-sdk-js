@@ -16,7 +16,7 @@ const checkUsability = ({ appKey, deviceId, sessionKey } = {}) =>
   (appKey && !deviceId && !sessionKey) || (appKey && deviceId);
 
 // Refer to `./index` for the doc
-const appgrid = stamp => config => {
+const makeAccedoOne = stamp => config => {
   const { gid, appKey, ip, target } = config;
   const {
     log = noop,
@@ -65,4 +65,4 @@ const appgrid = stamp => config => {
   });
 };
 
-module.exports = appgrid;
+module.exports = makeAccedoOne;

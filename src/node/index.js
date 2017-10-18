@@ -1,4 +1,4 @@
-const makeAppgrid = require('./client');
+const makeAccedoOne = require('./client');
 const commonStamps = require('../commonStamps');
 const appLogNode = require('../stamps/node/appLog');
 
@@ -20,17 +20,17 @@ const stamp = commonStamps.compose(appLogNode);
  * @param  {string} [config.target] all APIs calls will use this as the base API URL (defaults to the Accedo One API URL)
  * @return {client}        an Accedo One client tied to the given params
  * @example
- * const appgrid = require('appgrid');
+ * const accedoOne = require('@accedo/accedo-one');
  *
  * // when all info is available - use all of it !
- * const client = appgrid({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });
+ * const client = accedoOne({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID', sessionKey: 'SOME_SESSION_KEY' });
  *
  * // when there is no known sessionKey yet
- * const client2 = appgrid({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID' });
+ * const client2 = accedoOne({ appKey: 'MY_APP_KEY', deviceId: 'DEVICE_ID' });
  *
  * // when there is no known sessionKey or deviceId yet
- * const client3 = appgrid({ appKey: 'MY_APP_KEY' });
+ * const client3 = accedoOne({ appKey: 'MY_APP_KEY' });
  */
-const appgrid = makeAppgrid(stamp);
+const accedoOne = makeAccedoOne(stamp);
 
-module.exports = appgrid;
+module.exports = accedoOne;
