@@ -81,12 +81,6 @@ module.exports.grab = (path, config) => {
     });
 };
 
-module.exports.grabRaw = (path, config) => {
-  return getFetch(path, config).then(response => {
-    return response.body;
-  });
-};
-
 module.exports.post = (path, config, body = {}) => {
   const headers = Object.assign(
     {},

@@ -1,6 +1,7 @@
 # 4.0.0
 - BREAKING: in the functions related to application logs, the `facilityCode` property is now ignored. It used to be prepended to the `errorCode` when defined. This was a relic from a bespoke development that has nothing to do with Accedo One itself.
 Most likely, you were not using it. If you somehow did, only rely on the `errorCode` instead from now on.
+- BREAKING: the `getAssetById` method has been removed. It was already deprecated and nobody should relied on fetching assets by their ids.
 
 # 3.2.4
 

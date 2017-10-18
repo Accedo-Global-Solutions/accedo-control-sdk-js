@@ -1,6 +1,6 @@
 const stampit = require('stampit');
 const sessionStamp = require('./session');
-const { grab, grabRaw } = require('../apiHelper');
+const { grab } = require('../apiHelper');
 
 const stamp = stampit()
   .methods({
@@ -10,12 +10,6 @@ const stamp = stampit()
    */
     getAllAssets() {
       return this.withSessionHandling(() => grab('/asset', this.props.config));
-    },
-
-    // DEPRECATED, DO NOT USE ! Always rely on getAllAssets instead.
-    getAssetById(id) {
-      // note this method does not need a session
-      return grabRaw(`/asset/file/${id}`, this.props.config);
     },
   })
   // Make sure we have the sessionStamp withSessionHandling method
