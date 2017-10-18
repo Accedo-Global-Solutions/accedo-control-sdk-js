@@ -1,6 +1,6 @@
 const factory = require('../../src/node/index');
 
-describe('Appgrid Client creation', () => {
+describe('Accedo One Client creation', () => {
   test('should throw when no param is passed', () => {
     const makeClient = () => factory();
 

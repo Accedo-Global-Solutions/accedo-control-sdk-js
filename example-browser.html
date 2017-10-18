@@ -2,17 +2,17 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>AppGrid SDK sample with Polyfills</title>
+  <title>Accedo One SDK sample with Polyfills</title>
   <!-- Polyfills for older browsers -->
   <script src="https://ft-polyfill-service.herokuapp.com/v2/polyfill.min.js?features=Object.assign,Promise"></script>
   <script src="dist/appgrid.umd.min.js"></script>
 </head>
 <body>
-  <div>The result of an AppGrid network call will appear below. Check the source to see how simple this can be :)</div>
+  <div>The result of an Accedo One network call will appear below. Check the source to see how simple this can be :)</div>
   <pre id="output">Loading...</pre>
   <script>
     const ag = appgrid({
-      // this points to an existing sample app in AppGrid
+      // this points to an existing sample app in Accedo One
       appKey: '56740393e4b046a34cf049d1',
       // here we set the device ID manually to avoid creating new ones for everyone running this sample
       // DO NOT do this on production apps

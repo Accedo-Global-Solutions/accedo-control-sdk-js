@@ -2,7 +2,7 @@ const fetch = require('isomorphic-unfetch');
 const qs = require('qs');
 
 const MIME_TYPE_JSON = 'application/json';
-const HOST = 'https://appgrid-api.cloud.accedo.tv';
+const HOST = 'https://api.one.accedo.tv';
 const credentials = 'same-origin'; // NOTE: This option is required in order for Fetch to send cookies
 const defaultHeaders = { accept: MIME_TYPE_JSON };
 
@@ -109,7 +109,7 @@ module.exports.post = (path, config, body = {}) => {
   return fetch(requestUrl, options).then(({ status, statusText }) => {
     if (status !== 200) {
       throw new Error(
-        `AppGrid POST request returned a non-200 response. Status Code: ${status}. Status Text: ${statusText}`
+        `Accedo One POST request returned a non-200 response. Status Code: ${status}. Status Text: ${statusText}`
       );
     }
     const result = { status, statusText };

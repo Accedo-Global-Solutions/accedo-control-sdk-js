@@ -6,7 +6,7 @@ const logFacilityCode = '13';
 
 const nightOrDay = () => {
   const hour = new Date().getHours();
-  // NOTE: These strings are expected by AppGrid
+  // NOTE: These strings are expected by Accedo One
   switch (true) {
     case hour < 5 || hour > 17:
       return 'night';
@@ -52,14 +52,14 @@ describe('Logging API', () => {
     });
   });
 
-  test('sendLog should successfully send a log-message to AppGrid for each log-level', () => {
+  test('sendLog should successfully send a log-message to Accedo One for each log-level', () => {
     const promises = ['debug', 'info', 'warn', 'error'].map(level => {
       const exampleInfoEventOptions = getLogEventOptions(
         `This is a ${level} entry!`,
         logFacilityCode
       );
       return client.sendLog(level, exampleInfoEventOptions).then(response => {
-        // NOTE: for some reason: debug results in an undefined response from AppGrid
+        // NOTE: for some reason: debug results in an undefined response from Accedo One
         if (!response && level === 'debug') {
           return;
         }
@@ -69,7 +69,7 @@ describe('Logging API', () => {
     return Promise.all(promises);
   });
 
-  test('sendLog should successfully send a log-message with Metadata to AppGrid for each log-level', () => {
+  test('sendLog should successfully send a log-message with Metadata to Accedo One for each log-level', () => {
     const promises = ['debug', 'info', 'warn', 'error'].map(level => {
       const exampleInfoEventOptions = getLogEventOptions(
         `This is a new ${level} entry with Metadata!`,
@@ -79,7 +79,7 @@ describe('Logging API', () => {
       return client
         .sendLog(level, exampleInfoEventOptions, exampleMetadata)
         .then(response => {
-          // NOTE: for some reason: debug results in an undefined response from AppGrid
+          // NOTE: for some reason: debug results in an undefined response from Accedo One
           if (!response && level === 'debug') {
             return;
           }
@@ -89,7 +89,7 @@ describe('Logging API', () => {
     return Promise.all(promises);
   });
 
-  test('sendLogs should successfully send batched logs with Metadata to AppGrid', () => {
+  test('sendLogs should successfully send batched logs with Metadata to Accedo One', () => {
     const messages = [
       { timestamp: Date.now() - 2000, logType: 'error' },
       { timestamp: Date.now() - 500, logType: 'warn' },

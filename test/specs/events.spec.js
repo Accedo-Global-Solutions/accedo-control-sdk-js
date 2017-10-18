@@ -9,13 +9,13 @@ describe('Events API Tests', () => {
     deviceId: 'gregTestingSDK',
   });
 
-  test('sendUsageStartEvent should successfully send a usage start event to AppGrid', () => {
+  test('sendUsageStartEvent should successfully send a usage start event to Accedo One', () => {
     return client.sendUsageStartEvent().then(({ status }) => {
       expect(status).toBe(okStatus);
     });
   });
 
-  test('sendUsageStopEvent should successfully send a usage stop event to AppGrid after 3 seconds', () => {
+  test('sendUsageStopEvent should successfully send a usage stop event to Accedo One after 3 seconds', () => {
     const rententionTimeInSeconds = 3;
 
     return client

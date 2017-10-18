@@ -6,7 +6,7 @@ describe('Plugins API Tests', () => {
     deviceId: 'gregTestingSDK',
   });
 
-  test('getAllEnabledPlugins should return an array from AppGrid', () => {
+  test('getAllEnabledPlugins should return an array', () => {
     return client.getAllEnabledPlugins().then(plugins => {
       expect(Array.isArray(plugins)).toBe(true);
     });

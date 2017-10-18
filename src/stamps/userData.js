@@ -33,7 +33,7 @@ const stamp = stampit()
   .methods({
     /**
    * Get all the application-scope data for a given user
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @return {promise}  a promise of the requested data
    */
     getAllApplicationScopeDataByUser(userName) {
@@ -42,7 +42,7 @@ const stamp = stampit()
 
     /**
    * Get all the application-group-scope data for a given user
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @return {promise}  a promise of the requested data
    */
     getAllApplicationGroupScopeDataByUser(userName) {
@@ -51,7 +51,7 @@ const stamp = stampit()
 
     /**
    * Get all the application-scope data for a given user and data key
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @param {string} key a key to specify what data to obtain
    * @return {promise}  a promise of the requested data
    */
@@ -61,7 +61,7 @@ const stamp = stampit()
 
     /**
    * Get all the application-group-scope data for a given user
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @param {string} key a key to specify what data to obtain
    * @return {promise}  a promise of the requested data
    */
@@ -76,7 +76,7 @@ const stamp = stampit()
 
     /**
    * Set the application-scope data for a given user
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data
    */
@@ -86,7 +86,7 @@ const stamp = stampit()
 
     /**
    * Set the application-group-scope data for a given user
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data
    */
@@ -96,7 +96,7 @@ const stamp = stampit()
 
     /**
    * Set the application-scope data for a given user
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @param {string} key a key to specify what data to obtain
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data
@@ -113,7 +113,7 @@ const stamp = stampit()
 
     /**
    * Set the application-group-scope data for a given user
-   * @param {string} userName an appgrid user
+   * @param {string} userName an Accedo One user
    * @param {string} key a key to specify what data to obtain
    * @param {object} data the data to store
    * @return {promise}  a promise of the requested data

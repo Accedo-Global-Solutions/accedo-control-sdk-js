@@ -1,7 +1,7 @@
 {
   "name": "appgrid",
   "version": "3.2.3",
-  "description": "The Official vanilla-JS AppGrid SDK for Node.js and browsers",
+  "description": "The Official vanilla-JS Accedo One SDK for Node.js and browsers (previously known as AppGrid)",
   "main": "src/node/index.js",
   "browser": "dist/appgrid.umd.min.js",
   "scripts": {
@@ -21,10 +21,12 @@
     "url": "git@github.com:Accedo-Products/appgrid-sdk-js.git"
   },
   "keywords": [
-    "appgrid",
-    "accedo",
+    "AppGrid",
+    "Accedo",
+    "Accedo One",
     "sdk",
-    "es6"
+    "es6",
+    "javascript"
   ],
   "author": "Accedo, AB",
   "contributors": [
@@ -37,7 +39,7 @@
   "engines": {
     "node": ">= 4"
   },
-  "homepage": "http://appgrid.accedo.tv/",
+  "homepage": "https://www.accedo.tv/one",
   "files": [
     "dist/",
     "src/"

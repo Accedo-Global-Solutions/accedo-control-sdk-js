@@ -4,7 +4,7 @@ const apiHelper = require('../../src/apiHelper');
 
 const nightOrDay = () => {
   const hour = new Date().getHours();
-  // NOTE: These strings are expected by AppGrid
+  // NOTE: These strings are expected by Accedo One
   switch (true) {
     case hour < 5 || hour > 17:
       return 'night';

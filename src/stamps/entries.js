@@ -62,7 +62,7 @@ const stamp = stampit()
    * @param {array} [params.alias] an array of entry aliases (strings)
    * @param {array} [params.typeId] only return entries of the given type ids (strings)
    * @param {string} [params.typeAlias] only return entries whose entry type has this alias
-   * @param {number|string} [params.size] limit to that many results per page (limits as per AppGrid API, currently 1 to 50, default 20)
+   * @param {number|string} [params.size] limit to that many results per page (limits as per Accedo One API, currently 1 to 50, default 20)
    * @param {number|string} [params.offset] offset the result by that many pages
    * @param {string} [params.locale] if available, get the version for the given locale (defaults to the default locale)
    * @return {promise}  a promise of an array of entries (objects)

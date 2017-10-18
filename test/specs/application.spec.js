@@ -6,7 +6,7 @@ describe('Application API Tests', () => {
     deviceId: 'gregTestingSDK',
   });
 
-  test('getStatus should return the status of AppGrid', () => {
+  test('getStatus should return the status of Accedo One', () => {
     return client.getApplicationStatus().then(({ status }) => {
       expect(status).toBeTruthy();
     });

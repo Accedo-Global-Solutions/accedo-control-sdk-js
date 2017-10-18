@@ -1,7 +1,7 @@
 # this is used by the auto-generated documentation tool
 toc:
 
-  - name: AppGrid client factory
+  - name: Accedo One client factory
     description: |
       'appgridWrapperForBrowsers' is the default export for devices supporting Web Storage.
 
