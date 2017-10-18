@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>appgrid 3.2.3 | Documentation</title>
+  <title>appgrid 3.2.4 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>appgrid</h3>
-          <div class='mb1'><code>3.2.3</code></div>
+          <div class='mb1'><code>3.2.4</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -25,9 +25,9 @@
               
                 
                 <li><a
-                  href='#appgrid-client-factory'
+                  href='#accedo-one-client-factory'
                   class="h5 bold black caps">
-                  AppGrid client factory
+                  Accedo One client factory
                   
                 </a>
                 
@@ -305,9 +305,9 @@
               
                 
                 <li><a
-                  href='#sendlog'
+                  href='#sendlogs'
                   class="">
-                  sendLog
+                  sendLogs
                   
                 </a>
                 
@@ -315,9 +315,9 @@
               
                 
                 <li><a
-                  href='#sendlogs'
+                  href='#sendlog'
                   class="">
-                  sendLogs
+                  sendLog
                   
                 </a>
                 
@@ -335,8 +335,8 @@
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='appgrid-client-factory' class='mt0'>
-    AppGrid client factory
+  <h2 id='accedo-one-client-factory' class='mt0'>
+    Accedo One client factory
   </h2>
 
   
@@ -481,7 +481,7 @@ previous sessions (see
   </div>
   
 
-  <p>Factory function to create an instance of an AppGrid client.</p>
+  <p>Factory function to create an instance of an Accedo One client.</p>
 <p>You must get an instance before accessing any of the exposed client APIs.</p>
 
 
@@ -544,7 +544,7 @@ previous sessions (see
                 <tr>
                   <td class='break-word'><span class='code bold'>config.ip</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
                   </td>
-                  <td class='break-word'><span>the user's IP, given to AppGrid for every request this client will trigger (for geolocation).
+                  <td class='break-word'><span>the user's IP, given to Accedo One for every request this client will trigger (for geolocation).
 </span></td>
                 </tr>
               
@@ -572,7 +572,7 @@ previous sessions (see
                 <tr>
                   <td class='break-word'><span class='code bold'>config.target</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
                   </td>
-                  <td class='break-word'><span>all APIs calls will use this as the base API URL (defaults to the AppGrid API URL)
+                  <td class='break-word'><span>all APIs calls will use this as the base API URL (defaults to the Accedo One API URL)
 </span></td>
                 </tr>
               
@@ -590,7 +590,7 @@ previous sessions (see
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>client</code>:
-        an AppGrid client tied to the given params
+        an Accedo One client tied to the given params
 
       
     
@@ -739,7 +739,7 @@ Code examples can be found in the github repository.</p>
                 <tr>
                   <td class='break-word'><span class='code bold'>params.size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?</code>
                   </td>
-                  <td class='break-word'><span>limit to that many results per page (limits as per AppGrid API, currently 1 to 50, default 20)
+                  <td class='break-word'><span>limit to that many results per page (limits as per Accedo One API, currently 1 to 50, default 20)
 </span></td>
                 </tr>
               
@@ -1759,7 +1759,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -1828,7 +1828,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -1897,7 +1897,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -1975,7 +1975,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -2053,7 +2053,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -2131,7 +2131,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -2209,7 +2209,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -2296,7 +2296,7 @@ automatically for you when it is needed.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    an appgrid user
+	    an Accedo One user
 
           </div>
           
@@ -2385,159 +2385,6 @@ automatically for you when it is needed.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='sendlog'>
-      sendLog
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Send a log with the given level, details and extra metadata.</p>
-
-
-  <div class='pre p1 fill-light mt0'>sendLog(level: (<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>), details: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, metadata: any?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>level</span> <code class='quiet'>((<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>))</code>
-	    the log level
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>details</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    the log information
-
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the log message
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the facility code
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the error code
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 1 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 2 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 3 information
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>details.dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 4 information
-</span></td>
-                </tr>
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>metadata</span> <code class='quiet'>(any?)</code>
-	    extra metadata (will go through JSON.stringify).
-Can be passed as any number of trailing arguments.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
-        a promise of the success of the operation
 
       
     
@@ -2682,6 +2529,160 @@ or a POSIX millisecond number
               
             </tbody>
           </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+        a promise of the success of the operation
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sendlog'>
+      sendLog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>NOTE: This is the browser version, another version exists for Node
+Send a log with the given level, details and extra metadata.</p>
+
+
+  <div class='pre p1 fill-light mt0'>sendLog(level: (<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>), details: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, metadata: any?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>level</span> <code class='quiet'>((<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>))</code>
+	    the log level
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>details</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    the log information
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the log message
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.facilityCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the facility code
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the error code
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 1 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 2 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 3 information
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>details.dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>the dimension 4 information
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>metadata</span> <code class='quiet'>(any?)</code>
+	    extra metadata (will go through JSON.stringify).
+Can be passed as any number of trailing arguments.
+
+          </div>
           
         </div>
       

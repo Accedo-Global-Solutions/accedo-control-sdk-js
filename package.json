@@ -1,6 +1,6 @@
 {
   "name": "appgrid",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "The Official vanilla-JS Accedo One SDK for Node.js and browsers (previously known as AppGrid)",
   "main": "src/node/index.js",
   "browser": "dist/appgrid.umd.min.js",

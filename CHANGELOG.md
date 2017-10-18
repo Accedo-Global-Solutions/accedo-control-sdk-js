@@ -1,4 +1,4 @@
-# 3.2.4_UNRELEASED
+# 3.2.4
 
 - When calling `getLogLevel`, the result will be cached for 3 minutes and reused with no network call within that period.
 - Separated the Node and browser index files and differing sources (appLogs only for now)
