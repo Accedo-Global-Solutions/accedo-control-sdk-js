@@ -44,23 +44,21 @@ const nightOrDay = () => {
 };
 
 const exampleLogging = () => {
-  const getLogEventOptions = (message, facilityCode) => {
+  const getLogEventOptions = message => {
     // NOTE: This is simply a convenience/helper method for building a logEvent object.
-    const networkErrorCode = '002'; // NOTE: The ErrorCode used must exist within your Accedo One Application's configuration.
+    const networkErrorCode = '13002'; // NOTE: The ErrorCode used must exist within your Accedo One Application's configuration.
     const middlewareSourceCode = 'service-mw'; // NOTE: The SourceCode used must exist within your Accedo One Application's configuration.
     const noneViewName = 'sdk_unit_test'; // NOTE: The ViewName used must exist within your Accedo One Application's configuration.
     const deviceType = 'desktop'; // NOTE: The deviceType used must exist within your Accedo One Application's configuration.
     return {
       message,
       errorCode: networkErrorCode,
-      facilityCode, // NOTE: The FacilityCode used must exist within you Accedo One Application's configuration
       dim1: middlewareSourceCode,
       dim2: noneViewName,
       dim3: deviceType,
       dim4: nightOrDay(),
     };
   };
-  const logFacilityCode = '13';
   logExampleCategoryHeader('Logging Examples');
 
   const getLogLevel = () => {
@@ -85,8 +83,7 @@ const exampleLogging = () => {
   const sendInfoLogMessageWithMetadata = () => {
     logExampleHeader('Sending an info log message with Metadata to Accedo One');
     const exampleInfoEventOptionsWithMetadata = getLogEventOptions(
-      'This is an info log entry with Metadata!',
-      logFacilityCode
+      'This is an info log entry with Metadata!'
     );
     const exampleInfoMetadata = { someMetadataKey: 'someValue' };
     return client
@@ -110,15 +107,13 @@ const exampleLogging = () => {
       Object.assign(
         { timestamp: Date.now() - 1000, logType: 'warn' },
         getLogEventOptions(
-          'This is a warning, the first of two batched log entries!',
-          logFacilityCode
+          'This is a warning, the first of two batched log entries!'
         )
       ),
       Object.assign(
         { timestamp: Date.now(), logType: 'info' },
         getLogEventOptions(
-          'This is an info, the second of two batched log entries!',
-          logFacilityCode
+          'This is an info, the second of two batched log entries!'
         )
       ),
     ];

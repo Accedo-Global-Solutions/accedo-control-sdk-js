@@ -13,7 +13,6 @@ const stamp = stampit()
      * @param {'debug'|'info'|'warn'|'error'} level the log level
      * @param {object} details the log information
      * @param {string} details.message the log message
-     * @param {string} details.facilityCode the facility code
      * @param {string} details.errorCode the error code
      * @param {string} details.dim1 the dimension 1 information
      * @param {string} details.dim2 the dimension 2 information

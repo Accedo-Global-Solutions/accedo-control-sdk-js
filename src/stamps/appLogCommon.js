@@ -9,17 +9,13 @@ const ERROR = 'error';
 
 const ALLOWED_LEVELS = [DEBUG, INFO, WARN, ERROR];
 
-const getConcatenatedCode = (facilityCode = '0', errorCode = '0') =>
-  parseInt(`${facilityCode}${errorCode}`, 10);
-
 const getLogMessage = (message, metadata) =>
   !metadata ? message : JSON.stringify([message, metadata]);
 
 const getLogEvent = (details = {}, metadata) => {
   const message = getLogMessage(details.message, metadata);
-  const code = getConcatenatedCode(details.facilityCode, details.errorCode);
   return {
-    code,
+    code: details.errorCode || 0,
     message,
     dim1: details.dim1,
     dim2: details.dim2,
@@ -90,7 +86,6 @@ const stamp = stampit()
      *                                           as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
      *                                           or a POSIX millisecond number
      * @param {string} logs[].message the log message
-     * @param {string} logs[].facilityCode the facility code
      * @param {string} logs[].errorCode the error code
      * @param {string} logs[].dim1 the dimension 1 information
      * @param {string} logs[].dim2 the dimension 2 information

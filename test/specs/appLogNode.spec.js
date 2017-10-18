@@ -15,15 +15,14 @@ const nightOrDay = () => {
 };
 
 // NOTE: This is simply a convenience/helper method for building a logEvent object.
-const getLogEventOptions = (message, facilityCode) => {
-  const networkErrorCode = '002';
+const getLogEventOptions = message => {
+  const networkErrorCode = '88002';
   const middlewareSourceCode = 'service-mw';
   const noneViewName = 'sdk_unit_test';
   const deviceType = 'desktop';
   return {
     message,
     errorCode: networkErrorCode,
-    facilityCode,
     dim1: middlewareSourceCode,
     dim2: noneViewName,
     dim3: deviceType,
@@ -41,7 +40,7 @@ describe('Logging API, using Node.js', () => {
   test('on non-browser environment, sendLog should not trigger a call to getLogLevel', () => {
     const logLevelSpy = jest.spyOn(client, 'getLogLevel');
     return client
-      .sendLog('error', getLogEventOptions('just a test', 88))
+      .sendLog('error', getLogEventOptions('just a test'))
       .then(() => {
         expect(logLevelSpy.mock.calls.length).toBe(0);
       });
