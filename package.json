@@ -6,7 +6,7 @@
   "browser": "dist/appgrid.umd.min.js",
   "scripts": {
     "clean": "rimraf dist/*",
-    "prebuild": "yarn run clean && yarn run lint",
+    "prebuild": "npm run clean && npm run lint",
     "build": "rollup -c rollup.config.browser.js",
     "lint": "eslint {src/,test/} --ext .js",
     "lint:check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
@@ -14,7 +14,7 @@
     "test": "jest",
     "doc": "documentation build src/**/index.js -c doc_config.yml --format html -o docs",
     "docmd": "documentation build src/**/index.js -c doc_config.yml --format md > API.md",
-    "prepublishOnly": "yarn test && yarn run doc && yarn run build"
+    "prepublishOnly": "npm test && npm run doc && npm run build"
   },
   "repository": {
     "type": "git",
