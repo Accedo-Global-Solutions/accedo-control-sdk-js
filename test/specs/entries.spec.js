@@ -43,13 +43,12 @@ describe('Entries API Tests', () => {
     return Promise.all([
       client.getEntryByAlias(alias, { locale: 'fr' }),
       client.getEntryByAlias(alias, { locale: 'en' }),
-      // client.getEntryByAlias(alias, { locale: 'es' }),
-    ]).then(([fr, en]) => {
+      client.getEntryByAlias(alias, { locale: 'es' }),
+    ]).then(([fr, en, es]) => {
       expect(fr.hello).toBe('bonjour');
       expect(en.hello).toBe('hello');
-      // PENDING the AppGrid 2.12 release (currently returns a 404)
       // no spanish locale - should return the default, french in this case
-      // es.hello.should.equal('ola');
+      expect(es.hello).toEqual('bonjour');
     });
   });
 
