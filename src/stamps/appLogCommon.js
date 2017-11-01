@@ -79,11 +79,16 @@ const stamp = stampit()
   })
   .methods({
     /**
-     * Send batched logs, each with its own level, timestamp, details and extra metadata.
+     * Send batched logs, each with its own level, timestamp, details and extra
+     * metadata.
+     * Note that on browsers, the other method, `sendLog`, is more convenient as
+     * it will auto-batch logs for you.
+     *
      * @param {object[]} logs Log description objects
      * @param {'debug'|'info'|'warn'|'error'} logs[].logType the log type
      * @param {string|number} logs[].timestamp the timestamp for the log,
-     *                                           as a UTC ISO 8601 string (ie. '2016-07-04T06:17:21Z'),
+     *                                           as a UTC ISO 8601 string
+     *                                           (ie. '2016-07-04T06:17:21Z'),
      *                                           or a POSIX millisecond number
      * @param {string} logs[].message the log message
      * @param {string} logs[].errorCode the error code

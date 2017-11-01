@@ -56,43 +56,47 @@ describe('Logging API, using a browser', () => {
       });
   });
 
-  test('with `error` level, only one log will actually be posted', () => {
+  test('with `error` level, only one log will actually be posted as a batch', () => {
     const client = makeClient();
 
     apiHelper.__changeMaps({ '/application/log/level': { logLevel: 'error' } });
 
     return sendOneLogOfEach(client).then(allResults => {
       expect(allResults.filter(res => res.requestAvoided).length).toBe(3);
+      expect(allResults.filter(res => res.requestQueued).length).toBe(1);
     });
   });
 
-  test('with `warn` level, 2 logs will actually be posted', () => {
+  test('with `warn` level, 2 logs will actually be posted as a batch', () => {
     const client = makeClient();
 
     apiHelper.__changeMaps({ '/application/log/level': { logLevel: 'warn' } });
 
     return sendOneLogOfEach(client).then(allResults => {
       expect(allResults.filter(res => res.requestAvoided).length).toBe(2);
+      expect(allResults.filter(res => res.requestQueued).length).toBe(2);
     });
   });
 
-  test('with `info` level, 3 logs will actually be posted', () => {
+  test('with `info` level, 3 logs will actually be posted as a batch', () => {
     const client = makeClient();
 
     apiHelper.__changeMaps({ '/application/log/level': { logLevel: 'info' } });
 
     return sendOneLogOfEach(client).then(allResults => {
       expect(allResults.filter(res => res.requestAvoided).length).toBe(1);
+      expect(allResults.filter(res => res.requestQueued).length).toBe(3);
     });
   });
 
-  test('with `debug` level, all 4 logs will actually be posted', () => {
+  test('with `debug` level, all 4 logs will actually be posted as a batch', () => {
     const client = makeClient();
 
     apiHelper.__changeMaps({ '/application/log/level': { logLevel: 'debug' } });
 
     return sendOneLogOfEach(client).then(allResults => {
       expect(allResults.filter(res => res.requestAvoided).length).toBe(0);
+      expect(allResults.filter(res => res.requestQueued).length).toBe(4);
     });
   });
 

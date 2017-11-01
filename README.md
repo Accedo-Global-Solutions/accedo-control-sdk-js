@@ -43,7 +43,7 @@ The default factory exposed by this SDK allows creating a client instance tied t
  - specific to Detect:
   - ensures concurrent calls to get the log level will result in one network call at most
   - caches the log level for 3 minutes
-  - on a browser, individual logs are only sent when necessary (i.e. when the log's level is equal or higher than the current level set on the app)
+  - on browsers, individual logs are only sent when necessary (i.e. when the log's level is equal or higher than the current level set on the app), and automatically grouped then sent as a batch (see the `sendLog` doc)
 
 :information_source: _For Node, an [express-compatible middleware is also available as a separate package](https://github.com/Accedo-Products/accedo-one-sdk-express).
 You should really consider using it if possible, as it makes things even easier and provides extra features._

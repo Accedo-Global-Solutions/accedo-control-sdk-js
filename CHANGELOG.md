@@ -1,3 +1,11 @@
+# 4.0.1
+
+- FIX: documentation: the `errorCode` parameter in the `sendLog` method should be a number, not a string
+
+And, for **browsers only**:
+- FIX: the `sendLog` method will now auto-batch several logs over a period of time and depending on a size limit.
+The batch will also be tentatively flushed when the user navigates away.
+
 # 4.0.0
 - BREAKING: in the functions related to application logs, the `facilityCode` property is now ignored. It used to be prepended to the `errorCode` when defined. This was a relic from a bespoke development that has nothing to do with Accedo One itself.
 Most likely, you were not using it. If you somehow did, only rely on the `errorCode` instead from now on.

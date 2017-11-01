@@ -81,7 +81,7 @@ module.exports.grab = (path, config) => {
     });
 };
 
-module.exports.post = (path, config, body = {}) => {
+module.exports.post = (path, config, body = {}, sendRaw) => {
   const headers = Object.assign(
     {},
     defaultHeaders,
@@ -98,7 +98,7 @@ module.exports.post = (path, config, body = {}) => {
     headers,
     credentials,
     method: 'post',
-    body: JSON.stringify(body),
+    body: sendRaw ? body : JSON.stringify(body),
   };
   return fetch(requestUrl, options).then(({ status, statusText }) => {
     if (status !== 200) {
@@ -107,7 +107,7 @@ module.exports.post = (path, config, body = {}) => {
       );
     }
     const result = { status, statusText };
-    config.log('POST response: ', { status, statusText });
+    config.log('POST response: ', result);
     return result;
   });
 };
