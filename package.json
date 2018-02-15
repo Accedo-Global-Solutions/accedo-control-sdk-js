@@ -67,7 +67,7 @@
   "dependencies": {
     "isomorphic-unfetch": "^1.0.0",
     "qs": "^6.5.1",
-    "stampit": "^2.1.2",
+    "stampit": "^3.0.0",
     "uuid": "^3.1.0"
   },
   "bugs": {
