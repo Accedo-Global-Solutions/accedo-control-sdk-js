@@ -1,20 +1,17 @@
-const stampit = require('stampit');
 const sessionStamp = require('./session');
 const { grab } = require('../apiHelper');
 
-const stamp = stampit()
-  .methods({
+// Make sure we have the sessionStamp withSessionHandling method
+const stamp = sessionStamp.compose({
+  methods: {
     /**
-   * Get all the enabled plugins
-   * @return {promise}  a promise of the requested data
-   */
+     * Get all the enabled plugins
+     * @return {promise}  a promise of the requested data
+     */
     getAllEnabledPlugins() {
-      return this.withSessionHandling(() =>
-        grab('/plugins', this.props.config)
-      );
+      return this.withSessionHandling(() => grab('/plugins', this.config));
     },
-  })
-  // Make sure we have the sessionStamp withSessionHandling method
-  .compose(sessionStamp);
+  },
+});
 
 module.exports = stamp;

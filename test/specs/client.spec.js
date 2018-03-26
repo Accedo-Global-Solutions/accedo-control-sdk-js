@@ -55,6 +55,6 @@ describe('Accedo One Client creation', () => {
     };
 
     expect(makeClient).not.toThrow(Error);
-    expect(typeof client.props.config.deviceId === 'string').toBeTruthy();
+    expect(typeof client.config.deviceId === 'string').toBeTruthy();
   });
 });

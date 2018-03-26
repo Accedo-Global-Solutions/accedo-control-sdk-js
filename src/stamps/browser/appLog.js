@@ -1,4 +1,3 @@
-const stampit = require('stampit');
 const sessionStamp = require('../session');
 const appLogCommon = require('../appLogCommon');
 const { post } = require('../../apiHelper');
@@ -19,9 +18,9 @@ function sendBatch({ data, timeoutID }) {
   }
 
   return this.withSessionHandling(() =>
-    post('/application/logs', this.props.config, `[${data.join(',')}]`, true)
+    post('/application/logs', this.config, `[${data.join(',')}]`, true)
   ).catch(err => {
-    this.props.config.log(
+    this.config.log(
       `The batched logs could not be sent. ${data.length} logs lost`,
       err
     );
@@ -49,8 +48,9 @@ function setNavigationListeners(action) {
   }
 }
 
-const stamp = stampit()
-  .init(({ instance }) => {
+// Make sure we have the sessionStamp withSessionHandling method AND appLogCommon
+const stamp = sessionStamp.compose(appLogCommon, {
+  init(_, { instance }) {
     let batchedLogs = resetBatch();
 
     const flush = () => {
@@ -161,8 +161,6 @@ const stamp = stampit()
         });
       });
     };
-  })
-  // Make sure we have the sessionStamp withSessionHandling method
-  .compose(appLogCommon, sessionStamp);
-
+  },
+});
 module.exports = stamp;

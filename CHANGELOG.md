@@ -1,3 +1,7 @@
+# 4.0.2
+
+- FIX: update a dependency (stampit, now @stamp/it) to avoid a potential vulnerability detected by Snyk
+
 # 4.0.1
 
 - FIX: documentation: the `errorCode` parameter in the `sendLog` method should be a number, not a string

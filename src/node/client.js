@@ -60,9 +60,11 @@ const makeAccedoOne = stamp => config => {
     },
   });
 
-  return stamp({
-    props: { config: stampConfig },
-  });
+  return stamp
+    .props({
+      config: stampConfig,
+    })
+    .create();
 };
 
 module.exports = makeAccedoOne;

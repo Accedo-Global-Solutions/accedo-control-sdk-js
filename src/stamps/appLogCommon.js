@@ -1,4 +1,3 @@
-const stampit = require('stampit');
 const sessionStamp = require('./session');
 const { grab, post } = require('../apiHelper');
 
@@ -25,29 +24,30 @@ const getLogEvent = (details = {}, metadata) => {
 };
 
 function request(path) {
-  return this.withSessionHandling(() => grab(path, this.props.config));
+  return this.withSessionHandling(() => grab(path, this.config));
 }
 
 function postLogs(logs) {
   return this.withSessionHandling(() =>
-    post('/application/logs', this.props.config, logs)
+    post('/application/logs', this.config, logs)
   );
 }
 
 // we'll cache the log level for 3 minutes on each instance
 const CACHE_TTL = 1000 * 60 * 3;
 
-const stamp = stampit()
-  .init(({ instance }) => {
+// Make sure we have the sessionStamp withSessionHandling method
+const stamp = sessionStamp.compose({
+  init(_, { instance }) {
     // the latest log level retrieved and the timestamp
     let latestLevel = {};
     // the promise of getting the current log level
     let currentLevelPromise;
 
     /**
-     * Get the current log level
-     * @return {promise}  a promise of the log level (string)
-     */
+       * Get the current log level
+       * @return {promise}  a promise of the log level (string)
+       */
     instance.getLogLevel = function getLogLevel() {
       if (currentLevelPromise) {
         return currentLevelPromise;
@@ -59,7 +59,7 @@ const stamp = stampit()
         return Promise.resolve(previousLevel);
       }
       currentLevelPromise = request
-        .call(this, '/application/log/level')
+        .call(instance, '/application/log/level')
         .then(({ logLevel }) => {
           // we're no longer getting the current level
           currentLevelPromise = null;
@@ -76,8 +76,8 @@ const stamp = stampit()
 
       return currentLevelPromise;
     };
-  })
-  .methods({
+  },
+  methods: {
     /**
      * Send batched logs, each with its own level, timestamp, details and extra
      * metadata.
@@ -109,9 +109,8 @@ const stamp = stampit()
       });
       return postLogs.call(this, preparedLogs);
     },
-  })
-  // Make sure we have the sessionStamp withSessionHandling method
-  .compose(sessionStamp);
+  },
+});
 
 module.exports = stamp;
 stamp.getLogEvent = getLogEvent;

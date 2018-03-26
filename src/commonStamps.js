@@ -1,4 +1,4 @@
-const stampit = require('stampit');
+const compose = require('@stamp/compose');
 const entries = require('./stamps/entries');
 const session = require('./stamps/session');
 const application = require('./stamps/application');
@@ -12,7 +12,7 @@ const locales = require('./stamps/locales');
 const appLogCommon = require('./stamps/appLogCommon');
 
 // Simply compose all the stamps in one single stamp to give access to all methods
-const commonStamps = stampit().compose(
+const commonStamps = compose(
   session,
   entries,
   application,
