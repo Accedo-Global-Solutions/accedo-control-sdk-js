@@ -1,6 +1,6 @@
 {
   "name": "@accedo/accedo-one",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "The official Accedo One SDK for Node.js and browsers (previously known as AppGrid)",
   "main": "src/node/index.js",
   "browser": "dist/accedo-one.umd.min.js",

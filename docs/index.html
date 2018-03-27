@@ -2,19 +2,19 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>@accedo/accedo-one 4.0.1 | Documentation</title>
+  <title>@accedo/accedo-one 4.0.2 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
   <link href='assets/github.css' type='text/css' rel='stylesheet' />
+  <link href='assets/split.css' type='text/css' rel='stylesheet' />
 </head>
-<body class='documentation'>
-  <div class='max-width-4 mx-auto'>
-    <div class='clearfix md-mxn2'>
-      <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>@accedo/accedo-one</h3>
-          <div class='mb1'><code>4.0.1</code></div>
+          <div class='mb1'><code>4.0.2</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -330,7 +330,7 @@
           </div>
         </div>
       </div>
-      <div class='fix-margin-3'>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
         
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
@@ -375,7 +375,7 @@ callbacks as well.</p>
 <p>Note this is this library's module export for Web Storage-enabled devices.</p>
 
 
-  <div class='pre p1 fill-light mt0'>accedoOneWrapperForBrowsers(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
+  <div class='pre p1 fill-light mt0'>accedoOneWrapperForBrowsers(config: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
   
   
 
@@ -392,7 +392,7 @@ callbacks as well.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the configuration for the new instance
 
           </div>
@@ -411,9 +411,9 @@ callbacks as well.</p>
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.browserInfoProvider</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>A function that should return an object
+  <td class='break-word'><span class='code bold'>config.browserInfoProvider</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>A function that should return an object
 with 
 <code>deviceId</code>
  and 
@@ -425,14 +425,18 @@ previous sessions (see
 <code>onSessionKeyChanged</code>
 )
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.appKey/log/gid/etc</span> <code class='quiet'>any?</code>
-                  </td>
-                  <td class='break-word'><span>You should also pass any extra option accepted by the accedoOne factory function (appKey, log, gid, ...)
+  <td class='break-word'><span class='code bold'>config.appKey/log/gid/etc</span> <code class='quiet'>any?</code>
+  </td>
+  <td class='break-word'><span>You should also pass any extra option accepted by the accedoOne factory function (appKey, log, gid, ...)
 </span></td>
-                </tr>
+</tr>
+
+
               
             </tbody>
           </table>
@@ -485,7 +489,7 @@ previous sessions (see
 <p>You must get an instance before accessing any of the exposed client APIs.</p>
 
 
-  <div class='pre p1 fill-light mt0'>accedoOne(config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
+  <div class='pre p1 fill-light mt0'>accedoOne(config: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): client</div>
   
   
 
@@ -502,7 +506,7 @@ previous sessions (see
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the configuration for the new instance
 
           </div>
@@ -521,60 +525,76 @@ previous sessions (see
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.appKey</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the application Key
+  <td class='break-word'><span class='code bold'>config.appKey</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the application Key
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.deviceId</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>the device identifier (if not provided, a uuid will be generated instead)
+  <td class='break-word'><span class='code bold'>config.deviceId</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>the device identifier (if not provided, a uuid will be generated instead)
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.sessionKey</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>the sessionKey (note a new one may be created when not given or expired)
+  <td class='break-word'><span class='code bold'>config.sessionKey</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>the sessionKey (note a new one may be created when not given or expired)
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.ip</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>the user's IP, given to Accedo One for every request this client will trigger (for geolocation).
+  <td class='break-word'><span class='code bold'>config.ip</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>the user's IP, given to Accedo One for every request this client will trigger (for geolocation).
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.log</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>?</code>
-                  </td>
-                  <td class='break-word'><span>a function to use to see this SDK's logs
+  <td class='break-word'><span class='code bold'>config.log</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?</code>
+  </td>
+  <td class='break-word'><span>a function to use to see this SDK's logs
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.onDeviceIdGenerated</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>?</code>
-                  </td>
-                  <td class='break-word'><span>callback to obtain the new deviceId, if one gets generated
+  <td class='break-word'><span class='code bold'>config.onDeviceIdGenerated</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?</code>
+  </td>
+  <td class='break-word'><span>callback to obtain the new deviceId, if one gets generated
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.onSessionKeyChanged</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>?</code>
-                  </td>
-                  <td class='break-word'><span>callback to obtain the sessionKey, anytime a new one gets generated
+  <td class='break-word'><span class='code bold'>config.onSessionKeyChanged</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?</code>
+  </td>
+  <td class='break-word'><span>callback to obtain the sessionKey, anytime a new one gets generated
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>config.target</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>all APIs calls will use this as the base API URL (defaults to the Accedo One API URL)
+  <td class='break-word'><span class='code bold'>config.target</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>all APIs calls will use this as the base API URL (defaults to the Accedo One API URL)
 </span></td>
-                </tr>
+</tr>
+
+
               
             </tbody>
           </table>
@@ -659,7 +679,7 @@ Code examples can be found in the github repository.</p>
 <strong>DO NOT</strong> use several of the id, alias, typeId and typeAlias options at the same time - behaviour would be ungaranteed.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getEntries(params: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getEntries(params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -676,7 +696,7 @@ Code examples can be found in the github repository.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
 	    a parameters object
 
           </div>
@@ -695,67 +715,85 @@ Code examples can be found in the github repository.</p>
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.preview</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
-                  </td>
-                  <td class='break-word'><span>when true, get the preview version
+  <td class='break-word'><span class='code bold'>params.preview</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
+  </td>
+  <td class='break-word'><span>when true, get the preview version
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.at</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a>)?</code>
-                  </td>
-                  <td class='break-word'><span>when given, get the version at the given time
+  <td class='break-word'><span class='code bold'>params.at</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a>)?</code>
+  </td>
+  <td class='break-word'><span>when given, get the version at the given time
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.id</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>?</code>
-                  </td>
-                  <td class='break-word'><span>an array of entry ids (strings)
+  <td class='break-word'><span class='code bold'>params.id</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>?</code>
+  </td>
+  <td class='break-word'><span>an array of entry ids (strings)
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.alias</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>?</code>
-                  </td>
-                  <td class='break-word'><span>an array of entry aliases (strings)
+  <td class='break-word'><span class='code bold'>params.alias</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>?</code>
+  </td>
+  <td class='break-word'><span>an array of entry aliases (strings)
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.typeId</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>?</code>
-                  </td>
-                  <td class='break-word'><span>only return entries of the given type ids (strings)
+  <td class='break-word'><span class='code bold'>params.typeId</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>?</code>
+  </td>
+  <td class='break-word'><span>only return entries of the given type ids (strings)
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.typeAlias</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>only return entries whose entry type has this alias
+  <td class='break-word'><span class='code bold'>params.typeAlias</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>only return entries whose entry type has this alias
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?</code>
-                  </td>
-                  <td class='break-word'><span>limit to that many results per page (limits as per Accedo One API, currently 1 to 50, default 20)
+  <td class='break-word'><span class='code bold'>params.size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?</code>
+  </td>
+  <td class='break-word'><span>limit to that many results per page (limits as per Accedo One API, currently 1 to 50, default 20)
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.offset</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?</code>
-                  </td>
-                  <td class='break-word'><span>offset the result by that many pages
+  <td class='break-word'><span class='code bold'>params.offset</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?</code>
+  </td>
+  <td class='break-word'><span>offset the result by that many pages
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.locale</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>if available, get the version for the given locale (defaults to the default locale)
+  <td class='break-word'><span class='code bold'>params.locale</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>if available, get the version for the given locale (defaults to the default locale)
 </span></td>
-                </tr>
+</tr>
+
+
               
             </tbody>
           </table>
@@ -770,7 +808,7 @@ Code examples can be found in the github repository.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of an array of entries (objects)
 
       
@@ -807,7 +845,7 @@ Code examples can be found in the github repository.</p>
   <p>Get one content entry by id, based on the given parameters.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getEntryById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, params: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getEntryById(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -824,7 +862,7 @@ Code examples can be found in the github repository.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    the entry id
 
           </div>
@@ -833,7 +871,7 @@ Code examples can be found in the github repository.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
 	    a parameters object
 
           </div>
@@ -852,25 +890,31 @@ Code examples can be found in the github repository.</p>
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.preview</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
-                  </td>
-                  <td class='break-word'><span>when true, get the preview version
+  <td class='break-word'><span class='code bold'>params.preview</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
+  </td>
+  <td class='break-word'><span>when true, get the preview version
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.at</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a>)?</code>
-                  </td>
-                  <td class='break-word'><span>when given, get the version at the given time
+  <td class='break-word'><span class='code bold'>params.at</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a>)?</code>
+  </td>
+  <td class='break-word'><span>when given, get the version at the given time
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.locale</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>if available, get the version for the given locale (defaults to the default locale)
+  <td class='break-word'><span class='code bold'>params.locale</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>if available, get the version for the given locale (defaults to the default locale)
 </span></td>
-                </tr>
+</tr>
+
+
               
             </tbody>
           </table>
@@ -885,7 +929,7 @@ Code examples can be found in the github repository.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of an entry (object)
 
       
@@ -922,7 +966,7 @@ Code examples can be found in the github repository.</p>
   <p>Get one content entry, based on the given parameters.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getEntryByAlias(alias: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, params: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getEntryByAlias(alias: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -939,7 +983,7 @@ Code examples can be found in the github repository.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>alias</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>alias</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the entry alias
 
           </div>
@@ -948,7 +992,7 @@ Code examples can be found in the github repository.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
 	    a parameters object
 
           </div>
@@ -967,25 +1011,31 @@ Code examples can be found in the github repository.</p>
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.preview</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
-                  </td>
-                  <td class='break-word'><span>when true, get the preview version
+  <td class='break-word'><span class='code bold'>params.preview</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?</code>
+  </td>
+  <td class='break-word'><span>when true, get the preview version
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.at</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a>)?</code>
-                  </td>
-                  <td class='break-word'><span>when given, get the version at the given time
+  <td class='break-word'><span class='code bold'>params.at</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a>)?</code>
+  </td>
+  <td class='break-word'><span>when given, get the version at the given time
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>params.locale</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
-                  </td>
-                  <td class='break-word'><span>if available, get the version for the given locale (defaults to the default locale)
+  <td class='break-word'><span class='code bold'>params.locale</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
+  </td>
+  <td class='break-word'><span>if available, get the version for the given locale (defaults to the default locale)
 </span></td>
-                </tr>
+</tr>
+
+
               
             </tbody>
           </table>
@@ -1000,7 +1050,7 @@ Code examples can be found in the github repository.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of an entry (object)
 
       
@@ -1035,11 +1085,11 @@ Code examples can be found in the github repository.</p>
   
 
   <p>Create a session and store it for reuse in this client instance
-Note you do not usually need to worry about this. Other methods will call it
-automatically for you when it is needed.</p>
+Note you do not usually need to worry about this. Other methods will call
+it automatically for you when it is needed.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>createSession(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1057,7 +1107,7 @@ automatically for you when it is needed.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of a string, the sessionKey
 
       
@@ -1094,7 +1144,7 @@ automatically for you when it is needed.</p>
   <p>Get the current log level</p>
 
 
-  <div class='pre p1 fill-light mt0'>getLogLevel(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getLogLevel(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1112,7 +1162,7 @@ automatically for you when it is needed.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the log level (string)
 
       
@@ -1155,7 +1205,7 @@ any queued-up log.</p>
 <p>If the current log level is high enough, lower level logs will be ignored.</p>
 
 
-  <div class='pre p1 fill-light mt0'>sendLog(level: (<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>), details: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, metadata: any?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>sendLog(level: (<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>), details: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, metadata: any?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1181,7 +1231,7 @@ any queued-up log.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>details</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>details</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the log information
 
           </div>
@@ -1200,46 +1250,58 @@ any queued-up log.</p>
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>details.message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the log message
+  <td class='break-word'><span class='code bold'>details.message</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the log message
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>details.errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
-                  </td>
-                  <td class='break-word'><span>the error code (max 5 digits)
+  <td class='break-word'><span class='code bold'>details.errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+  </td>
+  <td class='break-word'><span>the error code (max 5 digits)
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>details.dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 1 information
+  <td class='break-word'><span class='code bold'>details.dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 1 information
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>details.dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 2 information
+  <td class='break-word'><span class='code bold'>details.dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 2 information
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>details.dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 3 information
+  <td class='break-word'><span class='code bold'>details.dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 3 information
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>details.dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 4 information
+  <td class='break-word'><span class='code bold'>details.dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 4 information
 </span></td>
-                </tr>
+</tr>
+
+
               
             </tbody>
           </table>
@@ -1264,7 +1326,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the success of the operation
 (queuing on browser, posting on Node.js)
 
@@ -1302,7 +1364,7 @@ Can be passed as any number of trailing arguments.
   <p>Returns the currently stored sessionKey for this client instance</p>
 
 
-  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  <div class='pre p1 fill-light mt0'>getSessionKey(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
   
   
 
@@ -1320,7 +1382,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
         the sessionKey, if any
 
       
@@ -1357,7 +1419,7 @@ Can be passed as any number of trailing arguments.
   <p>Get the current application status</p>
 
 
-  <div class='pre p1 fill-light mt0'>getApplicationStatus(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getApplicationStatus(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1375,7 +1437,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the application status (string)
 
       
@@ -1412,7 +1474,7 @@ Can be passed as any number of trailing arguments.
   <p>Lists all the assets.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAllAssets(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getAllAssets(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1430,7 +1492,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of a hash of assets (key: asset name, value: asset URL)
 
       
@@ -1467,7 +1529,7 @@ Can be passed as any number of trailing arguments.
   <p>Send a usage START event</p>
 
 
-  <div class='pre p1 fill-light mt0'>sendUsageStartEvent(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>sendUsageStartEvent(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1485,7 +1547,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise denoting the success of the operation
 
       
@@ -1522,7 +1584,7 @@ Can be passed as any number of trailing arguments.
   <p>Send a usage QUIT event</p>
 
 
-  <div class='pre p1 fill-light mt0'>sendUsageStopEvent(retentionTimeInSeconds: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>sendUsageStopEvent(retentionTimeInSeconds: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1539,7 +1601,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>retentionTimeInSeconds</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?)</code>
+            <span class='code bold'>retentionTimeInSeconds</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)?)</code>
 	    the retention time, in seconds
 
           </div>
@@ -1554,7 +1616,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise denoting the success of the operation
 
       
@@ -1591,7 +1653,7 @@ Can be passed as any number of trailing arguments.
   <p>Get all the enabled plugins</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAllEnabledPlugins(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getAllEnabledPlugins(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1609,7 +1671,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -1646,7 +1708,7 @@ Can be passed as any number of trailing arguments.
   <p>Get the profile information</p>
 
 
-  <div class='pre p1 fill-light mt0'>getProfileInfo(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getProfileInfo(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1664,7 +1726,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -1701,7 +1763,7 @@ Can be passed as any number of trailing arguments.
   <p>Get all the metadata</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAllMetadata(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getAllMetadata(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1719,7 +1781,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -1756,7 +1818,7 @@ Can be passed as any number of trailing arguments.
   <p>Get the metadata by a specific key</p>
 
 
-  <div class='pre p1 fill-light mt0'>getMetadataByKey(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getMetadataByKey(key: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1773,7 +1835,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    a key to get specific metadata
 
           </div>
@@ -1788,7 +1850,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -1825,7 +1887,7 @@ Can be passed as any number of trailing arguments.
   <p>Get the metadata by specific keys</p>
 
 
-  <div class='pre p1 fill-light mt0'>getMetadataByKeys(keys: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getMetadataByKeys(keys: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1842,7 +1904,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>keys</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+            <span class='code bold'>keys</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
 	    an array of keys (strings)
 
           </div>
@@ -1857,7 +1919,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -1894,7 +1956,7 @@ Can be passed as any number of trailing arguments.
   <p>Get all the application-scope data for a given user</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAllApplicationScopeDataByUser(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getAllApplicationScopeDataByUser(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1911,7 +1973,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -1926,7 +1988,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -1963,7 +2025,7 @@ Can be passed as any number of trailing arguments.
   <p>Get all the application-group-scope data for a given user</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAllApplicationGroupScopeDataByUser(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getAllApplicationGroupScopeDataByUser(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -1980,7 +2042,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -1995,7 +2057,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2032,7 +2094,7 @@ Can be passed as any number of trailing arguments.
   <p>Get all the application-scope data for a given user and data key</p>
 
 
-  <div class='pre p1 fill-light mt0'>getApplicationScopeDataByUserAndKey(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getApplicationScopeDataByUserAndKey(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2049,7 +2111,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -2058,7 +2120,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    a key to specify what data to obtain
 
           </div>
@@ -2073,7 +2135,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2110,7 +2172,7 @@ Can be passed as any number of trailing arguments.
   <p>Get all the application-group-scope data for a given user</p>
 
 
-  <div class='pre p1 fill-light mt0'>getApplicationGroupScopeDataByUserAndKey(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getApplicationGroupScopeDataByUserAndKey(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2127,7 +2189,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -2136,7 +2198,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    a key to specify what data to obtain
 
           </div>
@@ -2151,7 +2213,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2188,7 +2250,7 @@ Can be passed as any number of trailing arguments.
   <p>Set the application-scope data for a given user</p>
 
 
-  <div class='pre p1 fill-light mt0'>setApplicationScopeUserData(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>setApplicationScopeUserData(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2205,7 +2267,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -2214,7 +2276,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the data to store
 
           </div>
@@ -2229,7 +2291,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2266,7 +2328,7 @@ Can be passed as any number of trailing arguments.
   <p>Set the application-group-scope data for a given user</p>
 
 
-  <div class='pre p1 fill-light mt0'>setApplicationGroupScopeUserData(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>setApplicationGroupScopeUserData(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2283,7 +2345,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -2292,7 +2354,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the data to store
 
           </div>
@@ -2307,7 +2369,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2344,7 +2406,7 @@ Can be passed as any number of trailing arguments.
   <p>Set the application-scope data for a given user</p>
 
 
-  <div class='pre p1 fill-light mt0'>setApplicationScopeUserDataByKey(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>setApplicationScopeUserDataByKey(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2361,7 +2423,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -2370,7 +2432,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    a key to specify what data to obtain
 
           </div>
@@ -2379,7 +2441,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the data to store
 
           </div>
@@ -2394,7 +2456,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2431,7 +2493,7 @@ Can be passed as any number of trailing arguments.
   <p>Set the application-group-scope data for a given user</p>
 
 
-  <div class='pre p1 fill-light mt0'>setApplicationGroupScopeUserDataByKey(userName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>setApplicationGroupScopeUserDataByKey(userName: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, key: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2448,7 +2510,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>userName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    an Accedo One user
 
           </div>
@@ -2457,7 +2519,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    a key to specify what data to obtain
 
           </div>
@@ -2466,7 +2528,7 @@ Can be passed as any number of trailing arguments.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the data to store
 
           </div>
@@ -2481,7 +2543,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2518,7 +2580,7 @@ Can be passed as any number of trailing arguments.
   <p>Get all the available locales</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAvailableLocales(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>getAvailableLocales(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2536,7 +2598,7 @@ Can be passed as any number of trailing arguments.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the requested data
 
       
@@ -2576,7 +2638,7 @@ Note that on browsers, the other method, <code>sendLog</code>, is more convenien
 it will auto-batch logs for you.</p>
 
 
-  <div class='pre p1 fill-light mt0'>sendLogs(logs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
+  <div class='pre p1 fill-light mt0'>sendLogs(logs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></div>
   
   
 
@@ -2593,7 +2655,7 @@ it will auto-batch logs for you.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>logs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+            <span class='code bold'>logs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
 	    Log description objects
 
           </div>
@@ -2612,70 +2674,88 @@ it will auto-batch logs for you.</p>
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].logType</span> <code class='quiet'>(<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>)</code>
-                  </td>
-                  <td class='break-word'><span>the log type
+  <td class='break-word'><span class='code bold'>logs[].logType</span> <code class='quiet'>(<code>"debug"</code> | <code>"info"</code> | <code>"warn"</code> | <code>"error"</code>)</code>
+  </td>
+  <td class='break-word'><span>the log type
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].timestamp</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-                  </td>
-                  <td class='break-word'><span>the timestamp for the log,
+  <td class='break-word'><span class='code bold'>logs[].timestamp</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+  </td>
+  <td class='break-word'><span>the timestamp for the log,
 as a UTC ISO 8601 string
 (ie. '2016-07-04T06:17:21Z'),
 or a POSIX millisecond number
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].message</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the log message
+  <td class='break-word'><span class='code bold'>logs[].message</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the log message
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the error code
+  <td class='break-word'><span class='code bold'>logs[].errorCode</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the error code
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 1 information
+  <td class='break-word'><span class='code bold'>logs[].dim1</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 1 information
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 2 information
+  <td class='break-word'><span class='code bold'>logs[].dim2</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 2 information
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 3 information
+  <td class='break-word'><span class='code bold'>logs[].dim3</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 3 information
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-                  </td>
-                  <td class='break-word'><span>the dimension 4 information
+  <td class='break-word'><span class='code bold'>logs[].dim4</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>the dimension 4 information
 </span></td>
-                </tr>
+</tr>
+
+
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>logs[].metadata</span> <code class='quiet'>any?</code>
-                  </td>
-                  <td class='break-word'><span>extra metadata (will go through JSON.stringify).
+  <td class='break-word'><span class='code bold'>logs[].metadata</span> <code class='quiet'>any?</code>
+  </td>
+  <td class='break-word'><span>extra metadata (will go through JSON.stringify).
 </span></td>
-                </tr>
+</tr>
+
+
               
             </tbody>
           </table>
@@ -2690,7 +2770,7 @@ or a POSIX millisecond number
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a></code>:
         a promise of the success of the operation
 
       
@@ -2712,8 +2792,8 @@ or a POSIX millisecond number
         
       </div>
     </div>
-  </div>
   <script src='assets/anchor.js'></script>
+  <script src='assets/split.js'></script>
   <script src='assets/site.js'></script>
 </body>
 </html>
