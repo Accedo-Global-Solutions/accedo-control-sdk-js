@@ -45,9 +45,9 @@ const stamp = sessionStamp.compose({
     let currentLevelPromise;
 
     /**
-       * Get the current log level
-       * @return {promise}  a promise of the log level (string)
-       */
+     * Get the current log level
+     * @return {promise}  a promise of the log level (string)
+     */
     instance.getLogLevel = function getLogLevel() {
       if (currentLevelPromise) {
         return currentLevelPromise;

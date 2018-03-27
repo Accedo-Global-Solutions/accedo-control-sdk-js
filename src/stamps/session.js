@@ -59,7 +59,7 @@ const stamp = stampit({
      * @private
      * @param {function} next a function that returns a promise
      * @return {promise}  a promise of the result of the next function
-    */
+     */
     withSessionHandling(next) {
       // existing session
       if (this.getSessionKey()) {

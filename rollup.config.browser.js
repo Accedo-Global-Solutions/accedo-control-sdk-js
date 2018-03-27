@@ -5,11 +5,13 @@ import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify'; // eslint-disable-line import/extensions
 
 export default {
-  entry: 'src/browser/index.js',
-  format: 'umd',
-  dest: 'dist/accedo-one.umd.min.js',
-  moduleName: 'accedoOne',
-  sourceMap: false,
+  input: 'src/browser/index.js',
+  output: {
+    file: 'dist/accedo-one.umd.min.js',
+    format: 'umd',
+    name: 'accedoOne',
+    sourcemap: false,
+  },
   plugins: [
     nodeResolve({
       module: true,
@@ -23,6 +25,6 @@ export default {
     }),
     commonjs(),
     buble(),
-    uglify()
-  ]
+    uglify(),
+  ],
 };
