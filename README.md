@@ -1,18 +1,9 @@
-# Accedo One SDK for Node.js and browsers [![npm](https://img.shields.io/npm/v/@accedo/accedo-one.svg?maxAge=3600)](https://www.npmjs.com/package/@accedo/accedo-one)
-
-```
-   _                    _           ___
-  /_\   ___ ___ ___  __| | ___     /___\_ __   ___
- //_\\ / __/ __/ _ \/ _` |/ _ \   //  // '_ \ / _ \
-/  _  \ (_| (_|  __/ (_| | (_) | / \_//| | | |  __/
-\_/ \_/\___\___\___|\__,_|\___/  \___/ |_| |_|\___|
-
-```
+# Accedo Control SDK for Node.js and browsers [![npm](https://img.shields.io/npm/v/@accedo/accedo-one.svg?maxAge=3600)](https://www.npmjs.com/package/@accedo/accedo-one)
 
 ## Summary
 
-This is the official [Accedo One](https://www.accedo.tv/one) SDK for Node.js and browsers, previously known as the AppGrid JS SDK.
-While Accedo One exposes a set of friendly REST APIs, this SDK is intended to provide a smoother experience when coding in JS.
+This is the Accedo Control SDK for Node.js and browsers, previously known as the AppGrid JS SDK.
+While Accedo Control exposes a set of friendly REST APIs, this SDK is intended to provide a smoother experience when coding in JS.
 It also encourages the use of best practices (for example: reusing the same sessionId for a client, but different clients for different devices).
 
 We follow [semantic versioning](http://semver.org/).
@@ -35,24 +26,24 @@ This should work from version 4, but we test on, and recommend to use the latest
 ## Features
 
 The default factory exposed by this SDK allows creating a client instance tied to a device id and an application key. It provides these features :
- - easy access to Accedo One APIs
+ - easy access to Accedo Control APIs
  - automatic deviceId creation when none was provided
  - automatic session creation when none was provided (lazy - only when needed)
  - automatic session re-creation when the previous one has expired (lazy)
- - ensures only one session will be created at a time, even if concurrent Accedo One requests are made
+ - ensures only one session will be created at a time, even if concurrent Accedo Control requests are made
  - specific to Detect:
   - ensures concurrent calls to get the log level will result in one network call at most
   - caches the log level for 3 minutes
   - on browsers, individual logs are only sent when necessary (i.e. when the log's level is equal or higher than the current level set on the app), and automatically grouped then sent as a batch (see the `sendLog` doc)
 
-:information_source: _For Node, an [express-compatible middleware is also available as a separate package](https://github.com/Accedo-Products/accedo-one-sdk-express).
+:information_source: _For Node, an [express-compatible middleware is also available as a separate package](https://github.com/Accedo-Products/accedo-control-sdk-express).
 You should really consider using it if possible, as it makes things even easier and provides extra features._
 
 ## Documentation
 
 Refer to the [API docs for this SDK](https://accedo-products.github.io/accedo-one-sdk-js/).
 
-You may also want to refer to the [Accedo One Rest API documentation](https://developer.one.accedo.tv/) that this SDK uses behind the scenes. Accedo One-specific terminology is defined there.
+You may also want to refer to the [Accedo Control Rest API documentation](https://developer.one.accedo.tv/) that this SDK uses behind the scenes. Accedo Control-specific terminology is defined there.
 
 ## Installation
 
@@ -70,14 +61,14 @@ import accedoOne from '@accedo/accedo-one'
 ## Examples
 Below are a few examples, refer to `example-node.js` for more of them that you can run yourself (clone this repo then execute `node example-node.js`).
 
-### Create an Accedo One client instance
+### Create an Accedo Control client instance
 
-:point_right: _On Node, we recommend you use the [Express middleware](https://github.com/Accedo-Products/accedo-one-sdk-express) instead, as it makes it easier and enforces some more best practices._
+:point_right: _On Node, we recommend you use the [Express middleware](https://github.com/Accedo-Products/accedo-control-sdk-express) instead, as it makes it easier and enforces some more best practices._
 
-An instance of an Accedo One client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
+An instance of an Accedo Control client must be obtained. It's created with the factory exported as the default export in this library, with parameters for the specific client you need.
 
 ```javascript
-// This is an Accedo One client factory - name it "factory", "accedoOne", or anything else.
+// This is an Accedo Control client factory - name it "factory", "accedoOne", or anything else.
 // If you use this library on a browser through a <script> tag, `accedoOne` is a global variable
 // so you do not need to import or require anything.
 import accedoOne from '@accedo/accedo-one';
@@ -94,24 +85,24 @@ const client = accedoOne({
 });
 ```
 
-You should create a new client for every device that needs to access the Accedo One APIs.
+You should create a new client for every device that needs to access the Accedo Control APIs.
 
 :warning: **DO NOT** reuse a single client, in your Node server, to relay requests from various consumers.
 
-If you are triggering some Accedo One API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's deviceId (typically you would persist a consumer deviceId via the cookies, or as a request parameter in your server APIs - unless the device lets you use some unique ID like a MAC address).
+If you are triggering some Accedo Control API calls in response to server requests, **you should create a new client every time**, by using the factory and reusing your application key and the consumer's deviceId (typically you would persist a consumer deviceId via the cookies, or as a request parameter in your server APIs - unless the device lets you use some unique ID like a MAC address).
 
 :bulb: Note again, the middleware (see above) does that work for you, so it's best to use it whenever possible.
 
-### Create a new Accedo One session
+### Create a new Accedo Control session
 
 The `client.createSession` lets you manually create a new session, that will be stored for reuse onto this client instance.
 As any API call that needs a session will trigger this method implicitly when needed, **you will normally not need to ever do this yourself**.
 
-### Get all Accedo One Metadata associated with your application key
+### Get all Accedo Control Metadata associated with your application key
 ```javascript
 client.getAllMetadata()
   .then(metadata => {
-    console.log('Successfully requested all metadata from Accedo One', metadata);
+    console.log('Successfully requested all metadata from Accedo Control', metadata);
   })
   .catch(error => {
     // TODO handle error
@@ -141,10 +132,8 @@ The sample includes the polyfills necessary for older browsers like IE11 (those 
 
 ## More information & Links
 
-* [Accedo One homepage](https://www.accedo.tv/one)
-* [Accedo One help center](https://support.one.accedo.tv)
-* [Accedo One API documentation](https://developer.one.accedo.tv)
-* [The Express-compatible middleware](https://github.com/Accedo-Products/accedo-one-sdk-express) that relies on this library.
+* [Accedo Control API documentation](https://developer.one.accedo.tv)
+* [The Express-compatible middleware](https://github.com/Accedo-Products/accedo-control-sdk-express) that relies on this library.
 
 ## Unit Tests
 
