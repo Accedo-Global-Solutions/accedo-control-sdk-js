@@ -13,19 +13,14 @@ const getForwardedForHeader = ({ ip }) => {
   return { 'X-FORWARDED-FOR': ip };
 };
 
-const getSessionHeader = ({ sessionKey }) => {
-  if (!sessionKey) {
-    return {};
-  }
-  return { 'X-SESSION': sessionKey };
-};
-
 const getContentTypeHeader = () => ({ 'Content-Type': MIME_TYPE_JSON });
 
 const getQueryString = (config, existingQs = {}) => {
   // When there is a sessionKey, these are useless
   const defaultQs = config.sessionKey
-    ? {}
+    ? {
+        sessionKey: config.sessionKey,
+      }
     : {
         appKey: config.appKey,
         uuid: config.deviceId,
@@ -50,8 +45,7 @@ const getRequestUrlWithQueryString = (path, config) => {
 const getExtraHeaders = config => {
   return Object.assign(
     {},
-    getForwardedForHeader(config),
-    getSessionHeader(config)
+    getForwardedForHeader(config)
   );
 };
 
